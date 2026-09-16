@@ -1,0 +1,60 @@
+# ==============================================================================
+# Git Attributes Configuration
+# Project: An Agentic AI Framework for Reliable and Evidence-Based Code Review
+# ==============================================================================
+
+# Auto-detect text files and normalize line endings to LF on commit
+* text=auto eol=lf
+
+# --- Source Code & Configurations (Explicit LF) ---
+*.py text eol=lf
+*.pyi text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.js text eol=lf
+*.jsx text eol=lf
+*.json text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.toml text eol=lf
+*.ini text eol=lf
+*.cfg text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+*.sql text eol=lf
+*.html text eol=lf
+*.css text eol=lf
+*.sh text eol=lf
+*.env* text eol=lf
+Dockerfile* text eol=lf
+.gitignore text eol=lf
+.gitattributes text eol=lf
+
+# --- Windows Shell Scripts (Keep CRLF) ---
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# --- Binary Files ---
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg text eol=lf
+*.pdf binary
+*.woff binary
+*.woff2 binary
+*.eot binary
+*.ttf binary
+*.zip binary
+*.tar.gz binary
+*.tgz binary
+*.db binary
+*.sqlite binary
+*.sqlite3 binary
+*.pyc binary
+*.pyd binary
+*.so binary
+*.dll binary
+*.exe binary
