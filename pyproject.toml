@@ -1,0 +1,202 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agentic-ai-code-reviewer"
+version = "0.1.0"
+description = "An Agentic AI Framework for Reliable and Evidence-Based Automated Code Review"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [
+    { name = "Sakshi Bhosale" }
+]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Framework :: FastAPI",
+    "Topic :: Software Development :: Quality Assurance",
+]
+
+# --- Core Runtime Dependencies (Phase 1 Ingestion & Baseline) ---
+dependencies = [
+    # Asynchronous Web API framework for webhooks and review trace endpoints
+    "fastapi>=0.110.0",
+    # Production ASGI server with uvloop and httptools
+    "uvicorn[standard]>=0.28.0",
+    # Robust data validation and JSON Schema generation (Pydantic v2)
+    "pydantic>=2.6.0",
+    # Type-safe environment variable parsing with validation
+    "pydantic-settings>=2.2.0",
+    # Asynchronous HTTP client for GitHub REST API interactions
+    "httpx>=0.27.0",
+    # Multipart form/payload support for webhook processing
+    "python-multipart>=0.0.9",
+]
+
+[project.optional-dependencies]
+# --- Database & Persistence Layer (PostgreSQL & Alembic) ---
+database = [
+    # Asynchronous ORM and relational query builder
+    "sqlalchemy[asyncio]>=2.0.28",
+    # High-performance async PostgreSQL driver
+    "asyncpg>=0.29.0",
+    # Relational database schema migration manager
+    "alembic>=1.13.1",
+    # Client driver utility and sync fallback
+    "psycopg[binary]>=3.1.18",
+]
+
+# --- Asynchronous Task Queue & Cache (Redis & ARQ) ---
+queue = [
+    # Async job queue built on top of Redis
+    "arq>=0.25.0",
+    # Async Redis client with hiredis parser support
+    "redis[hiredis]>=5.0.3",
+]
+
+# --- Agentic AI & Orchestration Runtime (LangGraph & LLM SDKs) ---
+ai = [
+    # Stateful multi-agent Directed Acyclic Graph orchestration
+    "langgraph>=0.0.30",
+    # Standard interface abstractions for prompts, messages, and output parsing
+    "langchain-core>=0.1.30",
+    # OpenAI provider integration for specialist and critic agents
+    "langchain-openai>=0.1.0",
+    # Anthropic provider integration for alternative reasoning and evaluation
+    "langchain-anthropic>=0.1.0",
+    # Google Gemini provider integration for multi-vendor resilience
+    "langchain-google-genai>=1.0.0",
+    # Exponential backoff retry handler with jitter for resilient API calls
+    "tenacity>=8.2.3",
+]
+
+# --- Static Code & Context Analysis ---
+analysis = [
+    # Unified diff parser extracting hunks, file paths, and line coordinates
+    "unidiff>=0.7.5",
+    # Incremental AST parsing for semantic chunking and context extraction
+    "tree-sitter>=0.21.0",
+    # Python grammar bindings for Tree-sitter
+    "tree-sitter-python>=0.21.0",
+]
+
+# --- Empirical Evaluation & Scientific Benchmarking ---
+evaluation = [
+    # Tabular data manipulation for benchmark datasets and results
+    "pandas>=2.2.0",
+    # Numerical computation for confidence distributions
+    "numpy>=1.26.4",
+    # Statistical analysis, confusion matrix, precision/recall metrics
+    "scikit-learn>=1.4.1",
+    # Formatted Markdown/plain text output for evaluation tables
+    "tabulate>=0.9.0",
+]
+
+# --- Development, Testing, and Code Quality Suite ---
+dev = [
+    # Foundation database and queue dependencies required for development and testing
+    "agentic-ai-code-reviewer[database,queue]",
+    # Modern test framework
+    "pytest>=8.1.0",
+    # Pytest runner extension for async test cases
+    "pytest-asyncio>=0.23.5",
+    # Code coverage measurement and reporting
+    "pytest-cov>=5.0.0",
+    # Extremely fast linter and formatter replacing Black, Flake8, and isort
+    "ruff>=0.3.4",
+    # Strict static type checker
+    "mypy>=1.9.0",
+    # Redis type stubs for strict mypy compliance
+    "types-redis>=4.6.0.20240425",
+    # Git hook management for pre-commit linting
+    "pre-commit>=3.7.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["backend"]
+include = ["app*"]
+namespaces = true
+
+# ==============================================================================
+# Quality Tooling Configuration
+# ==============================================================================
+
+# --- Pytest Configuration ---
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests", "backend/tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_functions = ["test_*"]
+asyncio_mode = "auto"
+addopts = "-v --strict-markers --cov=backend/app --cov-report=term-missing --cov-report=html:htmlcov --cov-fail-under=0"
+markers = [
+    "unit: Fast isolated unit tests with no external services",
+    "integration: Integration tests requiring PostgreSQL, Redis, or Docker",
+    "evaluation: Empirical benchmark tests comparing agentic against baseline",
+]
+
+# --- Ruff Linter & Formatter Configuration ---
+# Ruff replaces Flake8, Black, and isort with high-performance Rust-based execution.
+[tool.ruff]
+target-version = "py312"
+line-length = 88
+indent-width = 4
+exclude = [
+    ".venv",
+    "venv",
+    ".git",
+    "__pycache__",
+    "build",
+    "dist",
+    "node_modules",
+]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # Pyflakes
+    "I",   # isort import sorting
+    "B",   # flake8-bugbear (common bug prevention)
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade (modern Python 3.11+ idioms)
+    "ARG", # flake8-unused-arguments
+    "SIM", # flake8-simplify
+]
+ignore = [
+    "E501", # Line length is governed by ruff format
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
+
+# --- Mypy Static Type Checking Configuration ---
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+strict_equality = true
+plugins = ["pydantic.mypy"]
+
+[[tool.mypy.overrides]]
+module = [
+    "unidiff.*",
+    "tree_sitter.*",
+    "tree_sitter_python.*",
+    "arq.*",
+    "tabulate.*",
+]
+ignore_missing_imports = true
