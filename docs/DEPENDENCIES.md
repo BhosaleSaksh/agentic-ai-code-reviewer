@@ -17,6 +17,9 @@ Required for foundational application execution, asynchronous HTTP handling, and
 - **`pydantic-settings` ($\ge 2.2.0$):** Type-safe configuration management loading environment variables from `.env` with validation at startup.
 - **`httpx` ($\ge 0.27.0$):** Asynchronous HTTP client for non-blocking communication with the GitHub REST API and external services.
 - **`python-multipart` ($\ge 0.0.9$):** Streaming parser required by FastAPI for processing form-data and webhook payload envelopes.
+- **`pyjwt[crypto]` ($\ge 2.8.0$):** Cryptographic JWT creation and token decoding library used for generating RS256-signed GitHub App authentication tokens.
+- **`cryptography` ($\ge 42.0.0$):** Underlying cryptographic primitives enabling secure RSA private key parsing, PKCS#1/PKCS#8 PEM handling, and RS256 digital signature computation.
+
 
 ### 2.2 Database & Persistence Dependencies (`database` group - Phase 1)
 Required for relational persistence and schema evolution:
