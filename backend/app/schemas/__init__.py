@@ -27,6 +27,16 @@ from app.schemas.github import (
 from app.schemas.health import DependencyStatus, HealthResponse, ReadinessResponse
 from app.schemas.job import ReviewJobPayload, ReviewJobResult
 from app.schemas.review_plan import ReviewPlan
+from app.schemas.static_analysis import (
+    BanditFinding,
+    BanditResult,
+    PipAuditFinding,
+    PipAuditResult,
+    SemgrepFinding,
+    SemgrepResult,
+    StaticAnalysisExecutionStatus,
+    ToolAnalysisSummary,
+)
 from app.schemas.webhook import (
     GenericWebhookPayload,
     PullRequestWebhookPayload,
@@ -49,6 +59,7 @@ __all__ = [
     "EvidenceType",
     "FileChangeType",
     "DiffLineType",
+    "StaticAnalysisExecutionStatus",
     # Schemas
     "EvidenceModel",
     "ReviewFinding",
@@ -76,4 +87,11 @@ __all__ = [
     "GitHubPullRequestFile",
     "PullRequestContext",
     "WorkspaceContext",
+    "SemgrepFinding",
+    "SemgrepResult",
+    "BanditFinding",
+    "BanditResult",
+    "PipAuditFinding",
+    "PipAuditResult",
+    "ToolAnalysisSummary",
 ]

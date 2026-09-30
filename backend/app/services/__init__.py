@@ -5,6 +5,12 @@ from app.services.diff_parser import (
     MalformedHunkError,
     parse_diff,
 )
+from app.services.evidence_persistence_service import (
+    CommitMismatchError,
+    EvidencePersistenceError,
+    EvidencePersistenceService,
+    ReviewRunNotFoundError,
+)
 from app.services.finding_mapper import (
     evidence_to_orm,
     finding_to_orm,
@@ -56,4 +62,8 @@ __all__ = [
     "GitError",
     "GitCommandError",
     "GitTimeoutError",
+    "EvidencePersistenceService",
+    "EvidencePersistenceError",
+    "ReviewRunNotFoundError",
+    "CommitMismatchError",
 ]

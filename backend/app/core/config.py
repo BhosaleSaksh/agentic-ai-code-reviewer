@@ -107,11 +107,26 @@ class Settings(BaseSettings):
     GOOGLE_API_KEY: SecretStr | None = None
     GOOGLE_MODEL: str = "gemini-1.5-pro"
 
-    # --- Static Analysis Sandbox Limits ---
+    # --- Static Analysis Sandbox Limits (Phase 2.1) ---
     DOCKER_SANDBOX_ENABLED: bool = True
-    SEMGREP_TIMEOUT_SECONDS: int = 60
-    BANDIT_TIMEOUT_SECONDS: int = 45
-    PIP_AUDIT_TIMEOUT_SECONDS: int = 45
+    STATIC_ANALYSIS_ENABLED: bool = True
+    STATIC_ANALYSIS_TIMEOUT_SECONDS: float = 60.0
+    SEMGREP_TIMEOUT_SECONDS: float = 60.0
+    BANDIT_TIMEOUT_SECONDS: float = 45.0
+    PIP_AUDIT_TIMEOUT_SECONDS: float = 45.0
+    STATIC_ANALYSIS_MEMORY_LIMIT: str = "512m"
+    STATIC_ANALYSIS_CPU_LIMIT: str = "1.0"
+    STATIC_ANALYSIS_MAX_OUTPUT_BYTES: int = 10 * 1024 * 1024  # 10 MB
+    STATIC_ANALYSIS_NETWORK: str = "none"
+    SEMGREP_IMAGE: str = "semgrep/semgrep:1.78.0"
+    BANDIT_IMAGE: str = "ghcr.io/pycqa/bandit/bandit:1.9.4"
+    PIP_AUDIT_IMAGE: str = "pip-audit:2.7.3"
+    SEMGREP_CONTAINER_USER: str = "1000:1000"
+    BANDIT_CONTAINER_USER: str = "1000:1000"
+    PIP_AUDIT_CONTAINER_USER: str = "1000:1000"
+    SEMGREP_RULES_PATH: Path | None = None
+    PIP_AUDIT_CACHE_DIR: Path | None = None
+    STATIC_ANALYSIS_MAX_EVIDENCE_ITEMS_PER_RUN: int = 1000
 
     # --- Review & Verification Parameters ---
     MIN_VERIFICATION_CONFIDENCE: float = 0.75

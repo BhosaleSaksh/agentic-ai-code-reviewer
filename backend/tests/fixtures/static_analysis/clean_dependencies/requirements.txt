@@ -1,0 +1,5 @@
+# Synthetic clean dependency fixture
+# Pinned to modern, non-vulnerable versions
+requests==2.32.3
+urllib3==2.2.2
+pydantic==2.8.2

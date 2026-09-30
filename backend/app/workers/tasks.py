@@ -198,7 +198,48 @@ async def review_pull_request_job(
                     workspace_ctx.actual_head_sha,
                     workspace_ctx.size_bytes,
                 )
-                # Future Phase 2 static analyzers and agents will execute inside this block.
+                # Phase 2.1: Execute containerized static analysis if enabled
+                if getattr(settings, "STATIC_ANALYSIS_ENABLED", True):
+                    from app.static_analysis.service import StaticAnalysisService
+
+                    sa_service: StaticAnalysisService | None = ctx.get(
+                        "static_analysis_service"
+                    )
+                    if sa_service is None and getattr(
+                        settings, "DOCKER_SANDBOX_ENABLED", True
+                    ):
+                        sa_service = StaticAnalysisService(settings=settings)
+
+                    if sa_service is not None and sa_service.is_docker_available():
+                        try:
+                            static_results = await sa_service.run_all(workspace_ctx)
+                            pa_status = (
+                                static_results.pip_audit.execution_status.value
+                                if static_results.pip_audit
+                                else "NOT_RUN"
+                            )
+                            pa_count = (
+                                len(static_results.pip_audit.findings)
+                                if static_results.pip_audit
+                                else 0
+                            )
+                            logger.info(
+                                "Worker completed static analysis: job_id=%s, semgrep=%s (findings=%d), "
+                                "bandit=%s (findings=%d), pip-audit=%s (findings=%d)",
+                                job_id,
+                                static_results.semgrep.execution_status.value,
+                                len(static_results.semgrep.findings),
+                                static_results.bandit.execution_status.value,
+                                len(static_results.bandit.findings),
+                                pa_status,
+                                pa_count,
+                            )
+                        except Exception as sa_exc:
+                            logger.warning(
+                                "Non-blocking static analysis error: job_id=%s, error=%s",
+                                job_id,
+                                sa_exc,
+                            )
         except GitTimeoutError as exc:
             logger.warning(
                 "Transient Git timeout during workspace checkout: job_id=%s, try=%d, error=%s; triggering retry",

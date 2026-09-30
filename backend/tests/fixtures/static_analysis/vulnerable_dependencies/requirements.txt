@@ -1,0 +1,6 @@
+# Synthetic vulnerable dependency fixture
+# Known historical vulnerable versions with public CVE advisories:
+# flask 0.12: CVE-2018-18074, CVE-2019-1010083
+# jinja2 2.10: CVE-2019-10906, CVE-2020-28493
+flask==0.12
+jinja2==2.10
