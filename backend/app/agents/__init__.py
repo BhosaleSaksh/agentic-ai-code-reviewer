@@ -11,6 +11,11 @@ from app.agents.bug_logic_prompt import (
     BUG_LOGIC_SYSTEM_PROMPT,
     build_bug_logic_user_prompt,
 )
+from app.agents.critic import CriticAgent
+from app.agents.critic_prompt import (
+    CRITIC_SYSTEM_PROMPT,
+    build_critic_user_prompt,
+)
 from app.agents.error_handling import ErrorHandlingAgent
 from app.agents.error_handling_prompt import (
     ERROR_HANDLING_SYSTEM_PROMPT,
@@ -37,6 +42,8 @@ __all__ = [
     "BUG_LOGIC_SYSTEM_PROMPT",
     "BaseSpecialistAgent",
     "BugLogicAgent",
+    "CRITIC_SYSTEM_PROMPT",
+    "CriticAgent",
     "ERROR_HANDLING_SYSTEM_PROMPT",
     "ErrorHandlingAgent",
     "PLANNER_SYSTEM_PROMPT",
@@ -49,6 +56,7 @@ __all__ = [
     "TEST_ADEQUACY_SYSTEM_PROMPT",
     "TestAdequacyAgent",
     "build_bug_logic_user_prompt",
+    "build_critic_user_prompt",
     "build_error_handling_user_prompt",
     "build_planner_user_prompt",
     "build_security_user_prompt",

@@ -133,6 +133,16 @@ class ReviewFinding(BaseModel):
         description="GitHub Review Comment ID if published to the PR",
     )
 
+    @field_validator(
+        "issue_type", "severity", "side", "verification_status", mode="before"
+    )
+    @classmethod
+    def normalize_enum_case(cls, v: object) -> object:
+        """Normalize string representations of enums to uppercase."""
+        if isinstance(v, str):
+            return v.strip().upper()
+        return v
+
     @field_validator("confidence_score")
     @classmethod
     def validate_confidence(cls, v: float) -> float:
@@ -181,6 +191,15 @@ class ReviewFinding(BaseModel):
     def is_suppressed(self) -> bool:
         """Check if finding was suppressed as false positive or dropped."""
         return self.verification_status in (
+            VerificationStatus.SUPPRESSED_FALSE_POSITIVE,
+            VerificationStatus.DROPPED_LOW_CONFIDENCE,
+        )
+
+    @property
+    def is_rejected(self) -> bool:
+        """Check if finding was rejected during verification."""
+        return self.verification_status in (
+            VerificationStatus.REJECTED,
             VerificationStatus.SUPPRESSED_FALSE_POSITIVE,
             VerificationStatus.DROPPED_LOW_CONFIDENCE,
         )

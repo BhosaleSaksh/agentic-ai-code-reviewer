@@ -14,6 +14,7 @@ from typing import Annotated, Any, TypedDict
 from app.schemas.evidence import EvidenceModel
 from app.schemas.finding import ReviewFinding
 from app.schemas.review_plan import ReviewPlan
+from app.schemas.verification import VerificationResult
 
 
 def merge_candidate_findings(
@@ -87,6 +88,30 @@ def merge_error_messages(
     return combined
 
 
+def merge_verification_results(
+    existing: list[dict[str, Any]] | None,
+    new_results: list[dict[str, Any]] | None,
+) -> list[dict[str, Any]]:
+    """Reducer to merge verification decision results without duplicates."""
+    combined: list[dict[str, Any]] = list(existing or [])
+    if not new_results:
+        return combined
+
+    seen_ids: set[str] = {
+        str(r.get("finding_id") or r.get("id"))
+        for r in combined
+        if r.get("finding_id") or r.get("id")
+    }
+    for res in new_results:
+        fid = str(res.get("finding_id") or res.get("id"))
+        if fid and fid in seen_ids:
+            continue
+        if fid:
+            seen_ids.add(fid)
+        combined.append(res)
+    return combined
+
+
 class ReviewState(TypedDict, total=False):
     """Canonical typed state representation for the LangGraph code review pipeline.
 
@@ -125,6 +150,12 @@ class ReviewState(TypedDict, total=False):
     candidate_findings: Annotated[list[dict[str, Any]], merge_candidate_findings]
     specialist_errors: Annotated[list[dict[str, Any]], merge_specialist_errors]
     error_messages: Annotated[list[str], merge_error_messages]
+
+    # --- Critic Verified & Rejected Findings (Concurrent Reducer) ---
+    verified_findings: Annotated[list[dict[str, Any]], merge_candidate_findings]
+    rejected_findings: Annotated[list[dict[str, Any]], merge_candidate_findings]
+    verification_results: Annotated[list[dict[str, Any]], merge_verification_results]
+    verification_errors: Annotated[list[dict[str, Any]], merge_specialist_errors]
 
     # --- Execution & Lifecycle Status ---
     status: str
@@ -248,6 +279,10 @@ def create_initial_review_state(
         candidate_findings=[],
         specialist_errors=[],
         error_messages=[],
+        verified_findings=[],
+        rejected_findings=[],
+        verification_results=[],
+        verification_errors=[],
         status="PENDING",
         error=None,
         error_category=None,
@@ -280,3 +315,39 @@ def extract_candidate_findings(state: ReviewState) -> list[ReviewFinding]:
         elif isinstance(item, dict):
             findings.append(ReviewFinding.model_validate(item))
     return findings
+
+
+def extract_verified_findings(state: ReviewState) -> list[ReviewFinding]:
+    """Helper to deserialize and validate verified ReviewFinding items from state."""
+    raw_findings = state.get("verified_findings", [])
+    findings: list[ReviewFinding] = []
+    for item in raw_findings:
+        if isinstance(item, ReviewFinding):
+            findings.append(item)
+        elif isinstance(item, dict):
+            findings.append(ReviewFinding.model_validate(item))
+    return findings
+
+
+def extract_rejected_findings(state: ReviewState) -> list[ReviewFinding]:
+    """Helper to deserialize and validate rejected ReviewFinding items from state."""
+    raw_findings = state.get("rejected_findings", [])
+    findings: list[ReviewFinding] = []
+    for item in raw_findings:
+        if isinstance(item, ReviewFinding):
+            findings.append(item)
+        elif isinstance(item, dict):
+            findings.append(ReviewFinding.model_validate(item))
+    return findings
+
+
+def extract_verification_results(state: ReviewState) -> list[VerificationResult]:
+    """Helper to deserialize and validate VerificationResult items from state."""
+    raw_results = state.get("verification_results", [])
+    results: list[VerificationResult] = []
+    for item in raw_results:
+        if isinstance(item, VerificationResult):
+            results.append(item)
+        elif isinstance(item, dict):
+            results.append(VerificationResult.model_validate(item))
+    return results

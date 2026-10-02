@@ -7,6 +7,7 @@ from deterministic validation failures per Section K of the project architecture
 from __future__ import annotations
 
 from enum import StrEnum
+from typing import Any
 
 
 class WorkflowErrorCategory(StrEnum):
@@ -14,6 +15,7 @@ class WorkflowErrorCategory(StrEnum):
 
     INVALID_PLANNER_OUTPUT = "INVALID_PLANNER_OUTPUT"
     INVALID_SPECIALIST_OUTPUT = "INVALID_SPECIALIST_OUTPUT"
+    INVALID_CRITIC_OUTPUT = "INVALID_CRITIC_OUTPUT"
     LLM_PROVIDER_ERROR = "LLM_PROVIDER_ERROR"
     LLM_TIMEOUT = "LLM_TIMEOUT"
     CONTEXT_PREPARATION_FAILURE = "CONTEXT_PREPARATION_FAILURE"
@@ -91,6 +93,32 @@ class InvalidSpecialistOutputError(WorkflowError):
         super().__init__(
             message=message,
             category=WorkflowErrorCategory.INVALID_SPECIALIST_OUTPUT,
+            retryable=False,
+            details=details,
+        )
+
+
+class InvalidCriticOutputError(WorkflowError):
+    """Raised when the Critic Agent outputs malformed JSON or violates verification schema."""
+
+    def __init__(
+        self,
+        message: str,
+        finding_id: str | None = None,
+        raw_output: str | None = None,
+        validation_errors: list[Any] | None = None,
+    ) -> None:
+        details: dict[str, object] = {}
+        if finding_id:
+            details["finding_id"] = finding_id
+        if raw_output is not None:
+            details["raw_output"] = raw_output[:1000]
+        if validation_errors:
+            details["validation_errors"] = validation_errors
+
+        super().__init__(
+            message=message,
+            category=WorkflowErrorCategory.INVALID_CRITIC_OUTPUT,
             retryable=False,
             details=details,
         )

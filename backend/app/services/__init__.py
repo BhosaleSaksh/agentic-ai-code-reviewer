@@ -17,6 +17,10 @@ from app.services.finding_mapper import (
     orm_to_evidence,
     orm_to_finding,
 )
+from app.services.finding_persistence_service import (
+    FindingPersistenceError,
+    FindingPersistenceService,
+)
 from app.services.git_runner import (
     GitCommandError,
     GitError,
@@ -62,6 +66,8 @@ __all__ = [
     "GitError",
     "GitCommandError",
     "GitTimeoutError",
+    "FindingPersistenceService",
+    "FindingPersistenceError",
     "EvidencePersistenceService",
     "EvidencePersistenceError",
     "ReviewRunNotFoundError",

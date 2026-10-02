@@ -37,6 +37,12 @@ from app.schemas.static_analysis import (
     StaticAnalysisExecutionStatus,
     ToolAnalysisSummary,
 )
+from app.schemas.verification import (
+    CriticStructuredOutput,
+    EvidenceMatch,
+    VerificationContext,
+    VerificationResult,
+)
 from app.schemas.webhook import (
     GenericWebhookPayload,
     PullRequestWebhookPayload,
@@ -94,4 +100,8 @@ __all__ = [
     "PipAuditFinding",
     "PipAuditResult",
     "ToolAnalysisSummary",
+    "EvidenceMatch",
+    "VerificationContext",
+    "VerificationResult",
+    "CriticStructuredOutput",
 ]
