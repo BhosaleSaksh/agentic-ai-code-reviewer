@@ -57,6 +57,7 @@ The backend is structured under `backend/app/` to establish strict modular bound
   - Finding schemas, webhook event models, review plans, and API request/response contracts.
 - **`backend/app/services/`:** Business logic domain services.
   - Scoping/triage service, review coordinator, deduplication engine, and confidence scoring.
+  - `llm/`: LLM provider abstraction, structured schema generation, timeout bounds, and test mock provider.
 - **`backend/app/workers/`:** Asynchronous task execution.
   - ARQ background worker functions processing review tasks dispatched from webhooks.
 - **`backend/app/core/`:** Cross-cutting infrastructure.

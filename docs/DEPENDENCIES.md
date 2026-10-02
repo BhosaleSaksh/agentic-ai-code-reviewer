@@ -35,10 +35,10 @@ Required for background review execution and worker orchestration:
 
 ### 2.4 Agentic AI & Orchestration Dependencies (`ai` group - Phases 3 & 4)
 Required for stateful multi-agent DAG execution and model interaction:
-- **`langgraph` ($\ge 0.0.30$):** Stateful multi-agent graph runtime enabling cyclical control flow, map-reduce fan-out across specialist agents, and checkpointing (FR-09).
-- **`langchain-core` ($\ge 0.1.30$):** Fundamental abstractions for chat models, prompt templates, structured output parsing, and tool bindings.
-- **`langchain-openai` / `langchain-anthropic` / `langchain-google-genai`:** Model provider adapters facilitating multi-vendor reasoning and zero-downtime model fallbacks (NFR-4, Section K).
-- **`tenacity` ($\ge 8.2.3$):** Exponential backoff retry handler with jitter to gracefully handle LLM provider rate limits (HTTP 429) and transient network disconnects.
+- **`langgraph` ($\ge 0.2.0$, installed `1.2.12`):** Stateful multi-agent graph runtime enabling cyclical control flow, map-reduce fan-out across specialist agents, and checkpointing (FR-09).
+- **`langchain-core` ($\ge 0.3.0$, installed `1.6.6`):** Fundamental abstractions for runnables (`RunnableConfig`), prompt templates, structured output parsing, and tool bindings.
+- **`tenacity` ($\ge 8.2.3$, installed `9.1.4`):** Exponential backoff retry handler with jitter to gracefully handle LLM provider rate limits (HTTP 429) and transient network disconnects.
+- **Note on Vendor Provider SDKs (`langchain-openai`, `langchain-anthropic`, `langchain-google-genai`):** In Phase 3.1, external model provider packages are intentionally uninstalled/deferred. The system relies strictly on the `LLMService` abstraction and `MockLLMProvider` for 100% offline, deterministic, and isolated execution without external network or API key dependencies. Provider-specific SDKs will be added in Phase 3.2+ as real model integrations are introduced.
 
 ### 2.5 Code & Context Analysis Dependencies (`analysis` group - Phases 1 & 2)
 Required for parsing diffs and extracting syntactic context:
