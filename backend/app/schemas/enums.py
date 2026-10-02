@@ -56,6 +56,28 @@ class PublishStatus(StrEnum):
     PUBLISHED = "PUBLISHED"
     FAILED = "FAILED"
     DISMISSED = "DISMISSED"
+    SKIPPED = "SKIPPED"
+
+
+class FeedbackType(StrEnum):
+    """Types of reviewer feedback captured for model evaluation."""
+
+    REACTION_POSITIVE = "REACTION_POSITIVE"
+    REACTION_NEGATIVE = "REACTION_NEGATIVE"
+    COMMENT_REPLY = "COMMENT_REPLY"
+    COMMENT_DISMISSED = "COMMENT_DISMISSED"
+    COMMENT_RESOLVED = "COMMENT_RESOLVED"
+    FINDING_ACCEPTED = "FINDING_ACCEPTED"
+    FINDING_REJECTED = "FINDING_REJECTED"
+    REVIEW_SUBMITTED = "REVIEW_SUBMITTED"
+
+
+class FeedbackSource(StrEnum):
+    """Source of the received feedback event."""
+
+    GITHUB_WEBHOOK = "GITHUB_WEBHOOK"
+    API = "API"
+    MANUAL = "MANUAL"
 
 
 class EvidenceType(StrEnum):

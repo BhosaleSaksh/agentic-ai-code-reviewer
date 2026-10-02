@@ -8,6 +8,8 @@ from app.schemas.diff import DiffFile, DiffHunk, DiffLine, ParsedDiff
 from app.schemas.enums import (
     DiffLineType,
     EvidenceType,
+    FeedbackSource,
+    FeedbackType,
     FileChangeType,
     FindingSide,
     IssueType,
@@ -26,6 +28,15 @@ from app.schemas.github import (
 )
 from app.schemas.health import DependencyStatus, HealthResponse, ReadinessResponse
 from app.schemas.job import ReviewJobPayload, ReviewJobResult
+from app.schemas.publication import (
+    FeedbackCreate,
+    FeedbackFilter,
+    FeedbackResponse,
+    GitHubCommentPayload,
+    GitHubReviewPayload,
+    PublicationResult,
+    ReviewPublicationSummary,
+)
 from app.schemas.review_plan import ReviewPlan
 from app.schemas.static_analysis import (
     BanditFinding,
@@ -63,6 +74,8 @@ __all__ = [
     "VerificationStatus",
     "PublishStatus",
     "EvidenceType",
+    "FeedbackType",
+    "FeedbackSource",
     "FileChangeType",
     "DiffLineType",
     "StaticAnalysisExecutionStatus",
@@ -104,4 +117,11 @@ __all__ = [
     "VerificationContext",
     "VerificationResult",
     "CriticStructuredOutput",
+    "GitHubCommentPayload",
+    "GitHubReviewPayload",
+    "PublicationResult",
+    "ReviewPublicationSummary",
+    "FeedbackCreate",
+    "FeedbackResponse",
+    "FeedbackFilter",
 ]

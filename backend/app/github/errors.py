@@ -5,6 +5,7 @@ rate limiting, and PR context extraction without leaking sensitive credentials i
 """
 
 from datetime import datetime
+from typing import Any
 
 
 class GitHubError(Exception):
@@ -67,6 +68,18 @@ class GitHubNetworkError(GitHubError):
 
 class GitHubResponseError(GitHubError):
     """Raised when GitHub returns an unexpected or malformed response envelope."""
+
+
+class GitHubUnprocessableEntityError(GitHubResponseError):
+    """Raised when GitHub returns HTTP 422 Unprocessable Entity (e.g. invalid diff position or comment anchoring failure)."""
+
+    def __init__(
+        self,
+        message: str,
+        errors: list[dict[str, Any]] | None = None,
+    ) -> None:
+        super().__init__(message)
+        self.errors = errors or []
 
 
 class GitHubCommitMismatchError(GitHubError):

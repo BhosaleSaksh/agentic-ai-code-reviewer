@@ -14,6 +14,7 @@ from app.github.errors import (
     GitHubRateLimitError,
     GitHubResponseError,
     GitHubServerError,
+    GitHubUnprocessableEntityError,
 )
 from app.github.verifier import verify_github_signature
 
@@ -30,6 +31,7 @@ __all__ = [
     "GitHubServerError",
     "GitHubNetworkError",
     "GitHubResponseError",
+    "GitHubUnprocessableEntityError",
     "GitHubCommitMismatchError",
     "GitHubDiffTooLargeError",
 ]

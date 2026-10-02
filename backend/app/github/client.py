@@ -21,12 +21,14 @@ from app.github.errors import (
     GitHubRateLimitError,
     GitHubResponseError,
     GitHubServerError,
+    GitHubUnprocessableEntityError,
 )
 from app.schemas.github import (
     GitHubPullRequestFile,
     GitHubPullRequestMetadata,
     GitHubRateLimitInfo,
 )
+from app.schemas.publication import GitHubReviewPayload
 
 logger = logging.getLogger(__name__)
 
@@ -172,8 +174,16 @@ class GitHubClient:
 
         if status_code == 422:
             logger.error("GitHub REST API 422 Unprocessable: %s", endpoint_context)
-            raise GitHubResponseError(
-                f"GitHub API could not process request for {endpoint_context}"
+            errors: list[dict[str, Any]] = []
+            try:
+                data = response.json()
+                if isinstance(data, dict):
+                    errors = data.get("errors", [])
+            except Exception:
+                pass
+            raise GitHubUnprocessableEntityError(
+                f"GitHub API could not process request for {endpoint_context}",
+                errors=errors,
             )
 
         if status_code == 429:
@@ -427,3 +437,264 @@ class GitHubClient:
             )
 
         return response.text
+
+    async def create_pull_request_review(
+        self,
+        repo_full_name: str,
+        pr_number: int,
+        payload: GitHubReviewPayload | dict[str, Any],
+    ) -> dict[str, Any]:
+        """Submit a pull request review with optional inline review comments.
+
+        Args:
+            repo_full_name: Target repository in 'owner/repo' format.
+            pr_number: Target pull request number.
+            payload: Review payload containing commit_id, body, event, and comments.
+
+        Returns:
+            dict[str, Any]: The created GitHub Review resource representation.
+        """
+        endpoint = f"repos/{repo_full_name}/pulls/{pr_number}/reviews"
+        url = f"{self._base_url}/{endpoint}"
+        client = self._get_client()
+
+        if isinstance(payload, GitHubReviewPayload):
+            body_data = payload.model_dump(exclude_none=True)
+        else:
+            body_data = dict(payload)
+
+        headers = self._get_headers()
+
+        try:
+            response = await client.post(url, headers=headers, json=body_data)
+        except httpx.TimeoutException as exc:
+            logger.error("Timeout submitting PR review: %s", endpoint)
+            raise GitHubNetworkError(
+                f"Timeout submitting PR review for {endpoint}"
+            ) from exc
+        except httpx.RequestError as exc:
+            logger.error("Network error submitting PR review: %s", endpoint)
+            raise GitHubNetworkError(
+                f"Network failure submitting PR review for {endpoint}: {type(exc).__name__}"
+            ) from exc
+
+        self._handle_response_status(response, endpoint)
+
+        try:
+            result = response.json()
+            if not isinstance(result, dict):
+                raise ValueError("Expected JSON object")
+            return result
+        except Exception as exc:
+            logger.error("Failed to parse JSON response for PR review: %s", endpoint)
+            raise GitHubResponseError(
+                f"Invalid JSON returned from GitHub API for {endpoint}"
+            ) from exc
+
+    async def create_pull_request_comment(
+        self,
+        repo_full_name: str,
+        pr_number: int,
+        body: str,
+        commit_id: str,
+        path: str,
+        line: int,
+        side: str = "RIGHT",
+        start_line: int | None = None,
+        start_side: str | None = None,
+    ) -> dict[str, Any]:
+        """Create an individual review comment on a pull request diff.
+
+        Args:
+            repo_full_name: Target repository in 'owner/repo' format.
+            pr_number: Target pull request number.
+            body: Comment text markdown.
+            commit_id: SHA of the commit being commented on.
+            path: Relative file path in the repository.
+            line: Diff line number to attach comment to.
+            side: RIGHT (new) or LEFT (old).
+            start_line: Optional starting line for multi-line comments.
+            start_side: Optional side for multi-line start.
+
+        Returns:
+            dict[str, Any]: Created comment representation from GitHub.
+        """
+        endpoint = f"repos/{repo_full_name}/pulls/{pr_number}/comments"
+        url = f"{self._base_url}/{endpoint}"
+        client = self._get_client()
+
+        payload: dict[str, Any] = {
+            "body": body,
+            "commit_id": commit_id,
+            "path": path,
+            "line": line,
+            "side": side,
+        }
+        if start_line is not None:
+            payload["start_line"] = start_line
+            payload["start_side"] = start_side or side
+
+        headers = self._get_headers()
+
+        try:
+            response = await client.post(url, headers=headers, json=payload)
+        except httpx.TimeoutException as exc:
+            logger.error("Timeout posting PR review comment: %s", endpoint)
+            raise GitHubNetworkError(
+                f"Timeout posting PR review comment for {endpoint}"
+            ) from exc
+        except httpx.RequestError as exc:
+            logger.error("Network error posting PR review comment: %s", endpoint)
+            raise GitHubNetworkError(
+                f"Network failure posting PR comment for {endpoint}: {type(exc).__name__}"
+            ) from exc
+
+        self._handle_response_status(response, endpoint)
+
+        try:
+            result = response.json()
+            if not isinstance(result, dict):
+                raise ValueError("Expected JSON object")
+            return result
+        except Exception as exc:
+            logger.error("Failed to parse comment response JSON: %s", endpoint)
+            raise GitHubResponseError(
+                f"Invalid JSON returned from GitHub API for {endpoint}"
+            ) from exc
+
+    async def create_issue_comment(
+        self,
+        repo_full_name: str,
+        issue_number: int,
+        body: str,
+    ) -> dict[str, Any]:
+        """Create a general comment on an issue or pull request conversation thread.
+
+        Args:
+            repo_full_name: Target repository in 'owner/repo' format.
+            issue_number: Target issue or pull request number.
+            body: Comment text markdown.
+
+        Returns:
+            dict[str, Any]: Created issue comment representation.
+        """
+        endpoint = f"repos/{repo_full_name}/issues/{issue_number}/comments"
+        url = f"{self._base_url}/{endpoint}"
+        client = self._get_client()
+        headers = self._get_headers()
+
+        try:
+            response = await client.post(url, headers=headers, json={"body": body})
+        except httpx.TimeoutException as exc:
+            logger.error("Timeout posting issue comment: %s", endpoint)
+            raise GitHubNetworkError(
+                f"Timeout posting issue comment for {endpoint}"
+            ) from exc
+        except httpx.RequestError as exc:
+            logger.error("Network error posting issue comment: %s", endpoint)
+            raise GitHubNetworkError(
+                f"Network failure posting issue comment for {endpoint}: {type(exc).__name__}"
+            ) from exc
+
+        self._handle_response_status(response, endpoint)
+
+        try:
+            result = response.json()
+            if not isinstance(result, dict):
+                raise ValueError("Expected JSON object")
+            return result
+        except Exception as exc:
+            logger.error("Failed to parse issue comment JSON: %s", endpoint)
+            raise GitHubResponseError(
+                f"Invalid JSON returned from GitHub API for {endpoint}"
+            ) from exc
+
+    async def list_pull_request_comments(
+        self,
+        repo_full_name: str,
+        pr_number: int,
+    ) -> list[dict[str, Any]]:
+        """List all review comments on the specified pull request.
+
+        Args:
+            repo_full_name: Target repository in 'owner/repo' format.
+            pr_number: Target pull request number.
+
+        Returns:
+            list[dict[str, Any]]: List of review comment objects.
+        """
+        endpoint = f"repos/{repo_full_name}/pulls/{pr_number}/comments"
+        url = f"{self._base_url}/{endpoint}"
+        client = self._get_client()
+        headers = self._get_headers()
+
+        try:
+            response = await client.get(url, headers=headers)
+        except httpx.TimeoutException as exc:
+            logger.error("Timeout fetching PR comments: %s", endpoint)
+            raise GitHubNetworkError(
+                f"Timeout fetching PR comments for {endpoint}"
+            ) from exc
+        except httpx.RequestError as exc:
+            logger.error("Network error fetching PR comments: %s", endpoint)
+            raise GitHubNetworkError(
+                f"Network failure fetching PR comments for {endpoint}: {type(exc).__name__}"
+            ) from exc
+
+        self._handle_response_status(response, endpoint)
+
+        try:
+            result = response.json()
+            if not isinstance(result, list):
+                raise ValueError("Expected JSON list")
+            return result
+        except Exception as exc:
+            logger.error("Failed to parse PR comments JSON: %s", endpoint)
+            raise GitHubResponseError(
+                f"Invalid JSON list returned from GitHub API for {endpoint}"
+            ) from exc
+
+    async def list_pull_request_reviews(
+        self,
+        repo_full_name: str,
+        pr_number: int,
+    ) -> list[dict[str, Any]]:
+        """List all submitted reviews on the specified pull request.
+
+        Args:
+            repo_full_name: Target repository in 'owner/repo' format.
+            pr_number: Target pull request number.
+
+        Returns:
+            list[dict[str, Any]]: List of review objects.
+        """
+        endpoint = f"repos/{repo_full_name}/pulls/{pr_number}/reviews"
+        url = f"{self._base_url}/{endpoint}"
+        client = self._get_client()
+        headers = self._get_headers()
+
+        try:
+            response = await client.get(url, headers=headers)
+        except httpx.TimeoutException as exc:
+            logger.error("Timeout fetching PR reviews: %s", endpoint)
+            raise GitHubNetworkError(
+                f"Timeout fetching PR reviews for {endpoint}"
+            ) from exc
+        except httpx.RequestError as exc:
+            logger.error("Network error fetching PR reviews: %s", endpoint)
+            raise GitHubNetworkError(
+                f"Network failure fetching PR reviews for {endpoint}: {type(exc).__name__}"
+            ) from exc
+
+        self._handle_response_status(response, endpoint)
+
+        try:
+            result = response.json()
+            if not isinstance(result, list):
+                raise ValueError("Expected JSON list")
+            return result
+        except Exception as exc:
+            logger.error("Failed to parse PR reviews JSON: %s", endpoint)
+            raise GitHubResponseError(
+                f"Invalid JSON list returned from GitHub API for {endpoint}"
+            ) from exc

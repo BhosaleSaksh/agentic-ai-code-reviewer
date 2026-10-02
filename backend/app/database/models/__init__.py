@@ -6,7 +6,9 @@ and registered with the declarative Base metadata.
 
 from app.database.base import Base
 from app.database.models.evidence_item import EvidenceItem
+from app.database.models.feedback import ReviewFeedback
 from app.database.models.finding import Finding
+from app.database.models.publication import ReviewPublication
 from app.database.models.pull_request import PullRequest
 from app.database.models.repository import Repository
 from app.database.models.review_run import ReviewRun
@@ -18,6 +20,8 @@ __all__ = [
     "Finding",
     "PullRequest",
     "Repository",
+    "ReviewFeedback",
+    "ReviewPublication",
     "ReviewRun",
     "WebhookDelivery",
 ]

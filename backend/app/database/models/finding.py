@@ -22,6 +22,8 @@ from app.database.base import Base
 
 if TYPE_CHECKING:
     from app.database.models.evidence_item import EvidenceItem
+    from app.database.models.feedback import ReviewFeedback
+    from app.database.models.publication import ReviewPublication
     from app.database.models.review_run import ReviewRun
 
 
@@ -156,6 +158,16 @@ class Finding(Base):
         back_populates="finding",
         cascade="all, delete-orphan",
         passive_deletes=True,
+        lazy="selectin",
+    )
+    publications: Mapped[list["ReviewPublication"]] = relationship(
+        "ReviewPublication",
+        back_populates="finding",
+        lazy="selectin",
+    )
+    feedbacks: Mapped[list["ReviewFeedback"]] = relationship(
+        "ReviewFeedback",
+        back_populates="finding",
         lazy="selectin",
     )
 

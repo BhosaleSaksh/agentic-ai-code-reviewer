@@ -46,7 +46,7 @@ The backend is structured under `backend/app/` to establish strict modular bound
   - Unified diff parsing (`unidiff`), hunk boundary extraction, and enclosing scope extraction via Tree-sitter.
   - Semantic chunking for large pull requests (>400 LOC changed) without breaking method boundaries.
 - **`backend/app/database/`:** Relational persistence layer.
-  - SQLAlchemy async models (`Repository`, `PullRequest`, `ReviewRun`, `EvidenceItem`, `Finding`).
+  - SQLAlchemy async models (`Repository`, `PullRequest`, `ReviewRun`, `EvidenceItem`, `Finding`, `ReviewPublication`, `ReviewFeedback`).
   - Alembic migrations, connection pool configuration, and database session management.
 - **`backend/app/github/`:** GitHub API client & integration.
   - GitHub App authentication, JWT token generation, installation token refreshing.
@@ -54,9 +54,10 @@ The backend is structured under `backend/app/` to establish strict modular bound
 - **`backend/app/orchestration/`:** LangGraph workflow engine.
   - Defines the state machine graph (`ReviewState`), state checkpoints, node transitions, and map-reduce execution across specialists.
 - **`backend/app/schemas/`:** Strict Pydantic v2 schemas.
-  - Finding schemas, webhook event models, review plans, and API request/response contracts.
+  - Finding schemas, webhook event models, review plans, publication payloads, feedback models, and API request/response contracts.
 - **`backend/app/services/`:** Business logic domain services.
   - Scoping/triage service, review coordinator, deduplication engine, and confidence scoring.
+  - `github/`: Verified review publisher, deterministic comment mapper, diff positioning validator, publication persistence, and feedback service.
   - `llm/`: LLM provider abstraction, structured schema generation, timeout bounds, and test mock provider.
 - **`backend/app/workers/`:** Asynchronous task execution.
   - ARQ background worker functions processing review tasks dispatched from webhooks.

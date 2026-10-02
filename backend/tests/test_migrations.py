@@ -28,7 +28,7 @@ def test_alembic_config_and_script_directory() -> None:
 
     heads = script_dir.get_heads()
     assert len(heads) == 1
-    assert heads[0] == "b2f69a12c841"
+    assert heads[0] == "c5e31d4e6f20"
 
 
 @pytest.mark.integration
@@ -37,7 +37,7 @@ async def test_applied_migration_revision_in_database() -> None:
     async for session in get_db_session():
         result = await session.execute(text("SELECT version_num FROM alembic_version;"))
         current_rev = result.scalar()
-        assert current_rev == "b2f69a12c841"
+        assert current_rev == "c5e31d4e6f20"
 
 
 @pytest.mark.integration
@@ -55,6 +55,8 @@ async def test_migrated_tables_exist_in_database() -> None:
                 "evidence_items",
                 "findings",
                 "webhook_deliveries",
+                "review_publications",
+                "review_feedback",
                 "alembic_version",
             }
             assert expected.issubset(tables)
