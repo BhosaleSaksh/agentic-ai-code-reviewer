@@ -403,6 +403,17 @@ async def test_findings_and_feedback_endpoints(
     assert len(ev_list) == 1
     assert ev_list[0]["rule_or_cve_id"] == "bandit.B608"
 
+    # 2b. List all findings with query filters
+    all_findings_resp = await async_client.get(
+        "/api/v1/findings",
+        params={"verification_status": "VERIFIED", "severity": "HIGH"},
+    )
+    assert all_findings_resp.status_code == 200
+    matched_findings = all_findings_resp.json()
+    assert len(matched_findings) >= 1
+    assert all(f["verification_status"] == "VERIFIED" for f in matched_findings)
+    assert all(f["severity"] == "HIGH" for f in matched_findings)
+
     # 3. Finding not found
     fake_id = uuid.uuid4()
     assert (await async_client.get(f"/api/v1/findings/{fake_id}")).status_code == 404

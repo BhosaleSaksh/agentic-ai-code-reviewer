@@ -195,8 +195,8 @@ Query keys are structured hierarchically using a typed factory pattern:
 
 ### Backend:
 ```powershell
-# Activate Python virtual environment and run backend server
-.\.venv\Scripts\python.exe -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+# Activate Python virtual environment and run backend server on 127.0.0.1
+.\.venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 
 ### Frontend:
@@ -207,7 +207,7 @@ cd frontend
 # Install dependencies (only required once)
 npm install
 
-# Start Vite dev server with proxy to backend (http://localhost:8000)
+# Start Vite dev server with proxy to backend (http://127.0.0.1:8000)
 npm run dev
 
 # Run TypeScript type check
