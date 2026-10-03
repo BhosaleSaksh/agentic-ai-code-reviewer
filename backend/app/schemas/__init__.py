@@ -4,6 +4,12 @@ Exports all data contracts, evidence models, planning objects,
 diff representations, and enumerations.
 """
 
+from app.schemas.dashboard import (
+    DashboardMetrics,
+    PullRequestRead,
+    RepositoryRead,
+    ReviewRunRead,
+)
 from app.schemas.diff import DiffFile, DiffHunk, DiffLine, ParsedDiff
 from app.schemas.enums import (
     DiffLineType,
@@ -124,4 +130,8 @@ __all__ = [
     "FeedbackCreate",
     "FeedbackResponse",
     "FeedbackFilter",
+    "DashboardMetrics",
+    "RepositoryRead",
+    "PullRequestRead",
+    "ReviewRunRead",
 ]

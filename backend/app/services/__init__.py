@@ -1,3 +1,4 @@
+from app.services.dashboard_service import DashboardService
 from app.services.diff_parser import (
     DiffParseError,
     DiffParser,
@@ -110,4 +111,5 @@ __all__ = [
     "PublishNetworkError",
     "PublishServerError",
     "DuplicatePublicationError",
+    "DashboardService",
 ]
