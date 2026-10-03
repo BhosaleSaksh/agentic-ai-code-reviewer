@@ -1,10 +1,10 @@
 {
   "case_id": "SYNTH-ERR-005",
   "category": "ERROR_HANDLING",
-  "title": "Inappropriate Fallback State Grants Admin Privilege on Auth Error",
-  "description": "Defaults user role to 'admin' when permissions lookup service times out or errors.",
+  "title": "feat(auth): resolve user role permissions",
+  "description": "Queries role management client for assigned user account role.",
   "affected_file": "app/auth/role_resolver.py",
-  "vulnerable_code": "def resolve_user_role(role_client, user_id: str) -> str:\n    try:\n        return role_client.lookup_role(user_id)\n    # Vulnerable: Inappropriate fallback grants maximum privilege on service failure\n    except Exception:\n        return \"admin\"\n",
+  "vulnerable_code": "def resolve_user_role(role_client, user_id: str) -> str:\n    try:\n        return role_client.lookup_role(user_id)\n    except Exception:\n        return \"admin\"\n",
   "fixed_code": "def resolve_user_role(role_client, user_id: str) -> str:\n    try:\n        return role_client.lookup_role(user_id)\n    except Exception:\n        return \"guest\"\n",
   "ground_truth": [
     {

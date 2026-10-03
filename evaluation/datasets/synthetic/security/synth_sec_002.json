@@ -1,10 +1,10 @@
 {
   "case_id": "SYNTH-SEC-002",
   "category": "SECURITY",
-  "title": "Hardcoded JWT Secret Token in Authentication Module",
-  "description": "Commits a static hardcoded HMAC signing secret into the JWT creation helper.",
+  "title": "feat(auth): add JWT token generation helper",
+  "description": "Provides utility function to generate signed JWT tokens for authenticated users.",
   "affected_file": "app/auth/jwt_helper.py",
-  "vulnerable_code": "import jwt\nfrom datetime import datetime, timedelta, UTC\n\n# Vulnerable: Insecure hardcoded cryptographic key\nsecret_key = \"super_secret_jwt_signing_key_12345\"\n\ndef create_access_token(user_id: str) -> str:\n    payload = {\n        \"sub\": user_id,\n        \"exp\": datetime.now(UTC) + timedelta(hours=1),\n    }\n    return jwt.encode(payload, secret_key, algorithm=\"HS256\")\n",
+  "vulnerable_code": "import jwt\nfrom datetime import datetime, timedelta, UTC\n\nsecret_key = \"super_secret_jwt_signing_key_12345\"\n\ndef create_access_token(user_id: str) -> str:\n    payload = {\n        \"sub\": user_id,\n        \"exp\": datetime.now(UTC) + timedelta(hours=1),\n    }\n    return jwt.encode(payload, secret_key, algorithm=\"HS256\")\n",
   "fixed_code": "import os\nimport jwt\nfrom datetime import datetime, timedelta, UTC\n\nsecret_key = os.environ[\"JWT_SECRET_KEY\"]\n\ndef create_access_token(user_id: str) -> str:\n    payload = {\n        \"sub\": user_id,\n        \"exp\": datetime.now(UTC) + timedelta(hours=1),\n    }\n    return jwt.encode(payload, secret_key, algorithm=\"HS256\")\n",
   "ground_truth": [
     {

@@ -1,10 +1,10 @@
 {
   "case_id": "SYNTH-SEC-005",
   "category": "SECURITY",
-  "title": "Command Injection in Network Diagnostic Utility",
-  "description": "Executes shell command with unescaped user input and shell=True.",
+  "title": "feat(network): add host ping diagnostic utility",
+  "description": "Adds helper function to ping remote hosts and return network latency outputs.",
   "affected_file": "app/utils/diagnostics.py",
-  "vulnerable_code": "import subprocess\n\ndef ping_host(host_ip: str) -> str:\n    # Vulnerable: shell=True with user concatenation allows command injection\n    cmd = f\"ping -c 1 {host_ip}\"\n    output = subprocess.run(cmd, shell=True, capture_output=True, text=True)\n    return output.stdout\n",
+  "vulnerable_code": "import subprocess\n\ndef ping_host(host_ip: str) -> str:\n    cmd = f\"ping -c 1 {host_ip}\"\n    output = subprocess.run(cmd, shell=True, capture_output=True, text=True)\n    return output.stdout\n",
   "fixed_code": "import subprocess\nimport shlex\n\ndef ping_host(host_ip: str) -> str:\n    cmd = [\"ping\", \"-c\", \"1\", host_ip]\n    output = subprocess.run(cmd, shell=False, capture_output=True, text=True)\n    return output.stdout\n",
   "ground_truth": [
     {

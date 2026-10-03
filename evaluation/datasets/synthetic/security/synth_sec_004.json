@@ -1,10 +1,10 @@
 {
   "case_id": "SYNTH-SEC-004",
   "category": "SECURITY",
-  "title": "Use of Broken MD5 Hash for Password Storage",
-  "description": "Uses hashlib.md5 to hash passwords before storing in the database.",
+  "title": "feat(auth): add password hashing utility",
+  "description": "Adds utility function to compute password hash digests for user registration.",
   "affected_file": "app/auth/hasher.py",
-  "vulnerable_code": "import hashlib\n\ndef hash_user_password(password: str) -> str:\n    # Vulnerable: Insecure MD5 hashing without salt\n    digest = hashlib.md5(password.encode()).hexdigest()\n    return digest\n",
+  "vulnerable_code": "import hashlib\n\ndef hash_user_password(password: str) -> str:\n    digest = hashlib.md5(password.encode()).hexdigest()\n    return digest\n",
   "fixed_code": "import argon2\n\nph = argon2.PasswordHasher()\n\ndef hash_user_password(password: str) -> str:\n    return ph.hash(password)\n",
   "ground_truth": [
     {

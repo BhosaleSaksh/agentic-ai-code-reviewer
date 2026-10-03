@@ -1,0 +1,41 @@
+{
+  "case_id": "REAL-TEST-001",
+  "category": "TEST_ADEQUACY",
+  "title": "refactor(poolmanager): initialize connection pool manager",
+  "description": "Refactors PoolManager connection pool construction and default socket timeout handling.",
+  "affected_file": "src/urllib3/poolmanager.py",
+  "vulnerable_code": "class PoolManager:\n    def __init__(self, num_pools=10, headers=None, **connection_pool_kw):\n        self.connection_pool_kw = connection_pool_kw\n        # Missing test coverage for socket timeout inheritance when **connection_pool_kw defaults applied\n        if \"timeout\" not in self.connection_pool_kw:\n            self.connection_pool_kw[\"timeout\"] = 30.0\n",
+  "fixed_code": "# Accompanied by test in test_poolmanager.py: test_poolmanager_timeout_inheritance()\nclass PoolManager:\n    def __init__(self, num_pools=10, headers=None, **connection_pool_kw):\n        self.connection_pool_kw = connection_pool_kw\n        if \"timeout\" not in self.connection_pool_kw:\n            self.connection_pool_kw[\"timeout\"] = 30.0\n",
+  "ground_truth": [
+    {
+      "defect_id": "DEFECT-REAL-TEST-001",
+      "category": "TEST_ADEQUACY",
+      "affected_file": "src/urllib3/poolmanager.py",
+      "line_start": 4,
+      "line_end": 6,
+      "expected_issue_type": "MISSING_REGRESSION_TEST",
+      "expected_severity": "MEDIUM",
+      "description": "Missing SSL Context Timeout Regression Test in PoolManager.",
+      "explanation": "PR refactored connection pool initialization without adding tests for default socket timeout inheritance.",
+      "expected_evidence": [
+        {
+          "tool_name": "test_coverage_analyzer",
+          "rule_or_cve_id": "test.coverage.missing_regression_test",
+          "target_pattern": "if \"timeout\" not in self.connection_pool_kw:",
+          "description": "Timeout defaulting logic lacks dedicated regression unit test in test suite."
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "source": "maintainer_review_request",
+    "repository": "urllib3/urllib3",
+    "commit_sha": "9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b",
+    "author_or_curator": "urllib3_maintainers",
+    "created_at": "2021-04-18T00:00:00Z",
+    "license": "MIT",
+    "reference_url": "https://github.com/urllib3/urllib3/pull/2168",
+    "ground_truth_authority": "maintainer_review_comment",
+    "annotation_uncertainty": "LOW"
+  }
+}

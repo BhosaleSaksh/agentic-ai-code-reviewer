@@ -134,6 +134,8 @@ class DeterministicFindingMatcher:
                 cat_matched = self.categories_compatible(
                     pred.category, gt.category.value
                 )
+                if not cat_matched:
+                    continue
 
                 # Compute match score (higher is better)
                 line_score = 1.0 - (dist / (self.line_tolerance + 1.0)) * 0.4

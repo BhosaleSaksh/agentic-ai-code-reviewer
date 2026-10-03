@@ -1,10 +1,10 @@
 {
   "case_id": "SYNTH-TEST-003",
   "category": "TEST_ADEQUACY",
-  "title": "Untested Queue Retry Backoff Regression Risk",
-  "description": "Modifies retry backoff multiplier in task queue without regression test validating max backoff ceiling.",
+  "title": "feat(queue): compute exponential retry backoff",
+  "description": "Computes exponential retry delay interval for queued job attempts.",
   "affected_file": "app/queue/backoff.py",
-  "vulnerable_code": "def compute_backoff(attempt: int, base_delay: float = 1.0) -> float:\n    # Vulnerable: Multiplier altered from attempt * 2 to 2 ** attempt without cap test\n    delay = base_delay * (2 ** attempt)\n    return min(delay, 300.0)\n",
+  "vulnerable_code": "def compute_backoff(attempt: int, base_delay: float = 1.0) -> float:\n    delay = base_delay * (2 ** attempt)\n    return min(delay, 300.0)\n",
   "fixed_code": "# Implementation with regression tests verifying ceiling in tests/test_backoff.py\ndef compute_backoff(attempt: int, base_delay: float = 1.0) -> float:\n    delay = base_delay * (2 ** attempt)\n    return min(delay, 300.0)\n",
   "ground_truth": [
     {

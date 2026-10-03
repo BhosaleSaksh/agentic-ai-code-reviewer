@@ -1,10 +1,10 @@
 {
   "case_id": "SYNTH-ERR-001",
   "category": "ERROR_HANDLING",
-  "title": "Silent Exception Suppression in Background Sync",
-  "description": "Swallows database sync failure silently with bare except pass.",
+  "title": "refactor(sync): synchronize database records",
+  "description": "Fetches uncommitted database records and syncs batch to replica.",
   "affected_file": "app/sync/reconciler.py",
-  "vulnerable_code": "def sync_records(primary_db, replica_db):\n    try:\n        records = primary_db.fetch_uncommitted()\n        replica_db.write_batch(records)\n    # Vulnerable: Exception silently swallowed without logging or retry\n    except Exception:\n        pass\n",
+  "vulnerable_code": "def sync_records(primary_db, replica_db):\n    try:\n        records = primary_db.fetch_uncommitted()\n        replica_db.write_batch(records)\n    except Exception:\n        pass\n",
   "fixed_code": "import logging\nlogger = logging.getLogger(__name__)\n\ndef sync_records(primary_db, replica_db):\n    try:\n        records = primary_db.fetch_uncommitted()\n        replica_db.write_batch(records)\n    except Exception as exc:\n        logger.error(\"Record synchronization failed: %s\", exc, exc_info=True)\n        raise\n",
   "ground_truth": [
     {

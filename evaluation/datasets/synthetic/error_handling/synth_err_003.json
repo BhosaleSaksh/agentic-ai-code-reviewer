@@ -1,10 +1,10 @@
 {
   "case_id": "SYNTH-ERR-003",
   "category": "ERROR_HANDLING",
-  "title": "Unclosed File Descriptor Resource Leak",
-  "description": "Opens report file directly with open() without context manager or cleanup block.",
+  "title": "feat(reports): export audit log entries",
+  "description": "Writes audit log records to specified destination output path.",
   "affected_file": "app/reports/exporter.py",
-  "vulnerable_code": "def export_audit_log(entries: list[dict], output_path: str) -> int:\n    # Vulnerable: File handle not closed; causes file descriptor exhaustion\n    f = open(output_path, \"w\")\n    for entry in entries:\n        f.write(str(entry) + \"\\n\")\n    return len(entries)\n",
+  "vulnerable_code": "def export_audit_log(entries: list[dict], output_path: str) -> int:\n    f = open(output_path, \"w\")\n    for entry in entries:\n        f.write(str(entry) + \"\\n\")\n    return len(entries)\n",
   "fixed_code": "def export_audit_log(entries: list[dict], output_path: str) -> int:\n    with open(output_path, \"w\", encoding=\"utf-8\") as f:\n        for entry in entries:\n            f.write(str(entry) + \"\\n\")\n    return len(entries)\n",
   "ground_truth": [
     {

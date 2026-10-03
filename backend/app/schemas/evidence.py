@@ -5,9 +5,18 @@ of the project architecture: DiffEvidence, StaticToolEvidence,
 DependencyEvidence, and ContextEvidence.
 """
 
+import uuid
 from typing import Any
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+from pydantic import (
+    AliasChoices,
+    BaseModel,
+    ConfigDict,
+    Field,
+    computed_field,
+    field_validator,
+    model_validator,
+)
 
 from app.schemas.enums import EvidenceType
 
@@ -26,6 +35,10 @@ class EvidenceModel(BaseModel):
         validate_assignment=True,
     )
 
+    id: uuid.UUID | None = Field(
+        None,
+        description="Unique evidence item identifier if persisted",
+    )
     evidence_type: EvidenceType = Field(
         ...,
         description="Pillar of evidence: DIFF_HUNK, STATIC_ANALYSIS, DEPENDENCY, or AST_CONTEXT",
@@ -49,7 +62,8 @@ class EvidenceModel(BaseModel):
     snippet: str = Field(
         ...,
         min_length=1,
-        alias="content_snippet",
+        validation_alias=AliasChoices("snippet", "content_snippet"),
+        serialization_alias="snippet",
         description="Code snippet, diff hunk excerpt, or AST context excerpt",
     )
     rule_or_cve_id: str | None = Field(
@@ -64,9 +78,22 @@ class EvidenceModel(BaseModel):
     )
     metadata: dict[str, Any] | None = Field(
         None,
-        alias="extra_metadata",
+        validation_alias=AliasChoices("metadata", "extra_metadata"),
+        serialization_alias="metadata",
         description="Additional structured context (e.g. raw tool output, AST caller graph)",
     )
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def content_snippet(self) -> str:
+        """Alias property providing backward compatibility for content_snippet."""
+        return self.snippet
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def extra_metadata(self) -> dict[str, Any] | None:
+        """Alias property providing backward compatibility for extra_metadata."""
+        return self.metadata
 
     @field_validator("file_path")
     @classmethod

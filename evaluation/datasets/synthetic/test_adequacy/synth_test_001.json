@@ -1,10 +1,10 @@
 {
   "case_id": "SYNTH-TEST-001",
   "category": "TEST_ADEQUACY",
-  "title": "Missing Unit Test Coverage for VIP Customer Tier Branch",
-  "description": "Adds enterprise customer discount branch without adding any corresponding unit or regression tests.",
+  "title": "feat(tiers): add VIP enterprise fee tier",
+  "description": "Calculates customer base fee rate based on account membership tier.",
   "affected_file": "app/services/tier_calculator.py",
-  "vulnerable_code": "def calculate_tier_rate(customer_tier: str, base_fee: float) -> float:\n    # Vulnerable: VIP logic added in PR without any test coverage in test suite\n    if customer_tier == \"VIP_ENTERPRISE\":\n        return base_fee * 0.5\n    elif customer_tier == \"STANDARD\":\n        return base_fee * 0.9\n    return base_fee\n",
+  "vulnerable_code": "def calculate_tier_rate(customer_tier: str, base_fee: float) -> float:\n    if customer_tier == \"VIP_ENTERPRISE\":\n        return base_fee * 0.5\n    elif customer_tier == \"STANDARD\":\n        return base_fee * 0.9\n    return base_fee\n",
   "fixed_code": "# Implementation with tests added to tests/test_tier_calculator.py\ndef calculate_tier_rate(customer_tier: str, base_fee: float) -> float:\n    if customer_tier == \"VIP_ENTERPRISE\":\n        return base_fee * 0.5\n    elif customer_tier == \"STANDARD\":\n        return base_fee * 0.9\n    return base_fee\n",
   "ground_truth": [
     {

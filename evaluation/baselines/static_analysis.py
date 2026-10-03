@@ -7,7 +7,7 @@ import time
 import uuid
 
 from evaluation.baselines.base import BaseBaseline
-from evaluation.models.case import EvaluationCase
+from evaluation.models.case import EvaluationInput
 from evaluation.models.finding import NormalizedFinding
 from evaluation.models.metrics import ResourceUsage
 
@@ -15,17 +15,20 @@ from evaluation.models.metrics import ResourceUsage
 class StaticAnalysisBaseline(BaseBaseline):
     """Deterministic analyzer executing standard security and syntactic pattern matching."""
 
-    def __init__(self) -> None:
+    def __init__(self, mode: str = "offline") -> None:
         super().__init__(
             name="static_analysis_only",
             description="Pure static analysis using deterministic security and syntax heuristics (Bandit/Semgrep rules)",
+            mode=mode,
         )
+        self.provider_name = "bandit_semgrep_engine"
+        self.model_name = "ast_and_regex_rulesets"
 
     async def evaluate_case(
-        self, case: EvaluationCase
+        self, case: EvaluationInput
     ) -> tuple[list[NormalizedFinding], ResourceUsage]:
         """Inspect vulnerable source code for deterministic static analysis signatures."""
-        start_time = time.monotonic()
+        start_time = time.perf_counter()
         findings: list[NormalizedFinding] = []
 
         code = case.vulnerable_code
@@ -203,7 +206,7 @@ class StaticAnalysisBaseline(BaseBaseline):
                     )
                 )
 
-        elapsed = time.monotonic() - start_time
+        elapsed = time.perf_counter() - start_time
         usage = ResourceUsage(
             latency_seconds=round(elapsed, 4),
             api_calls=0,

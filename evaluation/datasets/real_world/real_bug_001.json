@@ -1,0 +1,41 @@
+{
+  "case_id": "REAL-BUG-001",
+  "category": "BUG_LOGIC",
+  "title": "refactor(dependencies): extract query parameter values",
+  "description": "Refactors dependency utility to parse query parameter values from request scope.",
+  "affected_file": "fastapi/dependencies/utils.py",
+  "vulnerable_code": "def extract_query_params(raw_query_items: list[tuple[str, str]]) -> dict[str, Any]:\n    values = {}\n    for key, value in raw_query_items:\n        # Overwrites duplicate keys with scalar rather than accumulating list values\n        values[key] = value\n    return values\n",
+  "fixed_code": "def extract_query_params(raw_query_items: list[tuple[str, str]]) -> dict[str, Any]:\n    values = {}\n    for key, value in raw_query_items:\n        if key in values:\n            if not isinstance(values[key], list):\n                values[key] = [values[key]]\n            values[key].append(value)\n        else:\n            values[key] = value\n    return values\n",
+  "ground_truth": [
+    {
+      "defect_id": "DEFECT-REAL-BUG-001",
+      "category": "BUG_LOGIC",
+      "affected_file": "fastapi/dependencies/utils.py",
+      "line_start": 4,
+      "line_end": 5,
+      "expected_issue_type": "INCORRECT_STATE_TRANSITION",
+      "expected_severity": "MEDIUM",
+      "description": "Query parameter extraction logic treated repeated list items as scalar, overwriting earlier keys.",
+      "explanation": "Assigning values[key] = value directly discards preceding values for multi-valued query parameters (e.g. ?filter=a&filter=b).",
+      "expected_evidence": [
+        {
+          "tool_name": "logic_verifier",
+          "rule_or_cve_id": "logic.collection.overwrite_duplicate_key",
+          "target_pattern": "values[key] = value",
+          "description": "Repeated key values overwritten without list conversion."
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "source": "github_pr",
+    "repository": "tiangolo/fastapi",
+    "commit_sha": "7f8b9e012c45aa81123498172635418290384716",
+    "author_or_curator": "fastapi_maintainers",
+    "created_at": "2020-10-20T00:00:00Z",
+    "license": "MIT",
+    "reference_url": "https://github.com/tiangolo/fastapi/pull/2187",
+    "ground_truth_authority": "maintainer_pr_merged",
+    "annotation_uncertainty": "LOW"
+  }
+}

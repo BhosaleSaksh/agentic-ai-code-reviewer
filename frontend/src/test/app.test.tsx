@@ -184,6 +184,48 @@ describe("Phase 6 Review Dashboard - UI & Security Invariants", () => {
     expect(screen.getByText(/cursor.execute\(f"SELECT/)).toBeInTheDocument();
   });
 
+  it("renders evidence card with all fields including CVE, commit SHA, and content_snippet", () => {
+    const evidence: EvidenceModel = {
+      id: "ev-uuid-1234",
+      evidence_type: "STATIC_ANALYSIS",
+      corroborating_tool: "bandit",
+      rule_or_cve_id: "CVE-2023-12345",
+      file_path: "backend/app/auth.py",
+      start_line: 34,
+      end_line: 36,
+      snippet: "",
+      content_snippet: "hashlib.md5(password.encode()).hexdigest()",
+      metadata: {
+        commit_sha: "af0f0427252487b6cd0b76bba14a0d611fd67024",
+      },
+    };
+
+    render(<EvidenceCard evidence={evidence} />);
+
+    expect(screen.getByText("STATIC_ANALYSIS")).toBeInTheDocument();
+    expect(screen.getByText(/bandit/)).toBeInTheDocument();
+    expect(screen.getByText(/CVE-2023-12345/)).toBeInTheDocument();
+    expect(screen.getByText(/backend\/app\/auth.py:34–36/)).toBeInTheDocument();
+    expect(screen.getByText("af0f042")).toBeInTheDocument();
+    expect(screen.getByText(/hashlib.md5/)).toBeInTheDocument();
+  });
+
+  it("renders explicit 'Code snippet unavailable' when evidence snippet is empty or unavailable", () => {
+    const evidence: EvidenceModel = {
+      evidence_type: "DEPENDENCY",
+      corroborating_tool: "pip-audit",
+      rule_or_cve_id: "GHSA-xxxx-yyyy",
+      file_path: "requirements.txt",
+      start_line: 12,
+      end_line: 12,
+      snippet: "   ",
+    };
+
+    render(<EvidenceCard evidence={evidence} />);
+
+    expect(screen.getByText("Code snippet unavailable")).toBeInTheDocument();
+  });
+
   // 7. FeedbackCard rendering
   it("renders developer feedback card with reaction and reviewer", () => {
     const feedback: FeedbackResponse = {
@@ -249,6 +291,166 @@ describe("Phase 6 Review Dashboard - UI & Security Invariants", () => {
     expect(screen.getByText("Critic")).toBeInTheDocument();
     expect(screen.getByText("Verified (3)")).toBeInTheDocument();
     expect(screen.getByText("Published (3)")).toBeInTheDocument();
+  });
+
+  it("faithfully marks pipeline steps completed even when status is lowercase 'completed'", () => {
+    const lowercaseRun: ReviewRunRead = {
+      id: "run-888",
+      pull_request_id: "pr-2",
+      pr_number: 15,
+      repository_full_name: "acme/repo",
+      commit_sha: "1234567890abcdef1234567890abcdef12345678",
+      status: "completed",
+      trigger_type: "WEBHOOK",
+      total_tokens: 1200,
+      total_cost_usd: 0.005,
+      latency_seconds: 8.5,
+      review_plan: {
+        review_scope: "FULL",
+        active_agents: ["security"],
+        target_files: ["app/auth.py"],
+      },
+      error_log: null,
+      started_at: new Date().toISOString(),
+      completed_at: new Date().toISOString(),
+      created_at: new Date().toISOString(),
+      findings_count: 1,
+      verified_findings_count: 1,
+      published_findings_count: 1,
+    };
+
+    render(<ReviewPipeline run={lowercaseRun} />);
+
+    const pipeline = screen.getByTestId("review-pipeline");
+    expect(pipeline).toBeInTheDocument();
+    // All steps should have completed class
+    const steps = pipeline.querySelectorAll(".pipeline-step");
+    expect(steps.length).toBe(7);
+    steps.forEach((step) => {
+      expect(step).toHaveClass("completed");
+    });
+  });
+
+  it("correctly renders queued review with downstream steps pending", () => {
+    const queuedRun: ReviewRunRead = {
+      id: "run-queued",
+      pull_request_id: "pr-queued",
+      pr_number: 101,
+      repository_full_name: "acme/repo",
+      commit_sha: "aaaabbbbcccc",
+      status: "QUEUED",
+      trigger_type: "WEBHOOK",
+      total_tokens: 0,
+      total_cost_usd: 0,
+      latency_seconds: null,
+      review_plan: null,
+      error_log: null,
+      started_at: null,
+      completed_at: null,
+      created_at: new Date().toISOString(),
+      findings_count: 0,
+      verified_findings_count: 0,
+      published_findings_count: 0,
+    };
+
+    render(<ReviewPipeline run={queuedRun} />);
+    const pipeline = screen.getByTestId("review-pipeline");
+    const steps = pipeline.querySelectorAll(".pipeline-step");
+    expect(steps[0]).toHaveClass("completed"); // PR Ingested
+    expect(steps[1]).toHaveClass("pending"); // Planner
+    expect(steps[2]).toHaveClass("pending"); // Specialists
+    expect(steps[3]).toHaveClass("pending"); // Evidence
+    expect(steps[4]).toHaveClass("pending"); // Critic
+  });
+
+  it("correctly renders running review with active stage", () => {
+    const runningRun: ReviewRunRead = {
+      id: "run-running",
+      pull_request_id: "pr-running",
+      pr_number: 102,
+      repository_full_name: "acme/repo",
+      commit_sha: "bbbbccccdddd",
+      status: "RUNNING",
+      trigger_type: "WEBHOOK",
+      total_tokens: 500,
+      total_cost_usd: 0.001,
+      latency_seconds: null,
+      review_plan: null,
+      error_log: null,
+      started_at: new Date().toISOString(),
+      completed_at: null,
+      created_at: new Date().toISOString(),
+      findings_count: 0,
+      verified_findings_count: 0,
+      published_findings_count: 0,
+    };
+
+    render(<ReviewPipeline run={runningRun} />);
+    const pipeline = screen.getByTestId("review-pipeline");
+    const steps = pipeline.querySelectorAll(".pipeline-step");
+    expect(steps[0]).toHaveClass("completed");
+    expect(steps[1]).toHaveClass("active"); // Planner active
+  });
+
+  it("correctly renders failed review with failed step visibly distinguished", () => {
+    const failedRun: ReviewRunRead = {
+      id: "run-failed",
+      pull_request_id: "pr-failed",
+      pr_number: 103,
+      repository_full_name: "acme/repo",
+      commit_sha: "ccccddddeeee",
+      status: "FAILED",
+      trigger_type: "WEBHOOK",
+      total_tokens: 100,
+      total_cost_usd: 0.0005,
+      latency_seconds: null,
+      review_plan: null,
+      error_log: "Fatal error in planner",
+      started_at: new Date().toISOString(),
+      completed_at: null,
+      created_at: new Date().toISOString(),
+      findings_count: 0,
+      verified_findings_count: 0,
+      published_findings_count: 0,
+    };
+
+    render(<ReviewPipeline run={failedRun} />);
+    const pipeline = screen.getByTestId("review-pipeline");
+    const steps = pipeline.querySelectorAll(".pipeline-step");
+    expect(steps[0]).toHaveClass("completed");
+    expect(steps[1]).toHaveClass("failed"); // Planner failed
+    expect(pipeline.querySelector(".failed")).toBeInTheDocument();
+  });
+
+  it("correctly reflects review with zero findings and rejected findings", () => {
+    const rejectedFindingsRun: ReviewRunRead = {
+      id: "run-rejected",
+      pull_request_id: "pr-rejected",
+      pr_number: 104,
+      repository_full_name: "acme/repo",
+      commit_sha: "ddddeeeeffff",
+      status: "COMPLETED",
+      trigger_type: "WEBHOOK",
+      total_tokens: 3000,
+      total_cost_usd: 0.008,
+      latency_seconds: 12.0,
+      review_plan: {
+        review_scope: "FULL",
+        active_agents: ["security"],
+        target_files: ["main.py"],
+      },
+      error_log: null,
+      started_at: new Date().toISOString(),
+      completed_at: new Date().toISOString(),
+      created_at: new Date().toISOString(),
+      findings_count: 4,
+      verified_findings_count: 0, // all rejected by critic
+      published_findings_count: 0, // none published
+    };
+
+    render(<ReviewPipeline run={rejectedFindingsRun} />);
+    expect(screen.getByText("Verified (0)")).toBeInTheDocument();
+    expect(screen.getByText("Published (0)")).toBeInTheDocument();
   });
 
   // 9. Security: Sensitive tokens/passwords must NEVER be rendered

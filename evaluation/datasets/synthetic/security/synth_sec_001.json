@@ -1,10 +1,10 @@
 {
   "case_id": "SYNTH-SEC-001",
   "category": "SECURITY",
-  "title": "SQL Injection in User Search Query",
-  "description": "Introduces search endpoint concatenating unsanitized query parameters directly into SQL statement.",
+  "title": "feat(search): implement user search query endpoint",
+  "description": "Adds search endpoint querying users in the database by username filter.",
   "affected_file": "app/services/user_search.py",
-  "vulnerable_code": "import sqlite3\n\ndef search_users(db_conn, username_filter: str):\n    cursor = db_conn.cursor()\n    # Vulnerable: Unescaped f-string interpolation\n    query = f\"SELECT id, username, email FROM users WHERE username = '{username_filter}'\"\n    cursor.execute(query)\n    return cursor.fetchall()\n",
+  "vulnerable_code": "import sqlite3\n\ndef search_users(db_conn, username_filter: str):\n    cursor = db_conn.cursor()\n    query = f\"SELECT id, username, email FROM users WHERE username = '{username_filter}'\"\n    cursor.execute(query)\n    return cursor.fetchall()\n",
   "fixed_code": "import sqlite3\n\ndef search_users(db_conn, username_filter: str):\n    cursor = db_conn.cursor()\n    query = \"SELECT id, username, email FROM users WHERE username = ?\"\n    cursor.execute(query, (username_filter,))\n    return cursor.fetchall()\n",
   "ground_truth": [
     {

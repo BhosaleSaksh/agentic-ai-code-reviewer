@@ -1,10 +1,10 @@
 {
   "case_id": "SYNTH-BUG-001",
   "category": "BUG_LOGIC",
-  "title": "Off-by-One Boundary Condition in List Traversal",
-  "description": "Loop iterates using range(len(items) + 1), causing IndexError on the final iteration.",
+  "title": "refactor(queue): optimize batch item processing",
+  "description": "Processes input batch list items and returns uppercase transformed entries.",
   "affected_file": "app/processors/batch_queue.py",
-  "vulnerable_code": "def process_batch(items: list[str]) -> list[str]:\n    results = []\n    # Vulnerable: len(items) + 1 causes out-of-bounds IndexError\n    for i in range(len(items) + 1):\n        results.append(items[i].upper())\n    return results\n",
+  "vulnerable_code": "def process_batch(items: list[str]) -> list[str]:\n    results = []\n    for i in range(len(items) + 1):\n        results.append(items[i].upper())\n    return results\n",
   "fixed_code": "def process_batch(items: list[str]) -> list[str]:\n    results = []\n    for i in range(len(items)):\n        results.append(items[i].upper())\n    return results\n",
   "ground_truth": [
     {

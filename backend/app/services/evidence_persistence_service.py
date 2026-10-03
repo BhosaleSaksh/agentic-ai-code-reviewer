@@ -106,7 +106,7 @@ class EvidencePersistenceService:
             persisted_entities: list[EvidenceItem] = []
             for item in evidence_items:
                 entity = EvidenceItem(
-                    id=uuid.uuid4(),
+                    id=item.id or uuid.uuid4(),
                     review_run_id=review_run_id,
                     finding_id=None,
                     evidence_type=item.evidence_type.value,

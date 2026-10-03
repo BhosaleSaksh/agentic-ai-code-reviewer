@@ -1,10 +1,10 @@
 {
   "case_id": "SYNTH-BUG-004",
   "category": "BUG_LOGIC",
-  "title": "Invalid State Transition on Cancelled Order",
-  "description": "Fulfills order without verifying if state is already terminal (CANCELLED or REFUNDED).",
+  "title": "feat(fulfillment): handle order fulfillment dispatch",
+  "description": "Updates order status and dispatches fulfillment shipment.",
   "affected_file": "app/orders/fulfillment.py",
-  "vulnerable_code": "def fulfill_order(order):\n    # Vulnerable: Missing state validation; transitions cancelled orders to FULFILLED\n    order.status = \"FULFILLED\"\n    order.save()\n    dispatch_shipment(order)\n",
+  "vulnerable_code": "def fulfill_order(order):\n    order.status = \"FULFILLED\"\n    order.save()\n    dispatch_shipment(order)\n",
   "fixed_code": "def fulfill_order(order):\n    if order.status != \"PENDING\":\n        raise ValueError(f\"Cannot fulfill order with status {order.status}\")\n    order.status = \"FULFILLED\"\n    order.save()\n    dispatch_shipment(order)\n",
   "ground_truth": [
     {

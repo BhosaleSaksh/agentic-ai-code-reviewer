@@ -332,7 +332,7 @@ class DashboardService:
         if pull_request_id is not None:
             stmt = stmt.where(ReviewRun.pull_request_id == pull_request_id)
         if status is not None:
-            stmt = stmt.where(ReviewRun.status == status.upper())
+            stmt = stmt.where(func.upper(ReviewRun.status) == status.upper())
 
         stmt = stmt.limit(limit).offset(offset)
         result = await session.execute(stmt)

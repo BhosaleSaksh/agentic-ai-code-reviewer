@@ -1,10 +1,10 @@
 {
   "case_id": "SYNTH-ERR-004",
   "category": "ERROR_HANDLING",
-  "title": "Mismatched Exception Type in Configuration Parser",
-  "description": "Catches KeyError when accessing object attributes, missing AttributeError when attribute is undefined.",
+  "title": "feat(config): parse server port setting",
+  "description": "Extracts server port configuration from server configuration object.",
   "affected_file": "app/config/parser.py",
-  "vulnerable_code": "def parse_server_port(config_obj) -> int:\n    try:\n        # Vulnerable: config_obj is a custom class, not a dict; raises AttributeError\n        return int(config_obj.port)\n    except KeyError:\n        return 8080\n",
+  "vulnerable_code": "def parse_server_port(config_obj) -> int:\n    try:\n        return int(config_obj.port)\n    except KeyError:\n        return 8080\n",
   "fixed_code": "def parse_server_port(config_obj) -> int:\n    try:\n        return int(getattr(config_obj, \"port\", 8080))\n    except (AttributeError, ValueError):\n        return 8080\n",
   "ground_truth": [
     {

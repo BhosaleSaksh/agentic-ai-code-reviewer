@@ -49,14 +49,17 @@ export type FeedbackType =
 export type FeedbackSource = "GITHUB_WEBHOOK" | "DASHBOARD_UI" | "CLI_TOOL";
 
 export interface EvidenceModel {
+  id?: string;
   evidence_type: EvidenceType;
   file_path: string;
   start_line: number;
   end_line: number;
   snippet: string;
+  content_snippet?: string;
   rule_or_cve_id: string | null;
   corroborating_tool: string | null;
   metadata?: Record<string, unknown> | null;
+  extra_metadata?: Record<string, unknown> | null;
 }
 
 export interface ReviewFinding {

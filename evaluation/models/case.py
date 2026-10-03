@@ -120,6 +120,27 @@ class CaseProvenance(BaseModel):
     )
 
 
+class EvaluationInput(BaseModel):
+    """Model and baseline input containing strictly what a real reviewer would legitimately receive.
+
+    Ground-truth defect types, explanations, line coordinates, and severity expectations
+    are strictly excluded. Any attempt to pass or access ground truth raises an error.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    case_id: str = Field(description="Unique case identifier")
+    category: DefectCategory = Field(description="High-level category context")
+    title: str = Field(description="PR or code change title")
+    description: str = Field(description="PR description or contextual summary")
+    affected_file: str = Field(description="File path under review")
+    vulnerable_code: str = Field(description="Source code or diff under review")
+    metadata: dict[str, Any] = Field(
+        default_factory=dict,
+        description="Safe metadata such as repository name or commit SHA",
+    )
+
+
 class EvaluationCase(BaseModel):
     """Complete evaluation case containing code under review and ground truth."""
 
@@ -149,17 +170,24 @@ class EvaluationCase(BaseModel):
         description="Optional arbitrary metadata for extensible benchmark runners",
     )
 
-    def to_evaluation_input(self) -> dict[str, Any]:
+    def to_evaluation_input(self) -> EvaluationInput:
         """Produce clean input context for reviewer models without ground truth leakage.
 
         Returns only the file name, code/diff content, and description, strictly
         omitting defect locations, severity expectations, and ground-truth explanations.
         """
-        return {
-            "case_id": self.case_id,
-            "category": self.category.value,
-            "title": self.title,
-            "description": self.description,
-            "affected_file": self.affected_file,
-            "vulnerable_code": self.vulnerable_code,
-        }
+        safe_meta: dict[str, Any] = {}
+        if self.provenance.repository:
+            safe_meta["repository"] = self.provenance.repository
+        if self.provenance.commit_sha:
+            safe_meta["commit_sha"] = self.provenance.commit_sha
+
+        return EvaluationInput(
+            case_id=self.case_id,
+            category=self.category,
+            title=self.title,
+            description=self.description,
+            affected_file=self.affected_file,
+            vulnerable_code=self.vulnerable_code,
+            metadata=safe_meta,
+        )

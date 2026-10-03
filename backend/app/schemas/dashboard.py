@@ -11,7 +11,7 @@ import uuid
 from datetime import datetime
 from typing import Any
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 class RepositoryRead(BaseModel):
@@ -64,6 +64,12 @@ class PullRequestRead(BaseModel):
         None, description="Status of the latest review run"
     )
 
+    @field_validator("latest_review_run_status", mode="before")
+    @classmethod
+    def normalize_latest_status(cls, v: str | None) -> str | None:
+        """Ensure review run status is uppercase for UI contract consistency."""
+        return v.upper() if isinstance(v, str) else v
+
 
 class ReviewRunRead(BaseModel):
     """Schema representing an individual review run pipeline execution."""
@@ -107,6 +113,12 @@ class ReviewRunRead(BaseModel):
     published_findings_count: int = Field(
         0, description="Total findings published to GitHub"
     )
+
+    @field_validator("status", mode="before")
+    @classmethod
+    def normalize_status(cls, v: str) -> str:
+        """Ensure review run status is uppercase for UI contract consistency."""
+        return v.upper() if isinstance(v, str) else v
 
 
 class DashboardMetrics(BaseModel):

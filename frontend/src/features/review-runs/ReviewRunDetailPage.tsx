@@ -260,7 +260,11 @@ export const ReviewRunDetailPage: React.FC = () => {
           ) : (
             <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
               {evidenceList.map((ev, idx) => (
-                <EvidenceCard key={`${ev.file_path}-${ev.start_line}-${idx}`} evidence={ev} />
+                <EvidenceCard
+                  key={ev.id || `${ev.file_path}-${ev.start_line}-${idx}`}
+                  evidence={ev}
+                  commitSha={run.commit_sha}
+                />
               ))}
             </div>
           )}

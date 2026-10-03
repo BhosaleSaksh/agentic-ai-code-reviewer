@@ -1,0 +1,41 @@
+{
+  "case_id": "REAL-SEC-002",
+  "category": "SECURITY",
+  "title": "feat(helpers): parse encoding and mimetype headers",
+  "description": "Adds utility helper to parse incoming request charset and encoding headers.",
+  "affected_file": "src/flask/helpers.py",
+  "vulnerable_code": "import re\n\n_encoding_re = re.compile(r'charset=([a-zA-Z0-9_-]+)')\n\ndef parse_encoding_header(header_value: str) -> str:\n    if not header_value:\n        return 'utf-8'\n    # Unbounded string duplication regex evaluation on user header\n    match = _encoding_re.search(header_value * 100)\n    if match:\n        return match.group(1).lower()\n    return 'utf-8'\n",
+  "fixed_code": "import re\n\n_encoding_re = re.compile(r'charset=([a-zA-Z0-9_-]+)')\n\ndef parse_encoding_header(header_value: str) -> str:\n    if not header_value:\n        return 'utf-8'\n    # Bounded length parsing prevents catastrophic regex backtrack\n    match = _encoding_re.search(header_value[:256])\n    if match:\n        return match.group(1).lower()\n    return 'utf-8'\n",
+  "ground_truth": [
+    {
+      "defect_id": "DEFECT-REAL-SEC-002",
+      "category": "SECURITY",
+      "affected_file": "src/flask/helpers.py",
+      "line_start": 9,
+      "line_end": 10,
+      "expected_issue_type": "RESOURCE_EXHAUSTION_DOS",
+      "expected_severity": "HIGH",
+      "description": "Unbounded string repetition in encoding parser allows CPU exhaustion via memory spike.",
+      "explanation": "Multiplying untrusted user-controlled headers (header_value * 100) causes quadratic memory allocation and CPU starvation (CVE-2019-1010083, CWE-400).",
+      "expected_evidence": [
+        {
+          "tool_name": "security_advisory",
+          "rule_or_cve_id": "CVE-2019-1010083",
+          "target_pattern": "_encoding_re.search(header_value * 100)",
+          "description": "Unbounded string amplification evaluated against regular expression."
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "source": "oss_cve",
+    "repository": "pallets/flask",
+    "commit_sha": "a1c9e8312bc44d701e82845efac88c919d671842",
+    "author_or_curator": "pallets_maintainers",
+    "created_at": "2019-07-02T00:00:00Z",
+    "license": "BSD-3-Clause",
+    "reference_url": "https://github.com/pallets/flask/pull/3211",
+    "ground_truth_authority": "security_release_and_patch",
+    "annotation_uncertainty": "LOW"
+  }
+}

@@ -1,10 +1,10 @@
 {
   "case_id": "SYNTH-SEC-003",
   "category": "SECURITY",
-  "title": "Unsafe Deserialization via Python Pickle",
-  "description": "Deserializes untrusted request session cookies using pickle.loads.",
+  "title": "feat(session): add cookie session deserializer",
+  "description": "Implements helper function to load and parse user session state from base64 cookie data.",
   "affected_file": "app/session/cache.py",
-  "vulnerable_code": "import base64\nimport pickle\n\ndef load_user_session(cookie_data: str) -> dict:\n    raw_bytes = base64.b64decode(cookie_data)\n    # Vulnerable: Arbitrary code execution via pickle\n    session_dict = pickle.loads(raw_bytes)\n    return session_dict\n",
+  "vulnerable_code": "import base64\nimport pickle\n\ndef load_user_session(cookie_data: str) -> dict:\n    raw_bytes = base64.b64decode(cookie_data)\n    session_dict = pickle.loads(raw_bytes)\n    return session_dict\n",
   "fixed_code": "import base64\nimport json\n\ndef load_user_session(cookie_data: str) -> dict:\n    raw_bytes = base64.b64decode(cookie_data)\n    session_dict = json.loads(raw_bytes.decode('utf-8'))\n    return session_dict\n",
   "ground_truth": [
     {

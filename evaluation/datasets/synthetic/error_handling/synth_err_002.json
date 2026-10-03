@@ -1,10 +1,10 @@
 {
   "case_id": "SYNTH-ERR-002",
   "category": "ERROR_HANDLING",
-  "title": "Missing Error Handling and Timeout for Outbound Payment Gateway",
-  "description": "Performs synchronous external HTTP request without timeout configuration or network error handling.",
+  "title": "feat(payment): submit credit card charge request",
+  "description": "Posts payment charge request to payment gateway endpoint.",
   "affected_file": "app/services/payment_gateway.py",
-  "vulnerable_code": "import requests\n\ndef charge_card(card_token: str, amount_cents: int) -> dict:\n    # Vulnerable: Missing timeout parameter and no try/except for network errors\n    response = requests.post(\n        \"https://api.gateway.internal/v1/charges\",\n        json={\"token\": card_token, \"amount\": amount_cents}\n    )\n    return response.json()\n",
+  "vulnerable_code": "import requests\n\ndef charge_card(card_token: str, amount_cents: int) -> dict:\n    response = requests.post(\n        \"https://api.gateway.internal/v1/charges\",\n        json={\"token\": card_token, \"amount\": amount_cents}\n    )\n    return response.json()\n",
   "fixed_code": "import requests\nfrom app.core.exceptions import PaymentGatewayError\n\ndef charge_card(card_token: str, amount_cents: int) -> dict:\n    try:\n        response = requests.post(\n            \"https://api.gateway.internal/v1/charges\",\n            json={\"token\": card_token, \"amount\": amount_cents},\n            timeout=(3.0, 10.0)\n        )\n        response.raise_for_status()\n        return response.json()\n    except requests.RequestException as exc:\n        raise PaymentGatewayError(f\"Payment gateway unreachable: {exc}\") from exc\n",
   "ground_truth": [
     {

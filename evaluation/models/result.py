@@ -64,6 +64,18 @@ class BenchmarkRunResult(BaseModel):
 
     run_id: str = Field(description="UUID v4 identifying this specific benchmark run")
     baseline_name: str = Field(description="Name of the evaluated baseline or ablation")
+    execution_mode: str = Field(
+        default="offline_mock",
+        description="Explicit execution mode: offline_mock or real_llm",
+    )
+    provider: str = Field(
+        default="offline_simulator",
+        description="LLM provider name or offline simulator",
+    )
+    model: str = Field(
+        default="deterministic_mock",
+        description="Model identifier or heuristic version",
+    )
     dataset_version: str = Field(description="Dataset version identifier (e.g. 1.0.0)")
     timestamp: str = Field(description="ISO-8601 UTC timestamp of execution")
     git_commit_sha: str = Field(description="Repository Git commit SHA at time of run")

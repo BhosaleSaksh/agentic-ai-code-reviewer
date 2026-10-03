@@ -1,10 +1,10 @@
 {
   "case_id": "SYNTH-BUG-005",
   "category": "BUG_LOGIC",
-  "title": "Incorrect Operator Precedence in Discount Calculation",
-  "description": "Calculates total amount by subtracting fixed discount before item multiplication.",
+  "title": "feat(calculator): compute customer invoice totals",
+  "description": "Applies pricing discounts and computes invoice balance totals.",
   "affected_file": "app/billing/calculator.py",
-  "vulnerable_code": "def compute_invoice_total(quantity: int, unit_price: float, discount: float) -> float:\n    # Vulnerable: Subtracts discount from quantity before multiplying price\n    total = quantity - discount * unit_price\n    return max(0.0, total)\n",
+  "vulnerable_code": "def compute_invoice_total(quantity: int, unit_price: float, discount: float) -> float:\n    total = quantity - discount * unit_price\n    return max(0.0, total)\n",
   "fixed_code": "def compute_invoice_total(quantity: int, unit_price: float, discount: float) -> float:\n    subtotal = quantity * unit_price\n    total = subtotal - discount\n    return max(0.0, total)\n",
   "ground_truth": [
     {

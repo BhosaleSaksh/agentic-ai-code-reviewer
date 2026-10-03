@@ -1,0 +1,41 @@
+{
+  "case_id": "REAL-ERR-001",
+  "category": "ERROR_HANDLING",
+  "title": "feat(consumer): handle broker connection in event loop",
+  "description": "Implements consumer drain events polling loop with connection reconnect handling.",
+  "affected_file": "celery/events/consumer.py",
+  "vulnerable_code": "def consume_events(connection, callback):\n    channel = connection.channel()\n    while True:\n        try:\n            event = channel.drain_events(timeout=1.0)\n            if event:\n                callback(event)\n        except socket.timeout:\n            continue\n        # Unhandled ConnectionResetError causes event listener thread termination\n",
+  "fixed_code": "def consume_events(connection, callback):\n    channel = connection.channel()\n    while True:\n        try:\n            event = channel.drain_events(timeout=1.0)\n            if event:\n                callback(event)\n        except socket.timeout:\n            continue\n        except (ConnectionResetError, BrokenPipeError) as exc:\n            logger.warning(\"Broker connection reset, reconnecting: %s\", exc)\n            connection = reconnect()\n            channel = connection.channel()\n",
+  "ground_truth": [
+    {
+      "defect_id": "DEFECT-REAL-ERR-001",
+      "category": "ERROR_HANDLING",
+      "affected_file": "celery/events/consumer.py",
+      "line_start": 8,
+      "line_end": 10,
+      "expected_issue_type": "UNHANDLED_CONNECTION_RESET",
+      "expected_severity": "HIGH",
+      "description": "ConnectionResetError from Redis was unhandled in consumer event loop, terminating event listener thread.",
+      "explanation": "Network disconnections raise ConnectionResetError which was not caught, crashing the background consumer process.",
+      "expected_evidence": [
+        {
+          "tool_name": "exception_coverage_analyzer",
+          "rule_or_cve_id": "exception.unhandled.connection_reset",
+          "target_pattern": "except socket.timeout:",
+          "description": "Socket drain loop only handles timeout, omitting connection reset exceptions."
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "source": "production_bug_report",
+    "repository": "celery/celery",
+    "commit_sha": "3e9b1102948cbb37719283746152019283746152",
+    "author_or_curator": "celery_maintainers",
+    "created_at": "2020-11-12T00:00:00Z",
+    "license": "BSD-3-Clause",
+    "reference_url": "https://github.com/celery/celery/pull/6480",
+    "ground_truth_authority": "maintainer_patch_and_test",
+    "annotation_uncertainty": "MEDIUM"
+  }
+}

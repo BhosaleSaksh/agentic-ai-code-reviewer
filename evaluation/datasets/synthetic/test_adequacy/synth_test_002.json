@@ -1,10 +1,10 @@
 {
   "case_id": "SYNTH-TEST-002",
   "category": "TEST_ADEQUACY",
-  "title": "Insufficient Boundary Coverage for Zero and Negative Account Balances",
-  "description": "Withdrawal validator tested only with positive values; zero and negative boundary conditions untested.",
+  "title": "feat(banking): validate withdrawal amount",
+  "description": "Verifies whether withdrawal amount is permissible against account balance.",
   "affected_file": "app/banking/validator.py",
-  "vulnerable_code": "def validate_withdrawal(current_balance: float, withdraw_amount: float) -> bool:\n    # Vulnerable: Edge case when withdraw_amount <= 0 or current_balance == 0 is untested\n    if withdraw_amount > current_balance:\n        return False\n    return True\n",
+  "vulnerable_code": "def validate_withdrawal(current_balance: float, withdraw_amount: float) -> bool:\n    if withdraw_amount > current_balance:\n        return False\n    return True\n",
   "fixed_code": "def validate_withdrawal(current_balance: float, withdraw_amount: float) -> bool:\n    if withdraw_amount <= 0:\n        return False\n    if current_balance <= 0:\n        return False\n    if withdraw_amount > current_balance:\n        return False\n    return True\n",
   "ground_truth": [
     {

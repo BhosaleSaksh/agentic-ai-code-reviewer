@@ -1,10 +1,10 @@
 {
   "case_id": "SYNTH-BUG-003",
   "category": "BUG_LOGIC",
-  "title": "Inverted Boolean Condition in Access Gate",
-  "description": "Gate checks 'if not is_valid' and incorrectly executes privileged operation on invalid status.",
+  "title": "feat(gatekeeper): verify authorization token for account",
+  "description": "Evaluates authorization token and gates access to account operations.",
   "affected_file": "app/security/gatekeeper.py",
-  "vulnerable_code": "def authorize_request(token_verifier, token: str, account_id: str):\n    is_valid = token_verifier.verify(token)\n    # Vulnerable: Inverted condition executes grant on invalid token\n    if not is_valid:\n        grant_access(account_id)\n    else:\n        deny_access(account_id)\n",
+  "vulnerable_code": "def authorize_request(token_verifier, token: str, account_id: str):\n    is_valid = token_verifier.verify(token)\n    if not is_valid:\n        grant_access(account_id)\n    else:\n        deny_access(account_id)\n",
   "fixed_code": "def authorize_request(token_verifier, token: str, account_id: str):\n    is_valid = token_verifier.verify(token)\n    if is_valid:\n        grant_access(account_id)\n    else:\n        deny_access(account_id)\n",
   "ground_truth": [
     {

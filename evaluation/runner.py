@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Any
 
 from evaluation.baselines.base import BaseBaseline
+from evaluation.matching.evidence_auditor import EvidenceAuditor
 from evaluation.matching.matcher import DeterministicFindingMatcher
 from evaluation.metrics.calculator import MetricsCalculator
 from evaluation.models.case import EvaluationCase
@@ -31,7 +32,7 @@ class BenchmarkRunner:
         dataset_dir: str | Path | None = None,
         results_dir: str | Path | None = None,
         matcher: DeterministicFindingMatcher | None = None,
-        git_commit_sha: str = "0272942fd8b9267d8e798efffca9b831cd04cda1",
+        git_commit_sha: str = "af0f0427252487b6cd0b76bba14a0d611fd67024",
     ) -> None:
         self.dataset_dir = (
             Path(dataset_dir) if dataset_dir else Path("evaluation/datasets")
@@ -43,29 +44,54 @@ class BenchmarkRunner:
         self.matcher = matcher or DeterministicFindingMatcher()
         self.git_commit_sha = git_commit_sha
 
+    def load_all_cases(
+        self,
+        include_real_world: bool = True,
+        category: str | None = None,
+    ) -> list[EvaluationCase]:
+        """Discover and load all JSON evaluation cases from synthetic and real-world directories."""
+        cases: list[EvaluationCase] = []
+
+        # 1. Load synthetic cases (18 total)
+        synth_dir = self.dataset_dir / "synthetic"
+        if synth_dir.exists():
+            for json_file in sorted(synth_dir.rglob("*.json")):
+                try:
+                    data = json.loads(json_file.read_text(encoding="utf-8"))
+                    if "case_id" in data and "ground_truth" in data:
+                        case = EvaluationCase.model_validate(data)
+                        if not category or case.category.value == category:
+                            cases.append(case)
+                except Exception as e:
+                    logger.error(
+                        "Failed to load synthetic case from %s: %s", json_file, e
+                    )
+
+        # 2. Load real-world cases (5 total)
+        if include_real_world:
+            rw_dir = self.dataset_dir / "real_world"
+            if rw_dir.exists():
+                for json_file in sorted(rw_dir.glob("*.json")):
+                    try:
+                        data = json.loads(json_file.read_text(encoding="utf-8"))
+                        if "case_id" in data and "ground_truth" in data:
+                            case = EvaluationCase.model_validate(data)
+                            if not category or case.category.value == category:
+                                cases.append(case)
+                    except Exception as e:
+                        logger.error(
+                            "Failed to load real-world case from %s: %s",
+                            json_file,
+                            e,
+                        )
+
+        return cases
+
     def load_cases_from_directory(
         self, category_subdir: str | None = None
     ) -> list[EvaluationCase]:
-        """Discover and load all JSON evaluation cases from the synthetic dataset directory."""
-        cases: list[EvaluationCase] = []
-        target_dir = self.dataset_dir / "synthetic"
-        if category_subdir:
-            target_dir = target_dir / category_subdir
-
-        if not target_dir.exists():
-            logger.warning("Dataset directory does not exist: %s", target_dir)
-            return cases
-
-        for json_file in sorted(target_dir.rglob("*.json")):
-            try:
-                data = json.loads(json_file.read_text(encoding="utf-8"))
-                # If file contains an evaluation case or manifest entry
-                if "case_id" in data and "ground_truth" in data:
-                    cases.append(EvaluationCase.model_validate(data))
-            except Exception as e:
-                logger.error("Failed to load evaluation case from %s: %s", json_file, e)
-
-        return cases
+        """Backward-compatible loader for synthetic cases."""
+        return self.load_all_cases(include_real_world=False, category=category_subdir)
 
     def load_case_from_dict(self, data: dict[str, Any]) -> EvaluationCase:
         """Parse an in-memory dictionary into an EvaluationCase."""
@@ -100,8 +126,11 @@ class BenchmarkRunner:
         category_counts: dict[str, dict[str, int]] = {}
 
         for case in cases:
+            # Strictly isolate model input context to prevent ground-truth leakage
+            eval_input = case.to_evaluation_input()
+
             # 1. Execute baseline
-            predicted_findings, usage = await baseline.evaluate_case(case)
+            predicted_findings, usage = await baseline.evaluate_case(eval_input)
 
             total_latency += usage.latency_seconds
             total_api_calls += usage.api_calls
@@ -125,12 +154,13 @@ class BenchmarkRunner:
             total_fp += fp
             total_fn += fn
 
-            # Verification accounting
+            # Verification and evidence-grounding audit
             total_candidates += len(predicted_findings)
             for f in predicted_findings:
                 if f.is_verified:
                     total_verified += 1
-                    if len(f.evidence) > 0:
+                    # Rigorous evidence audit verifying non-empty snippet, valid tool, and file/line bounds
+                    if EvidenceAuditor.is_finding_grounded(f, eval_input):
                         total_grounded += 1
                 else:
                     total_rejected += 1
@@ -194,6 +224,9 @@ class BenchmarkRunner:
         run_result = BenchmarkRunResult(
             run_id=run_id,
             baseline_name=baseline.name,
+            execution_mode=getattr(baseline, "execution_mode", "offline_mock"),
+            provider=getattr(baseline, "provider_name", "offline_simulator"),
+            model=getattr(baseline, "model_name", "deterministic_mock"),
             dataset_version=dataset_version,
             timestamp=timestamp,
             git_commit_sha=self.git_commit_sha,
@@ -207,29 +240,115 @@ class BenchmarkRunner:
         )
 
         # 4. Serialize results
-        self.serialize_results(run_result)
+        self.serialize_results(run_result, baseline)
 
         return run_result
 
-    def serialize_results(self, result: BenchmarkRunResult) -> tuple[Path, Path]:
-        """Save machine-readable JSON and CSV summaries in results directory."""
-        json_path = self.results_dir / f"{result.run_id}_{result.baseline_name}.json"
-        csv_path = (
-            self.results_dir / f"{result.run_id}_{result.baseline_name}_summary.csv"
-        )
+    def serialize_results(
+        self, result: BenchmarkRunResult, _baseline: BaseBaseline | None = None
+    ) -> tuple[Path, Path]:
+        """Save run artifacts in isolated directory evaluation/results/<run_id>/ and legacy paths."""
+        # 1. Isolated run directory (Part 14)
+        run_dir = self.results_dir / result.run_id
+        run_dir.mkdir(parents=True, exist_ok=True)
 
-        # Write JSON report
-        json_path.write_text(
+        config_file = run_dir / "config.json"
+        summary_file = run_dir / "summary.json"
+        cases_file = run_dir / "cases.json"
+        metrics_file = run_dir / "metrics.csv"
+
+        config_data = {
+            "run_id": result.run_id,
+            "baseline_name": result.baseline_name,
+            "execution_mode": result.execution_mode,
+            "provider": result.provider,
+            "model": result.model,
+            "dataset_version": result.dataset_version,
+            "git_commit_sha": result.git_commit_sha,
+            "timestamp": result.timestamp,
+            "total_cases": result.total_cases,
+            "execution_metadata": result.execution_metadata,
+        }
+        config_file.write_text(json.dumps(config_data, indent=2), encoding="utf-8")
+
+        summary_file.write_text(
             json.dumps(result.model_dump(), indent=2), encoding="utf-8"
         )
 
-        # Write CSV report summary
-        with open(csv_path, mode="w", newline="", encoding="utf-8") as f:
+        cases_data = [c.model_dump() for c in result.case_results]
+        cases_file.write_text(json.dumps(cases_data, indent=2), encoding="utf-8")
+
+        with open(metrics_file, mode="w", newline="", encoding="utf-8") as f:
+            writer = csv.writer(f)
+            writer.writerow(
+                [
+                    "category",
+                    "cases",
+                    "tp",
+                    "fp",
+                    "fn",
+                    "precision",
+                    "recall",
+                    "f1",
+                    "fpr",
+                    "fnr",
+                    "ddr",
+                ]
+            )
+            ov = result.overall_metrics
+            writer.writerow(
+                [
+                    "OVERALL",
+                    result.total_cases,
+                    ov.true_positives,
+                    ov.false_positives,
+                    ov.false_negatives,
+                    ov.precision,
+                    ov.recall,
+                    ov.f1_score,
+                    ov.false_positive_rate,
+                    ov.false_negative_rate,
+                    ov.defect_detection_rate,
+                ]
+            )
+            for cat, cm in result.category_metrics.items():
+                writer.writerow(
+                    [
+                        cat,
+                        "-",
+                        cm.true_positives,
+                        cm.false_positives,
+                        cm.false_negatives,
+                        cm.precision,
+                        cm.recall,
+                        cm.f1_score,
+                        cm.false_positive_rate,
+                        cm.false_negative_rate,
+                        cm.defect_detection_rate,
+                    ]
+                )
+
+        # 2. Legacy root files in results_dir for backwards compatibility
+        legacy_json_path = (
+            self.results_dir / f"{result.run_id}_{result.baseline_name}.json"
+        )
+        legacy_csv_path = (
+            self.results_dir / f"{result.run_id}_{result.baseline_name}_summary.csv"
+        )
+
+        legacy_json_path.write_text(
+            json.dumps(result.model_dump(), indent=2), encoding="utf-8"
+        )
+
+        with open(legacy_csv_path, mode="w", newline="", encoding="utf-8") as f:
             writer = csv.writer(f)
             writer.writerow(
                 [
                     "run_id",
                     "baseline_name",
+                    "execution_mode",
+                    "provider",
+                    "model",
                     "dataset_version",
                     "total_cases",
                     "true_positives",
@@ -251,6 +370,9 @@ class BenchmarkRunner:
                 [
                     result.run_id,
                     result.baseline_name,
+                    result.execution_mode,
+                    result.provider,
+                    result.model,
                     result.dataset_version,
                     result.total_cases,
                     result.overall_metrics.true_positives,
@@ -269,5 +391,10 @@ class BenchmarkRunner:
                 ]
             )
 
-        logger.info("Evaluation results serialized to %s and %s", json_path, csv_path)
-        return json_path, csv_path
+        logger.info(
+            "Evaluation results serialized to directory %s and legacy files %s, %s",
+            run_dir,
+            legacy_json_path,
+            legacy_csv_path,
+        )
+        return legacy_json_path, legacy_csv_path

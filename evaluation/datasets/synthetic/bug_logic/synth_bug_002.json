@@ -1,10 +1,10 @@
 {
   "case_id": "SYNTH-BUG-002",
   "category": "BUG_LOGIC",
-  "title": "Unchecked NoneType Attribute Dereference",
-  "description": "Accesses profile attribute on user object returned by lookup without checking if user is None.",
+  "title": "feat(profile): add display name resolver",
+  "description": "Retrieves user record from database and returns display name from profile.",
   "affected_file": "app/services/profile_service.py",
-  "vulnerable_code": "def get_user_display_name(db, user_id: str) -> str:\n    user = db.get_user(user_id)\n    # Vulnerable: user may be None if not found, raising AttributeError\n    return user.profile.display_name\n",
+  "vulnerable_code": "def get_user_display_name(db, user_id: str) -> str:\n    user = db.get_user(user_id)\n    return user.profile.display_name\n",
   "fixed_code": "def get_user_display_name(db, user_id: str) -> str:\n    user = db.get_user(user_id)\n    if user is None or user.profile is None:\n        return \"Anonymous\"\n    return user.profile.display_name\n",
   "ground_truth": [
     {

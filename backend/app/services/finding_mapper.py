@@ -39,7 +39,7 @@ def evidence_to_orm(
     """
     effective_run_id = review_run_id or uuid.UUID(int=0)
     return EvidenceItem(
-        id=evidence_id or uuid.uuid4(),
+        id=evidence_id or evidence.id or uuid.uuid4(),
         review_run_id=effective_run_id,
         finding_id=finding_id,
         evidence_type=evidence.evidence_type.value,
@@ -63,6 +63,7 @@ def orm_to_evidence(orm_evidence: EvidenceItem) -> EvidenceModel:
         Canonical Pydantic EvidenceModel.
     """
     return EvidenceModel(
+        id=orm_evidence.id,
         evidence_type=EvidenceType(orm_evidence.evidence_type),
         file_path=orm_evidence.file_path,
         start_line=orm_evidence.start_line,
