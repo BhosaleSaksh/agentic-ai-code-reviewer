@@ -1,0 +1,38 @@
+{
+  "case_id": "SYNTH-BUG-005",
+  "category": "BUG_LOGIC",
+  "title": "Incorrect Operator Precedence in Discount Calculation",
+  "description": "Calculates total amount by subtracting fixed discount before item multiplication.",
+  "affected_file": "app/billing/calculator.py",
+  "vulnerable_code": "def compute_invoice_total(quantity: int, unit_price: float, discount: float) -> float:\n    # Vulnerable: Subtracts discount from quantity before multiplying price\n    total = quantity - discount * unit_price\n    return max(0.0, total)\n",
+  "fixed_code": "def compute_invoice_total(quantity: int, unit_price: float, discount: float) -> float:\n    subtotal = quantity * unit_price\n    total = subtotal - discount\n    return max(0.0, total)\n",
+  "ground_truth": [
+    {
+      "defect_id": "DEFECT-BUG-005",
+      "category": "BUG_LOGIC",
+      "affected_file": "app/billing/calculator.py",
+      "line_start": 3,
+      "line_end": 3,
+      "expected_issue_type": "CALCULATION_ERROR",
+      "expected_severity": "HIGH",
+      "description": "Operator precedence and arithmetic logic error in invoice discount calculation.",
+      "explanation": "Calculates 'quantity - (discount * unit_price)' instead of '(quantity * unit_price) - discount', corrupting billing charges.",
+      "expected_evidence": [
+        {
+          "tool_name": "arithmetic_verifier",
+          "rule_or_cve_id": "logic.arithmetic.order_of_operations",
+          "target_pattern": "quantity - discount * unit_price",
+          "description": "Subtraction applied to unit count rather than calculated gross subtotal."
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "source": "synthetic_corpus",
+    "author_or_curator": "evaluation_suite",
+    "created_at": "2026-10-03T12:00:00Z",
+    "license": "MIT",
+    "ground_truth_authority": "financial_calculation_spec",
+    "annotation_uncertainty": "LOW"
+  }
+}

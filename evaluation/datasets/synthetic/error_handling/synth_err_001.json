@@ -1,0 +1,38 @@
+{
+  "case_id": "SYNTH-ERR-001",
+  "category": "ERROR_HANDLING",
+  "title": "Silent Exception Suppression in Background Sync",
+  "description": "Swallows database sync failure silently with bare except pass.",
+  "affected_file": "app/sync/reconciler.py",
+  "vulnerable_code": "def sync_records(primary_db, replica_db):\n    try:\n        records = primary_db.fetch_uncommitted()\n        replica_db.write_batch(records)\n    # Vulnerable: Exception silently swallowed without logging or retry\n    except Exception:\n        pass\n",
+  "fixed_code": "import logging\nlogger = logging.getLogger(__name__)\n\ndef sync_records(primary_db, replica_db):\n    try:\n        records = primary_db.fetch_uncommitted()\n        replica_db.write_batch(records)\n    except Exception as exc:\n        logger.error(\"Record synchronization failed: %s\", exc, exc_info=True)\n        raise\n",
+  "ground_truth": [
+    {
+      "defect_id": "DEFECT-ERR-001",
+      "category": "ERROR_HANDLING",
+      "affected_file": "app/sync/reconciler.py",
+      "line_start": 6,
+      "line_end": 7,
+      "expected_issue_type": "SWALLOWED_EXCEPTION",
+      "expected_severity": "MEDIUM",
+      "description": "Silent exception suppression: broad except clause discards errors with pass.",
+      "explanation": "Silently suppressing exceptions prevents error detection, alerting, and data consistency recovery (flake8-bugbear B110).",
+      "expected_evidence": [
+        {
+          "tool_name": "flake8-bugbear",
+          "rule_or_cve_id": "flake8.B110",
+          "target_pattern": "except Exception: pass",
+          "description": "Do not pass silently in broad exception blocks."
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "source": "synthetic_corpus",
+    "author_or_curator": "evaluation_suite",
+    "created_at": "2026-10-03T12:00:00Z",
+    "license": "MIT",
+    "ground_truth_authority": "pep8_and_flake8_bugbear",
+    "annotation_uncertainty": "LOW"
+  }
+}

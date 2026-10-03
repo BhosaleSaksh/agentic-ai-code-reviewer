@@ -1,0 +1,38 @@
+{
+  "case_id": "SYNTH-BUG-003",
+  "category": "BUG_LOGIC",
+  "title": "Inverted Boolean Condition in Access Gate",
+  "description": "Gate checks 'if not is_valid' and incorrectly executes privileged operation on invalid status.",
+  "affected_file": "app/security/gatekeeper.py",
+  "vulnerable_code": "def authorize_request(token_verifier, token: str, account_id: str):\n    is_valid = token_verifier.verify(token)\n    # Vulnerable: Inverted condition executes grant on invalid token\n    if not is_valid:\n        grant_access(account_id)\n    else:\n        deny_access(account_id)\n",
+  "fixed_code": "def authorize_request(token_verifier, token: str, account_id: str):\n    is_valid = token_verifier.verify(token)\n    if is_valid:\n        grant_access(account_id)\n    else:\n        deny_access(account_id)\n",
+  "ground_truth": [
+    {
+      "defect_id": "DEFECT-BUG-003",
+      "category": "BUG_LOGIC",
+      "affected_file": "app/security/gatekeeper.py",
+      "line_start": 4,
+      "line_end": 5,
+      "expected_issue_type": "INVERTED_CONDITION",
+      "expected_severity": "CRITICAL",
+      "description": "Inverted boolean condition in authorization gate: grants access when token is invalid.",
+      "explanation": "Logic bug flips condition polarity, creating severe security vulnerability and improper state mutation.",
+      "expected_evidence": [
+        {
+          "tool_name": "symbolic_verifier",
+          "rule_or_cve_id": "logic.condition_inversion",
+          "target_pattern": "if not is_valid: grant_access",
+          "description": "Access grant branch paired with negated verification check."
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "source": "synthetic_corpus",
+    "author_or_curator": "evaluation_suite",
+    "created_at": "2026-10-03T12:00:00Z",
+    "license": "MIT",
+    "ground_truth_authority": "control_flow_audit",
+    "annotation_uncertainty": "LOW"
+  }
+}

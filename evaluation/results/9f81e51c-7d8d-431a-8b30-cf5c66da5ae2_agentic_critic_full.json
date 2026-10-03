@@ -1,0 +1,799 @@
+{
+  "run_id": "9f81e51c-7d8d-431a-8b30-cf5c66da5ae2",
+  "baseline_name": "agentic_critic_full",
+  "dataset_version": "1.0.0",
+  "timestamp": "2026-10-03T10:11:13.064485+00:00",
+  "git_commit_sha": "0272942fd8b9267d8e798efffca9b831cd04cda1",
+  "total_cases": 18,
+  "overall_metrics": {
+    "true_positives": 9,
+    "false_positives": 0,
+    "true_negatives": 0,
+    "false_negatives": 9,
+    "precision": 1.0,
+    "recall": 0.5,
+    "f1_score": 0.6667,
+    "false_positive_rate": 0.0,
+    "false_negative_rate": 0.5,
+    "defect_detection_rate": 0.5,
+    "precision_ci": [
+      0.7009,
+      1.0
+    ],
+    "recall_ci": [
+      0.2903,
+      0.7097
+    ]
+  },
+  "category_metrics": {
+    "BUG_LOGIC": {
+      "true_positives": 1,
+      "false_positives": 0,
+      "true_negatives": 0,
+      "false_negatives": 4,
+      "precision": 1.0,
+      "recall": 0.2,
+      "f1_score": 0.3333,
+      "false_positive_rate": 0.0,
+      "false_negative_rate": 0.8,
+      "defect_detection_rate": 0.2,
+      "precision_ci": [
+        0.2065,
+        1.0
+      ],
+      "recall_ci": [
+        0.0362,
+        0.6245
+      ]
+    },
+    "ERROR_HANDLING": {
+      "true_positives": 2,
+      "false_positives": 0,
+      "true_negatives": 0,
+      "false_negatives": 3,
+      "precision": 1.0,
+      "recall": 0.4,
+      "f1_score": 0.5714,
+      "false_positive_rate": 0.0,
+      "false_negative_rate": 0.6,
+      "defect_detection_rate": 0.4,
+      "precision_ci": [
+        0.3424,
+        1.0
+      ],
+      "recall_ci": [
+        0.1176,
+        0.7693
+      ]
+    },
+    "SECURITY": {
+      "true_positives": 5,
+      "false_positives": 0,
+      "true_negatives": 0,
+      "false_negatives": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "false_positive_rate": 0.0,
+      "false_negative_rate": 0.0,
+      "defect_detection_rate": 1.0,
+      "precision_ci": [
+        0.5655,
+        1.0
+      ],
+      "recall_ci": [
+        0.5655,
+        1.0
+      ]
+    },
+    "TEST_ADEQUACY": {
+      "true_positives": 1,
+      "false_positives": 0,
+      "true_negatives": 0,
+      "false_negatives": 2,
+      "precision": 1.0,
+      "recall": 0.3333,
+      "f1_score": 0.5,
+      "false_positive_rate": 0.0,
+      "false_negative_rate": 0.6667,
+      "defect_detection_rate": 0.3333,
+      "precision_ci": [
+        0.2065,
+        1.0
+      ],
+      "recall_ci": [
+        0.0615,
+        0.7923
+      ]
+    }
+  },
+  "verification_metrics": {
+    "total_candidates": 9,
+    "verified_count": 9,
+    "rejected_count": 0,
+    "verified_rate": 1.0,
+    "rejected_rate": 0.0,
+    "evidence_grounded_count": 9,
+    "evidence_grounded_rate": 1.0,
+    "critic_rejection_rate": 0.0
+  },
+  "total_resource_usage": {
+    "latency_seconds": 0.0,
+    "api_calls": 99,
+    "prompt_tokens": 24750,
+    "completion_tokens": 6750,
+    "total_tokens": 31500,
+    "estimated_cost_usd": 0.1755
+  },
+  "case_results": [
+    {
+      "case_id": "SYNTH-BUG-001",
+      "category": "BUG_LOGIC",
+      "ground_truth_count": 1,
+      "predicted_count": 0,
+      "true_positives": 0,
+      "false_positives": 0,
+      "false_negatives": 1,
+      "duplicates": 0,
+      "matched_pairs": [],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [
+        {
+          "defect_id": "DEFECT-BUG-001",
+          "category": "BUG_LOGIC",
+          "affected_file": "app/processors/batch_queue.py",
+          "line_start": 4,
+          "line_end": 5,
+          "expected_issue_type": "BOUNDARY_ERROR",
+          "expected_severity": "HIGH",
+          "description": "IndexError due to off-by-one boundary condition in range loop traversal.",
+          "explanation": "Traversing range(len(items) + 1) attempts to index items[len(items)], which raises an uncaught IndexError.",
+          "expected_evidence": [
+            {
+              "tool_name": "ast_analyzer",
+              "rule_or_cve_id": "logic.boundary.off_by_one",
+              "target_pattern": "range(len(items) + 1)",
+              "description": "Index range exceeds valid collection bounds."
+            }
+          ]
+        }
+      ],
+      "resource_usage": {
+        "latency_seconds": 0.0,
+        "api_calls": 5,
+        "prompt_tokens": 1200,
+        "completion_tokens": 300,
+        "total_tokens": 1500,
+        "estimated_cost_usd": 0.0081
+      }
+    },
+    {
+      "case_id": "SYNTH-BUG-002",
+      "category": "BUG_LOGIC",
+      "ground_truth_count": 1,
+      "predicted_count": 1,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "duplicates": 0,
+      "matched_pairs": [
+        {
+          "matched": true,
+          "ground_truth_id": "DEFECT-BUG-002",
+          "predicted_finding_id": "agent-ec3c9ffd",
+          "file_matched": true,
+          "line_distance": 0,
+          "category_matched": true,
+          "semantic_score": 1.0,
+          "is_duplicate": false,
+          "explanation": "Matched DEFECT-BUG-002 at lines 4-4 (distance=0)"
+        }
+      ],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [],
+      "resource_usage": {
+        "latency_seconds": 0.0,
+        "api_calls": 6,
+        "prompt_tokens": 1550,
+        "completion_tokens": 450,
+        "total_tokens": 2000,
+        "estimated_cost_usd": 0.0114
+      }
+    },
+    {
+      "case_id": "SYNTH-BUG-003",
+      "category": "BUG_LOGIC",
+      "ground_truth_count": 1,
+      "predicted_count": 0,
+      "true_positives": 0,
+      "false_positives": 0,
+      "false_negatives": 1,
+      "duplicates": 0,
+      "matched_pairs": [],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [
+        {
+          "defect_id": "DEFECT-BUG-003",
+          "category": "BUG_LOGIC",
+          "affected_file": "app/security/gatekeeper.py",
+          "line_start": 4,
+          "line_end": 5,
+          "expected_issue_type": "INVERTED_CONDITION",
+          "expected_severity": "CRITICAL",
+          "description": "Inverted boolean condition in authorization gate: grants access when token is invalid.",
+          "explanation": "Logic bug flips condition polarity, creating severe security vulnerability and improper state mutation.",
+          "expected_evidence": [
+            {
+              "tool_name": "symbolic_verifier",
+              "rule_or_cve_id": "logic.condition_inversion",
+              "target_pattern": "if not is_valid: grant_access",
+              "description": "Access grant branch paired with negated verification check."
+            }
+          ]
+        }
+      ],
+      "resource_usage": {
+        "latency_seconds": 0.0,
+        "api_calls": 5,
+        "prompt_tokens": 1200,
+        "completion_tokens": 300,
+        "total_tokens": 1500,
+        "estimated_cost_usd": 0.0081
+      }
+    },
+    {
+      "case_id": "SYNTH-BUG-004",
+      "category": "BUG_LOGIC",
+      "ground_truth_count": 1,
+      "predicted_count": 0,
+      "true_positives": 0,
+      "false_positives": 0,
+      "false_negatives": 1,
+      "duplicates": 0,
+      "matched_pairs": [],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [
+        {
+          "defect_id": "DEFECT-BUG-004",
+          "category": "BUG_LOGIC",
+          "affected_file": "app/orders/fulfillment.py",
+          "line_start": 3,
+          "line_end": 5,
+          "expected_issue_type": "INVALID_STATE_TRANSITION",
+          "expected_severity": "HIGH",
+          "description": "State transition to FULFILLED without validating current lifecycle state.",
+          "explanation": "Allows shipping cancelled or refunded orders because state pre-conditions are omitted.",
+          "expected_evidence": [
+            {
+              "tool_name": "state_machine_checker",
+              "rule_or_cve_id": "logic.state_machine.unguarded_transition",
+              "target_pattern": "order.status = \"FULFILLED\"",
+              "description": "Direct state assignment without precondition assertion."
+            }
+          ]
+        }
+      ],
+      "resource_usage": {
+        "latency_seconds": 0.0,
+        "api_calls": 5,
+        "prompt_tokens": 1200,
+        "completion_tokens": 300,
+        "total_tokens": 1500,
+        "estimated_cost_usd": 0.0081
+      }
+    },
+    {
+      "case_id": "SYNTH-BUG-005",
+      "category": "BUG_LOGIC",
+      "ground_truth_count": 1,
+      "predicted_count": 0,
+      "true_positives": 0,
+      "false_positives": 0,
+      "false_negatives": 1,
+      "duplicates": 0,
+      "matched_pairs": [],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [
+        {
+          "defect_id": "DEFECT-BUG-005",
+          "category": "BUG_LOGIC",
+          "affected_file": "app/billing/calculator.py",
+          "line_start": 3,
+          "line_end": 3,
+          "expected_issue_type": "CALCULATION_ERROR",
+          "expected_severity": "HIGH",
+          "description": "Operator precedence and arithmetic logic error in invoice discount calculation.",
+          "explanation": "Calculates 'quantity - (discount * unit_price)' instead of '(quantity * unit_price) - discount', corrupting billing charges.",
+          "expected_evidence": [
+            {
+              "tool_name": "arithmetic_verifier",
+              "rule_or_cve_id": "logic.arithmetic.order_of_operations",
+              "target_pattern": "quantity - discount * unit_price",
+              "description": "Subtraction applied to unit count rather than calculated gross subtotal."
+            }
+          ]
+        }
+      ],
+      "resource_usage": {
+        "latency_seconds": 0.0,
+        "api_calls": 5,
+        "prompt_tokens": 1200,
+        "completion_tokens": 300,
+        "total_tokens": 1500,
+        "estimated_cost_usd": 0.0081
+      }
+    },
+    {
+      "case_id": "SYNTH-ERR-001",
+      "category": "ERROR_HANDLING",
+      "ground_truth_count": 1,
+      "predicted_count": 1,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "duplicates": 0,
+      "matched_pairs": [
+        {
+          "matched": true,
+          "ground_truth_id": "DEFECT-ERR-001",
+          "predicted_finding_id": "agent-d4178540",
+          "file_matched": true,
+          "line_distance": 0,
+          "category_matched": true,
+          "semantic_score": 1.0,
+          "is_duplicate": false,
+          "explanation": "Matched DEFECT-ERR-001 at lines 6-6 (distance=0)"
+        }
+      ],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [],
+      "resource_usage": {
+        "latency_seconds": 0.0,
+        "api_calls": 6,
+        "prompt_tokens": 1550,
+        "completion_tokens": 450,
+        "total_tokens": 2000,
+        "estimated_cost_usd": 0.0114
+      }
+    },
+    {
+      "case_id": "SYNTH-ERR-002",
+      "category": "ERROR_HANDLING",
+      "ground_truth_count": 1,
+      "predicted_count": 0,
+      "true_positives": 0,
+      "false_positives": 0,
+      "false_negatives": 1,
+      "duplicates": 0,
+      "matched_pairs": [],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [
+        {
+          "defect_id": "DEFECT-ERR-002",
+          "category": "ERROR_HANDLING",
+          "affected_file": "app/services/payment_gateway.py",
+          "line_start": 5,
+          "line_end": 8,
+          "expected_issue_type": "MISSING_ERROR_HANDLING",
+          "expected_severity": "HIGH",
+          "description": "Missing timeout parameter and absence of network exception handling on outbound HTTP call.",
+          "explanation": "Omitting timeout can hang worker processes indefinitely on network failure, causing cascade outages (CWE-400).",
+          "expected_evidence": [
+            {
+              "tool_name": "bandit",
+              "rule_or_cve_id": "bandit.B113",
+              "target_pattern": "requests.post(...)",
+              "description": "Requests call without timeout parameter specified."
+            }
+          ]
+        }
+      ],
+      "resource_usage": {
+        "latency_seconds": 0.0,
+        "api_calls": 5,
+        "prompt_tokens": 1200,
+        "completion_tokens": 300,
+        "total_tokens": 1500,
+        "estimated_cost_usd": 0.0081
+      }
+    },
+    {
+      "case_id": "SYNTH-ERR-003",
+      "category": "ERROR_HANDLING",
+      "ground_truth_count": 1,
+      "predicted_count": 1,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "duplicates": 0,
+      "matched_pairs": [
+        {
+          "matched": true,
+          "ground_truth_id": "DEFECT-ERR-003",
+          "predicted_finding_id": "agent-bd0ecef9",
+          "file_matched": true,
+          "line_distance": 0,
+          "category_matched": true,
+          "semantic_score": 1.0,
+          "is_duplicate": false,
+          "explanation": "Matched DEFECT-ERR-003 at lines 3-3 (distance=0)"
+        }
+      ],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [],
+      "resource_usage": {
+        "latency_seconds": 0.0,
+        "api_calls": 6,
+        "prompt_tokens": 1550,
+        "completion_tokens": 450,
+        "total_tokens": 2000,
+        "estimated_cost_usd": 0.0114
+      }
+    },
+    {
+      "case_id": "SYNTH-ERR-004",
+      "category": "ERROR_HANDLING",
+      "ground_truth_count": 1,
+      "predicted_count": 0,
+      "true_positives": 0,
+      "false_positives": 0,
+      "false_negatives": 1,
+      "duplicates": 0,
+      "matched_pairs": [],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [
+        {
+          "defect_id": "DEFECT-ERR-004",
+          "category": "ERROR_HANDLING",
+          "affected_file": "app/config/parser.py",
+          "line_start": 5,
+          "line_end": 6,
+          "expected_issue_type": "INCORRECT_EXCEPTION_HANDLING",
+          "expected_severity": "MEDIUM",
+          "description": "Mismatched exception type: except KeyError does not catch AttributeError from object property access.",
+          "explanation": "Attribute access raises AttributeError, bypassing the KeyError handler and crashing the configuration loader.",
+          "expected_evidence": [
+            {
+              "tool_name": "ast_analyzer",
+              "rule_or_cve_id": "exception.type_mismatch",
+              "target_pattern": "except KeyError:",
+              "description": "Attribute access enclosed in dictionary-specific exception clause."
+            }
+          ]
+        }
+      ],
+      "resource_usage": {
+        "latency_seconds": 0.0,
+        "api_calls": 5,
+        "prompt_tokens": 1200,
+        "completion_tokens": 300,
+        "total_tokens": 1500,
+        "estimated_cost_usd": 0.0081
+      }
+    },
+    {
+      "case_id": "SYNTH-ERR-005",
+      "category": "ERROR_HANDLING",
+      "ground_truth_count": 1,
+      "predicted_count": 0,
+      "true_positives": 0,
+      "false_positives": 0,
+      "false_negatives": 1,
+      "duplicates": 0,
+      "matched_pairs": [],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [
+        {
+          "defect_id": "DEFECT-ERR-005",
+          "category": "ERROR_HANDLING",
+          "affected_file": "app/auth/role_resolver.py",
+          "line_start": 5,
+          "line_end": 6,
+          "expected_issue_type": "INAPPROPRIATE_FALLBACK",
+          "expected_severity": "CRITICAL",
+          "description": "Inappropriate fallback behavior: defaults to administrative privilege when permission service fails.",
+          "explanation": "Violates fail-secure principle (CWE-1188); system must fail closed (guest/unauthenticated) rather than open (admin).",
+          "expected_evidence": [
+            {
+              "tool_name": "security_policy_checker",
+              "rule_or_cve_id": "security.fail_secure_violation",
+              "target_pattern": "except Exception: return \"admin\"",
+              "description": "Fail-open privilege escalation in error recovery path."
+            }
+          ]
+        }
+      ],
+      "resource_usage": {
+        "latency_seconds": 0.0,
+        "api_calls": 5,
+        "prompt_tokens": 1200,
+        "completion_tokens": 300,
+        "total_tokens": 1500,
+        "estimated_cost_usd": 0.0081
+      }
+    },
+    {
+      "case_id": "SYNTH-SEC-001",
+      "category": "SECURITY",
+      "ground_truth_count": 1,
+      "predicted_count": 1,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "duplicates": 0,
+      "matched_pairs": [
+        {
+          "matched": true,
+          "ground_truth_id": "DEFECT-SEC-001",
+          "predicted_finding_id": "agent-257f793d",
+          "file_matched": true,
+          "line_distance": 0,
+          "category_matched": true,
+          "semantic_score": 1.0,
+          "is_duplicate": false,
+          "explanation": "Matched DEFECT-SEC-001 at lines 6-6 (distance=0)"
+        }
+      ],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [],
+      "resource_usage": {
+        "latency_seconds": 0.0,
+        "api_calls": 6,
+        "prompt_tokens": 1550,
+        "completion_tokens": 450,
+        "total_tokens": 2000,
+        "estimated_cost_usd": 0.0114
+      }
+    },
+    {
+      "case_id": "SYNTH-SEC-002",
+      "category": "SECURITY",
+      "ground_truth_count": 1,
+      "predicted_count": 1,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "duplicates": 0,
+      "matched_pairs": [
+        {
+          "matched": true,
+          "ground_truth_id": "DEFECT-SEC-002",
+          "predicted_finding_id": "agent-df0ae75b",
+          "file_matched": true,
+          "line_distance": 0,
+          "category_matched": true,
+          "semantic_score": 1.0,
+          "is_duplicate": false,
+          "explanation": "Matched DEFECT-SEC-002 at lines 5-5 (distance=0)"
+        }
+      ],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [],
+      "resource_usage": {
+        "latency_seconds": 0.0,
+        "api_calls": 6,
+        "prompt_tokens": 1550,
+        "completion_tokens": 450,
+        "total_tokens": 2000,
+        "estimated_cost_usd": 0.0114
+      }
+    },
+    {
+      "case_id": "SYNTH-SEC-003",
+      "category": "SECURITY",
+      "ground_truth_count": 1,
+      "predicted_count": 1,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "duplicates": 0,
+      "matched_pairs": [
+        {
+          "matched": true,
+          "ground_truth_id": "DEFECT-SEC-003",
+          "predicted_finding_id": "agent-2a69220c",
+          "file_matched": true,
+          "line_distance": 0,
+          "category_matched": true,
+          "semantic_score": 1.0,
+          "is_duplicate": false,
+          "explanation": "Matched DEFECT-SEC-003 at lines 7-7 (distance=0)"
+        }
+      ],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [],
+      "resource_usage": {
+        "latency_seconds": 0.0,
+        "api_calls": 6,
+        "prompt_tokens": 1550,
+        "completion_tokens": 450,
+        "total_tokens": 2000,
+        "estimated_cost_usd": 0.0114
+      }
+    },
+    {
+      "case_id": "SYNTH-SEC-004",
+      "category": "SECURITY",
+      "ground_truth_count": 1,
+      "predicted_count": 1,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "duplicates": 0,
+      "matched_pairs": [
+        {
+          "matched": true,
+          "ground_truth_id": "DEFECT-SEC-004",
+          "predicted_finding_id": "agent-0b48a420",
+          "file_matched": true,
+          "line_distance": 0,
+          "category_matched": true,
+          "semantic_score": 1.0,
+          "is_duplicate": false,
+          "explanation": "Matched DEFECT-SEC-004 at lines 5-5 (distance=0)"
+        }
+      ],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [],
+      "resource_usage": {
+        "latency_seconds": 0.0,
+        "api_calls": 6,
+        "prompt_tokens": 1550,
+        "completion_tokens": 450,
+        "total_tokens": 2000,
+        "estimated_cost_usd": 0.0114
+      }
+    },
+    {
+      "case_id": "SYNTH-SEC-005",
+      "category": "SECURITY",
+      "ground_truth_count": 1,
+      "predicted_count": 1,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "duplicates": 0,
+      "matched_pairs": [
+        {
+          "matched": true,
+          "ground_truth_id": "DEFECT-SEC-005",
+          "predicted_finding_id": "agent-75f44056",
+          "file_matched": true,
+          "line_distance": 0,
+          "category_matched": true,
+          "semantic_score": 1.0,
+          "is_duplicate": false,
+          "explanation": "Matched DEFECT-SEC-005 at lines 6-6 (distance=0)"
+        }
+      ],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [],
+      "resource_usage": {
+        "latency_seconds": 0.0,
+        "api_calls": 6,
+        "prompt_tokens": 1550,
+        "completion_tokens": 450,
+        "total_tokens": 2000,
+        "estimated_cost_usd": 0.0114
+      }
+    },
+    {
+      "case_id": "SYNTH-TEST-001",
+      "category": "TEST_ADEQUACY",
+      "ground_truth_count": 1,
+      "predicted_count": 0,
+      "true_positives": 0,
+      "false_positives": 0,
+      "false_negatives": 1,
+      "duplicates": 0,
+      "matched_pairs": [],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [
+        {
+          "defect_id": "DEFECT-TEST-001",
+          "category": "TEST_ADEQUACY",
+          "affected_file": "app/services/tier_calculator.py",
+          "line_start": 3,
+          "line_end": 4,
+          "expected_issue_type": "MISSING_TEST_COVERAGE",
+          "expected_severity": "MEDIUM",
+          "description": "Missing test for changed behavior: new VIP_ENTERPRISE tier logic has zero unit test coverage.",
+          "explanation": "Critical financial calculation path introduced without accompanying test assertions leaves logic vulnerable to undetected regressions.",
+          "expected_evidence": [
+            {
+              "tool_name": "coverage_diff_checker",
+              "rule_or_cve_id": "test.coverage.untested_branch",
+              "target_pattern": "if customer_tier == \"VIP_ENTERPRISE\":",
+              "description": "New branch missing from test suite coverage report."
+            }
+          ]
+        }
+      ],
+      "resource_usage": {
+        "latency_seconds": 0.0,
+        "api_calls": 5,
+        "prompt_tokens": 1200,
+        "completion_tokens": 300,
+        "total_tokens": 1500,
+        "estimated_cost_usd": 0.0081
+      }
+    },
+    {
+      "case_id": "SYNTH-TEST-002",
+      "category": "TEST_ADEQUACY",
+      "ground_truth_count": 1,
+      "predicted_count": 1,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "duplicates": 0,
+      "matched_pairs": [
+        {
+          "matched": true,
+          "ground_truth_id": "DEFECT-TEST-002",
+          "predicted_finding_id": "agent-9a6e4ed4",
+          "file_matched": true,
+          "line_distance": 0,
+          "category_matched": true,
+          "semantic_score": 1.0,
+          "is_duplicate": false,
+          "explanation": "Matched DEFECT-TEST-002 at lines 1-5 (distance=0)"
+        }
+      ],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [],
+      "resource_usage": {
+        "latency_seconds": 0.0,
+        "api_calls": 6,
+        "prompt_tokens": 1550,
+        "completion_tokens": 450,
+        "total_tokens": 2000,
+        "estimated_cost_usd": 0.0114
+      }
+    },
+    {
+      "case_id": "SYNTH-TEST-003",
+      "category": "TEST_ADEQUACY",
+      "ground_truth_count": 1,
+      "predicted_count": 0,
+      "true_positives": 0,
+      "false_positives": 0,
+      "false_negatives": 1,
+      "duplicates": 0,
+      "matched_pairs": [],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [
+        {
+          "defect_id": "DEFECT-TEST-003",
+          "category": "TEST_ADEQUACY",
+          "affected_file": "app/queue/backoff.py",
+          "line_start": 3,
+          "line_end": 4,
+          "expected_issue_type": "REGRESSION_RISK_UNTESTED",
+          "expected_severity": "MEDIUM",
+          "description": "Regression risk not covered: exponential delay alteration lacks test verifying maximum delay cap under large attempt counts.",
+          "explanation": "Altering retry backoff mechanics from linear to exponential creates high risk of worker starvation if max ceiling regressions occur.",
+          "expected_evidence": [
+            {
+              "tool_name": "git_blame_diff_checker",
+              "rule_or_cve_id": "test.regression.modified_core_algorithm",
+              "target_pattern": "delay = base_delay * (2 ** attempt)",
+              "description": "Modified core algorithm lacks regression test covering attempt >= 20."
+            }
+          ]
+        }
+      ],
+      "resource_usage": {
+        "latency_seconds": 0.0,
+        "api_calls": 5,
+        "prompt_tokens": 1200,
+        "completion_tokens": 300,
+        "total_tokens": 1500,
+        "estimated_cost_usd": 0.0081
+      }
+    }
+  ],
+  "execution_metadata": {
+    "category_filter": "all"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "case_id": "SYNTH-BUG-004",
+  "category": "BUG_LOGIC",
+  "title": "Invalid State Transition on Cancelled Order",
+  "description": "Fulfills order without verifying if state is already terminal (CANCELLED or REFUNDED).",
+  "affected_file": "app/orders/fulfillment.py",
+  "vulnerable_code": "def fulfill_order(order):\n    # Vulnerable: Missing state validation; transitions cancelled orders to FULFILLED\n    order.status = \"FULFILLED\"\n    order.save()\n    dispatch_shipment(order)\n",
+  "fixed_code": "def fulfill_order(order):\n    if order.status != \"PENDING\":\n        raise ValueError(f\"Cannot fulfill order with status {order.status}\")\n    order.status = \"FULFILLED\"\n    order.save()\n    dispatch_shipment(order)\n",
+  "ground_truth": [
+    {
+      "defect_id": "DEFECT-BUG-004",
+      "category": "BUG_LOGIC",
+      "affected_file": "app/orders/fulfillment.py",
+      "line_start": 3,
+      "line_end": 5,
+      "expected_issue_type": "INVALID_STATE_TRANSITION",
+      "expected_severity": "HIGH",
+      "description": "State transition to FULFILLED without validating current lifecycle state.",
+      "explanation": "Allows shipping cancelled or refunded orders because state pre-conditions are omitted.",
+      "expected_evidence": [
+        {
+          "tool_name": "state_machine_checker",
+          "rule_or_cve_id": "logic.state_machine.unguarded_transition",
+          "target_pattern": "order.status = \"FULFILLED\"",
+          "description": "Direct state assignment without precondition assertion."
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "source": "synthetic_corpus",
+    "author_or_curator": "evaluation_suite",
+    "created_at": "2026-10-03T12:00:00Z",
+    "license": "MIT",
+    "ground_truth_authority": "domain_model_invariant",
+    "annotation_uncertainty": "LOW"
+  }
+}

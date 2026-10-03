@@ -1,0 +1,38 @@
+{
+  "case_id": "SYNTH-TEST-002",
+  "category": "TEST_ADEQUACY",
+  "title": "Insufficient Boundary Coverage for Zero and Negative Account Balances",
+  "description": "Withdrawal validator tested only with positive values; zero and negative boundary conditions untested.",
+  "affected_file": "app/banking/validator.py",
+  "vulnerable_code": "def validate_withdrawal(current_balance: float, withdraw_amount: float) -> bool:\n    # Vulnerable: Edge case when withdraw_amount <= 0 or current_balance == 0 is untested\n    if withdraw_amount > current_balance:\n        return False\n    return True\n",
+  "fixed_code": "def validate_withdrawal(current_balance: float, withdraw_amount: float) -> bool:\n    if withdraw_amount <= 0:\n        return False\n    if current_balance <= 0:\n        return False\n    if withdraw_amount > current_balance:\n        return False\n    return True\n",
+  "ground_truth": [
+    {
+      "defect_id": "DEFECT-TEST-002",
+      "category": "TEST_ADEQUACY",
+      "affected_file": "app/banking/validator.py",
+      "line_start": 3,
+      "line_end": 5,
+      "expected_issue_type": "INSUFFICIENT_BOUNDARY_COVERAGE",
+      "expected_severity": "HIGH",
+      "description": "Insufficient boundary coverage: zero and negative balance edge cases lack unit test verification.",
+      "explanation": "Allows negative withdrawal amounts (e.g. withdraw -100) to pass validation because zero boundary is untested.",
+      "expected_evidence": [
+        {
+          "tool_name": "mutation_testing_analyzer",
+          "rule_or_cve_id": "test.boundary.zero_negative_untested",
+          "target_pattern": "if withdraw_amount > current_balance:",
+          "description": "Boundary condition mutation survives test suite."
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "source": "synthetic_corpus",
+    "author_or_curator": "evaluation_suite",
+    "created_at": "2026-10-03T12:00:00Z",
+    "license": "MIT",
+    "ground_truth_authority": "mutation_testing_report",
+    "annotation_uncertainty": "LOW"
+  }
+}

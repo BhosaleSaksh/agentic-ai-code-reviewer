@@ -1,0 +1,2 @@
+run_id,baseline_name,dataset_version,total_cases,true_positives,false_positives,false_negatives,precision,recall,f1_score,false_positive_rate,false_negative_rate,latency_seconds,total_tokens,cost_usd,evidence_grounded_rate,git_commit_sha
+9f81e51c-7d8d-431a-8b30-cf5c66da5ae2,agentic_critic_full,1.0.0,18,9,0,9,1.0,0.5,0.6667,0.0,0.5,0.0,31500,0.1755,1.0,0272942fd8b9267d8e798efffca9b831cd04cda1

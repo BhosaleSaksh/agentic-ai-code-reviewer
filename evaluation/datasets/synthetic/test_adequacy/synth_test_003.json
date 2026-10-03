@@ -1,0 +1,38 @@
+{
+  "case_id": "SYNTH-TEST-003",
+  "category": "TEST_ADEQUACY",
+  "title": "Untested Queue Retry Backoff Regression Risk",
+  "description": "Modifies retry backoff multiplier in task queue without regression test validating max backoff ceiling.",
+  "affected_file": "app/queue/backoff.py",
+  "vulnerable_code": "def compute_backoff(attempt: int, base_delay: float = 1.0) -> float:\n    # Vulnerable: Multiplier altered from attempt * 2 to 2 ** attempt without cap test\n    delay = base_delay * (2 ** attempt)\n    return min(delay, 300.0)\n",
+  "fixed_code": "# Implementation with regression tests verifying ceiling in tests/test_backoff.py\ndef compute_backoff(attempt: int, base_delay: float = 1.0) -> float:\n    delay = base_delay * (2 ** attempt)\n    return min(delay, 300.0)\n",
+  "ground_truth": [
+    {
+      "defect_id": "DEFECT-TEST-003",
+      "category": "TEST_ADEQUACY",
+      "affected_file": "app/queue/backoff.py",
+      "line_start": 3,
+      "line_end": 4,
+      "expected_issue_type": "REGRESSION_RISK_UNTESTED",
+      "expected_severity": "MEDIUM",
+      "description": "Regression risk not covered: exponential delay alteration lacks test verifying maximum delay cap under large attempt counts.",
+      "explanation": "Altering retry backoff mechanics from linear to exponential creates high risk of worker starvation if max ceiling regressions occur.",
+      "expected_evidence": [
+        {
+          "tool_name": "git_blame_diff_checker",
+          "rule_or_cve_id": "test.regression.modified_core_algorithm",
+          "target_pattern": "delay = base_delay * (2 ** attempt)",
+          "description": "Modified core algorithm lacks regression test covering attempt >= 20."
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "source": "synthetic_corpus",
+    "author_or_curator": "evaluation_suite",
+    "created_at": "2026-10-03T12:00:00Z",
+    "license": "MIT",
+    "ground_truth_authority": "change_impact_analysis",
+    "annotation_uncertainty": "LOW"
+  }
+}

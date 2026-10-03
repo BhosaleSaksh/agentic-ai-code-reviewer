@@ -1,0 +1,38 @@
+{
+  "case_id": "SYNTH-ERR-003",
+  "category": "ERROR_HANDLING",
+  "title": "Unclosed File Descriptor Resource Leak",
+  "description": "Opens report file directly with open() without context manager or cleanup block.",
+  "affected_file": "app/reports/exporter.py",
+  "vulnerable_code": "def export_audit_log(entries: list[dict], output_path: str) -> int:\n    # Vulnerable: File handle not closed; causes file descriptor exhaustion\n    f = open(output_path, \"w\")\n    for entry in entries:\n        f.write(str(entry) + \"\\n\")\n    return len(entries)\n",
+  "fixed_code": "def export_audit_log(entries: list[dict], output_path: str) -> int:\n    with open(output_path, \"w\", encoding=\"utf-8\") as f:\n        for entry in entries:\n            f.write(str(entry) + \"\\n\")\n    return len(entries)\n",
+  "ground_truth": [
+    {
+      "defect_id": "DEFECT-ERR-003",
+      "category": "ERROR_HANDLING",
+      "affected_file": "app/reports/exporter.py",
+      "line_start": 3,
+      "line_end": 5,
+      "expected_issue_type": "RESOURCE_LEAK",
+      "expected_severity": "MEDIUM",
+      "description": "File handle opened without context manager or try/finally cleanup leads to resource descriptor leak.",
+      "explanation": "If write fails or under high concurrency, unclosed file descriptors accumulate until process OS limits are exhausted (CWE-775).",
+      "expected_evidence": [
+        {
+          "tool_name": "resource_analyzer",
+          "rule_or_cve_id": "resource.unclosed_handle",
+          "target_pattern": "f = open(output_path, \"w\")",
+          "description": "File descriptor opened without context manager block."
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "source": "synthetic_corpus",
+    "author_or_curator": "evaluation_suite",
+    "created_at": "2026-10-03T12:00:00Z",
+    "license": "MIT",
+    "ground_truth_authority": "cwe_and_python_best_practices",
+    "annotation_uncertainty": "LOW"
+  }
+}

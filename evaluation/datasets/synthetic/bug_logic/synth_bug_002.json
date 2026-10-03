@@ -1,0 +1,38 @@
+{
+  "case_id": "SYNTH-BUG-002",
+  "category": "BUG_LOGIC",
+  "title": "Unchecked NoneType Attribute Dereference",
+  "description": "Accesses profile attribute on user object returned by lookup without checking if user is None.",
+  "affected_file": "app/services/profile_service.py",
+  "vulnerable_code": "def get_user_display_name(db, user_id: str) -> str:\n    user = db.get_user(user_id)\n    # Vulnerable: user may be None if not found, raising AttributeError\n    return user.profile.display_name\n",
+  "fixed_code": "def get_user_display_name(db, user_id: str) -> str:\n    user = db.get_user(user_id)\n    if user is None or user.profile is None:\n        return \"Anonymous\"\n    return user.profile.display_name\n",
+  "ground_truth": [
+    {
+      "defect_id": "DEFECT-BUG-002",
+      "category": "BUG_LOGIC",
+      "affected_file": "app/services/profile_service.py",
+      "line_start": 4,
+      "line_end": 4,
+      "expected_issue_type": "NULL_DEREFERENCE",
+      "expected_severity": "HIGH",
+      "description": "Unchecked NoneType attribute access causes unhandled AttributeError when user is not found.",
+      "explanation": "get_user() returns None on missing entity; dereferencing .profile directly causes runtime crash.",
+      "expected_evidence": [
+        {
+          "tool_name": "dataflow_analyzer",
+          "rule_or_cve_id": "logic.null_safety",
+          "target_pattern": "user.profile.display_name",
+          "description": "Nullable return value dereferenced without guard check."
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "source": "synthetic_corpus",
+    "author_or_curator": "evaluation_suite",
+    "created_at": "2026-10-03T12:00:00Z",
+    "license": "MIT",
+    "ground_truth_authority": "mypy_null_safety_check",
+    "annotation_uncertainty": "LOW"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "case_id": "SYNTH-SEC-002",
+  "category": "SECURITY",
+  "title": "Hardcoded JWT Secret Token in Authentication Module",
+  "description": "Commits a static hardcoded HMAC signing secret into the JWT creation helper.",
+  "affected_file": "app/auth/jwt_helper.py",
+  "vulnerable_code": "import jwt\nfrom datetime import datetime, timedelta, UTC\n\n# Vulnerable: Insecure hardcoded cryptographic key\nsecret_key = \"super_secret_jwt_signing_key_12345\"\n\ndef create_access_token(user_id: str) -> str:\n    payload = {\n        \"sub\": user_id,\n        \"exp\": datetime.now(UTC) + timedelta(hours=1),\n    }\n    return jwt.encode(payload, secret_key, algorithm=\"HS256\")\n",
+  "fixed_code": "import os\nimport jwt\nfrom datetime import datetime, timedelta, UTC\n\nsecret_key = os.environ[\"JWT_SECRET_KEY\"]\n\ndef create_access_token(user_id: str) -> str:\n    payload = {\n        \"sub\": user_id,\n        \"exp\": datetime.now(UTC) + timedelta(hours=1),\n    }\n    return jwt.encode(payload, secret_key, algorithm=\"HS256\")\n",
+  "ground_truth": [
+    {
+      "defect_id": "DEFECT-SEC-002",
+      "category": "SECURITY",
+      "affected_file": "app/auth/jwt_helper.py",
+      "line_start": 5,
+      "line_end": 5,
+      "expected_issue_type": "HARDCODED_CREDENTIAL",
+      "expected_severity": "HIGH",
+      "description": "Hardcoded symmetric JWT secret key stored in plaintext source code.",
+      "explanation": "Embedding credentials directly into source control enables token forgery and unauthorized authentication (CWE-798, Bandit B105).",
+      "expected_evidence": [
+        {
+          "tool_name": "bandit",
+          "rule_or_cve_id": "bandit.B105",
+          "target_pattern": "secret_key = \"super_secret_jwt_signing_key_12345\"",
+          "description": "Bandit B105 flag for hardcoded password/secret string."
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "source": "synthetic_corpus",
+    "author_or_curator": "evaluation_suite",
+    "created_at": "2026-10-03T12:00:00Z",
+    "license": "MIT",
+    "ground_truth_authority": "bandit_ruleset_and_cwe",
+    "annotation_uncertainty": "LOW"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "case_id": "SYNTH-BUG-001",
+  "category": "BUG_LOGIC",
+  "title": "Off-by-One Boundary Condition in List Traversal",
+  "description": "Loop iterates using range(len(items) + 1), causing IndexError on the final iteration.",
+  "affected_file": "app/processors/batch_queue.py",
+  "vulnerable_code": "def process_batch(items: list[str]) -> list[str]:\n    results = []\n    # Vulnerable: len(items) + 1 causes out-of-bounds IndexError\n    for i in range(len(items) + 1):\n        results.append(items[i].upper())\n    return results\n",
+  "fixed_code": "def process_batch(items: list[str]) -> list[str]:\n    results = []\n    for i in range(len(items)):\n        results.append(items[i].upper())\n    return results\n",
+  "ground_truth": [
+    {
+      "defect_id": "DEFECT-BUG-001",
+      "category": "BUG_LOGIC",
+      "affected_file": "app/processors/batch_queue.py",
+      "line_start": 4,
+      "line_end": 5,
+      "expected_issue_type": "BOUNDARY_ERROR",
+      "expected_severity": "HIGH",
+      "description": "IndexError due to off-by-one boundary condition in range loop traversal.",
+      "explanation": "Traversing range(len(items) + 1) attempts to index items[len(items)], which raises an uncaught IndexError.",
+      "expected_evidence": [
+        {
+          "tool_name": "ast_analyzer",
+          "rule_or_cve_id": "logic.boundary.off_by_one",
+          "target_pattern": "range(len(items) + 1)",
+          "description": "Index range exceeds valid collection bounds."
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "source": "synthetic_corpus",
+    "author_or_curator": "evaluation_suite",
+    "created_at": "2026-10-03T12:00:00Z",
+    "license": "MIT",
+    "ground_truth_authority": "static_typing_and_unit_test",
+    "annotation_uncertainty": "LOW"
+  }
+}

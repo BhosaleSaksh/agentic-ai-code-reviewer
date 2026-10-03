@@ -1,0 +1,38 @@
+{
+  "case_id": "SYNTH-ERR-005",
+  "category": "ERROR_HANDLING",
+  "title": "Inappropriate Fallback State Grants Admin Privilege on Auth Error",
+  "description": "Defaults user role to 'admin' when permissions lookup service times out or errors.",
+  "affected_file": "app/auth/role_resolver.py",
+  "vulnerable_code": "def resolve_user_role(role_client, user_id: str) -> str:\n    try:\n        return role_client.lookup_role(user_id)\n    # Vulnerable: Inappropriate fallback grants maximum privilege on service failure\n    except Exception:\n        return \"admin\"\n",
+  "fixed_code": "def resolve_user_role(role_client, user_id: str) -> str:\n    try:\n        return role_client.lookup_role(user_id)\n    except Exception:\n        return \"guest\"\n",
+  "ground_truth": [
+    {
+      "defect_id": "DEFECT-ERR-005",
+      "category": "ERROR_HANDLING",
+      "affected_file": "app/auth/role_resolver.py",
+      "line_start": 5,
+      "line_end": 6,
+      "expected_issue_type": "INAPPROPRIATE_FALLBACK",
+      "expected_severity": "CRITICAL",
+      "description": "Inappropriate fallback behavior: defaults to administrative privilege when permission service fails.",
+      "explanation": "Violates fail-secure principle (CWE-1188); system must fail closed (guest/unauthenticated) rather than open (admin).",
+      "expected_evidence": [
+        {
+          "tool_name": "security_policy_checker",
+          "rule_or_cve_id": "security.fail_secure_violation",
+          "target_pattern": "except Exception: return \"admin\"",
+          "description": "Fail-open privilege escalation in error recovery path."
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "source": "synthetic_corpus",
+    "author_or_curator": "evaluation_suite",
+    "created_at": "2026-10-03T12:00:00Z",
+    "license": "MIT",
+    "ground_truth_authority": "owasp_fail_secure_design_principle",
+    "annotation_uncertainty": "LOW"
+  }
+}

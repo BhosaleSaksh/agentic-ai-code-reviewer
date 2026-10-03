@@ -1,0 +1,38 @@
+{
+  "case_id": "SYNTH-SEC-004",
+  "category": "SECURITY",
+  "title": "Use of Broken MD5 Hash for Password Storage",
+  "description": "Uses hashlib.md5 to hash passwords before storing in the database.",
+  "affected_file": "app/auth/hasher.py",
+  "vulnerable_code": "import hashlib\n\ndef hash_user_password(password: str) -> str:\n    # Vulnerable: Insecure MD5 hashing without salt\n    digest = hashlib.md5(password.encode()).hexdigest()\n    return digest\n",
+  "fixed_code": "import argon2\n\nph = argon2.PasswordHasher()\n\ndef hash_user_password(password: str) -> str:\n    return ph.hash(password)\n",
+  "ground_truth": [
+    {
+      "defect_id": "DEFECT-SEC-004",
+      "category": "SECURITY",
+      "affected_file": "app/auth/hasher.py",
+      "line_start": 5,
+      "line_end": 5,
+      "expected_issue_type": "WEAK_CRYPTOGRAPHIC_HASH",
+      "expected_severity": "HIGH",
+      "description": "MD5 hash algorithm is cryptographically broken and vulnerable to collision and rainbow table attacks.",
+      "explanation": "Passwords hashed with MD5 can be cracked in seconds; secure salted algorithms like Argon2 or bcrypt must be used (CWE-328, Bandit B303).",
+      "expected_evidence": [
+        {
+          "tool_name": "bandit",
+          "rule_or_cve_id": "bandit.B303",
+          "target_pattern": "hashlib.md5(password.encode()).hexdigest()",
+          "description": "Bandit B303 warning for insecure MD5 hash function."
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "source": "synthetic_corpus",
+    "author_or_curator": "evaluation_suite",
+    "created_at": "2026-10-03T12:00:00Z",
+    "license": "MIT",
+    "ground_truth_authority": "bandit_and_owasp",
+    "annotation_uncertainty": "LOW"
+  }
+}

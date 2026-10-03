@@ -1,0 +1,59 @@
+{
+  "manifest_version": "1.0.0",
+  "dataset_name": "agentic_reviewer_benchmark_corpus",
+  "created_at": "2026-10-03T12:00:00Z",
+  "git_commit_sha": "0272942fd8b9267d8e798efffca9b831cd04cda1",
+  "license": "MIT",
+  "description": "Authoritative evaluation benchmark suite assessing defect detection accuracy, evidence grounding, and false positive rejection across reviewer architectures.",
+  "categories": [
+    "SECURITY",
+    "BUG_LOGIC",
+    "ERROR_HANDLING",
+    "TEST_ADEQUACY"
+  ],
+  "synthetic_corpus": {
+    "total_cases": 18,
+    "distribution": {
+      "SECURITY": 5,
+      "BUG_LOGIC": 5,
+      "ERROR_HANDLING": 5,
+      "TEST_ADEQUACY": 3
+    },
+    "case_ids": [
+      "SYNTH-SEC-001",
+      "SYNTH-SEC-002",
+      "SYNTH-SEC-003",
+      "SYNTH-SEC-004",
+      "SYNTH-SEC-005",
+      "SYNTH-BUG-001",
+      "SYNTH-BUG-002",
+      "SYNTH-BUG-003",
+      "SYNTH-BUG-004",
+      "SYNTH-BUG-005",
+      "SYNTH-ERR-001",
+      "SYNTH-ERR-002",
+      "SYNTH-ERR-003",
+      "SYNTH-ERR-004",
+      "SYNTH-ERR-005",
+      "SYNTH-TEST-001",
+      "SYNTH-TEST-002",
+      "SYNTH-TEST-003"
+    ]
+  },
+  "real_world_corpus": {
+    "manifest_path": "evaluation/datasets/manifests/real_world_manifest.json",
+    "total_cases": 5,
+    "case_ids": [
+      "REAL-SEC-001",
+      "REAL-SEC-002",
+      "REAL-BUG-001",
+      "REAL-ERR-001",
+      "REAL-TEST-001"
+    ]
+  },
+  "evaluation_protocols": {
+    "leakage_prevention": "Model prompts receive strictly the code under review and case title/description. Ground truth defect types, explanations, and line ranges are stored out-of-band and never exposed in prompts.",
+    "matching_policy": "Deterministic bipartite matching with 5-line proximity tolerance and category compatibility verification.",
+    "ground_truth_authority": "Dual-checked: Static analysis verification rules (Bandit/Semgrep) + unit test assertions + CVE advisory records."
+  }
+}

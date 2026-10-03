@@ -1,0 +1,38 @@
+{
+  "case_id": "SYNTH-SEC-005",
+  "category": "SECURITY",
+  "title": "Command Injection in Network Diagnostic Utility",
+  "description": "Executes shell command with unescaped user input and shell=True.",
+  "affected_file": "app/utils/diagnostics.py",
+  "vulnerable_code": "import subprocess\n\ndef ping_host(host_ip: str) -> str:\n    # Vulnerable: shell=True with user concatenation allows command injection\n    cmd = f\"ping -c 1 {host_ip}\"\n    output = subprocess.run(cmd, shell=True, capture_output=True, text=True)\n    return output.stdout\n",
+  "fixed_code": "import subprocess\nimport shlex\n\ndef ping_host(host_ip: str) -> str:\n    cmd = [\"ping\", \"-c\", \"1\", host_ip]\n    output = subprocess.run(cmd, shell=False, capture_output=True, text=True)\n    return output.stdout\n",
+  "ground_truth": [
+    {
+      "defect_id": "DEFECT-SEC-005",
+      "category": "SECURITY",
+      "affected_file": "app/utils/diagnostics.py",
+      "line_start": 6,
+      "line_end": 6,
+      "expected_issue_type": "COMMAND_INJECTION",
+      "expected_severity": "HIGH",
+      "description": "Shell command injection via subprocess.run with shell=True and user-controlled command string.",
+      "explanation": "Passing shell=True with unescaped arguments allows attackers to chain shell metacharacters (; & |) to run arbitrary system commands (CWE-78, Bandit B602).",
+      "expected_evidence": [
+        {
+          "tool_name": "bandit",
+          "rule_or_cve_id": "bandit.B602",
+          "target_pattern": "subprocess.run(cmd, shell=True",
+          "description": "Bandit B602 warning for subprocess call with shell=True."
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "source": "synthetic_corpus",
+    "author_or_curator": "evaluation_suite",
+    "created_at": "2026-10-03T12:00:00Z",
+    "license": "MIT",
+    "ground_truth_authority": "bandit_and_cwe",
+    "annotation_uncertainty": "LOW"
+  }
+}

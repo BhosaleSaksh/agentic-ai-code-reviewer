@@ -1,0 +1,38 @@
+{
+  "case_id": "SYNTH-SEC-001",
+  "category": "SECURITY",
+  "title": "SQL Injection in User Search Query",
+  "description": "Introduces search endpoint concatenating unsanitized query parameters directly into SQL statement.",
+  "affected_file": "app/services/user_search.py",
+  "vulnerable_code": "import sqlite3\n\ndef search_users(db_conn, username_filter: str):\n    cursor = db_conn.cursor()\n    # Vulnerable: Unescaped f-string interpolation\n    query = f\"SELECT id, username, email FROM users WHERE username = '{username_filter}'\"\n    cursor.execute(query)\n    return cursor.fetchall()\n",
+  "fixed_code": "import sqlite3\n\ndef search_users(db_conn, username_filter: str):\n    cursor = db_conn.cursor()\n    query = \"SELECT id, username, email FROM users WHERE username = ?\"\n    cursor.execute(query, (username_filter,))\n    return cursor.fetchall()\n",
+  "ground_truth": [
+    {
+      "defect_id": "DEFECT-SEC-001",
+      "category": "SECURITY",
+      "affected_file": "app/services/user_search.py",
+      "line_start": 6,
+      "line_end": 7,
+      "expected_issue_type": "SQL_INJECTION",
+      "expected_severity": "HIGH",
+      "description": "SQL Injection vulnerability via direct f-string string formatting in database cursor execution.",
+      "explanation": "Constructing SQL queries by concatenating raw user parameters enables arbitrary SQL command execution (CWE-89, Bandit B608).",
+      "expected_evidence": [
+        {
+          "tool_name": "bandit",
+          "rule_or_cve_id": "bandit.B608",
+          "target_pattern": "cursor.execute(query)",
+          "description": "Bandit B608 flag for SQL query formatted using unparameterized string formatting."
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "source": "synthetic_corpus",
+    "author_or_curator": "evaluation_suite",
+    "created_at": "2026-10-03T12:00:00Z",
+    "license": "MIT",
+    "ground_truth_authority": "bandit_ruleset_and_cwe",
+    "annotation_uncertainty": "LOW"
+  }
+}
