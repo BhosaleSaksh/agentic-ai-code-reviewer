@@ -486,7 +486,7 @@ async def test_review_publication_coordinator_integration(
         repository_full_name="owner/repo",
         pr_number=5,
         commit_sha=commit,
-        parsed_diff=sample_diff,
+        parsed_diff=sample_diff.model_dump(),
     )
     state["verified_findings"] = [f1.model_dump(), f2.model_dump()]
 

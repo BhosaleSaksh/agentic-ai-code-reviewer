@@ -48,6 +48,11 @@ class LLMResponse(BaseModel):
     total_tokens: int = Field(default=0, ge=0)
     latency_seconds: float = Field(default=0.0, ge=0.0)
     model_name: str = Field(default="unknown")
+    estimated_cost_usd: float | None = Field(
+        default=None,
+        ge=0.0,
+        description="Estimated USD cost if calculable from pricing rates",
+    )
 
 
 class BaseLLMProvider(ABC):

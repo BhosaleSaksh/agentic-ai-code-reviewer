@@ -13,7 +13,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 
 @pytest.fixture
-def mock_session() -> AsyncSession:
+def mock_session() -> AsyncMock:
     session = AsyncMock(spec=AsyncSession)
     mock_result = MagicMock()
     mock_result.scalar_one_or_none.return_value = None
@@ -23,7 +23,7 @@ def mock_session() -> AsyncSession:
 
 
 @pytest.mark.asyncio
-async def test_record_feedback_direct(mock_session: AsyncSession) -> None:
+async def test_record_feedback_direct(mock_session: AsyncMock) -> None:
     service = FeedbackService()
     finding_id = uuid.uuid4()
     run_id = uuid.uuid4()
@@ -57,7 +57,7 @@ async def test_record_feedback_direct(mock_session: AsyncSession) -> None:
 
 @pytest.mark.asyncio
 async def test_record_feedback_correlated_via_comment_id(
-    mock_session: AsyncSession,
+    mock_session: AsyncMock,
 ) -> None:
     service = FeedbackService()
     finding_id = uuid.uuid4()
@@ -91,7 +91,7 @@ async def test_record_feedback_correlated_via_comment_id(
 
 
 @pytest.mark.asyncio
-async def test_list_feedback_filtering(mock_session: AsyncSession) -> None:
+async def test_list_feedback_filtering(mock_session: AsyncMock) -> None:
     service = FeedbackService()
     sample_item = MagicMock(spec=ReviewFeedback)
     sample_item.id = uuid.uuid4()
@@ -116,7 +116,7 @@ async def test_list_feedback_filtering(mock_session: AsyncSession) -> None:
 
 @pytest.mark.asyncio
 async def test_record_webhook_feedback_comment_events(
-    mock_session: AsyncSession,
+    mock_session: AsyncMock,
 ) -> None:
     service = FeedbackService()
 
@@ -210,6 +210,7 @@ async def test_record_webhook_feedback_reactions(mock_session: AsyncSession) -> 
     )
     assert record_pos is not None
     assert record_pos.feedback_type == FeedbackType.REACTION_POSITIVE
+    assert record_pos.extra_metadata is not None
     assert record_pos.extra_metadata["reaction_content"] == "+1"
 
     # Thumbs down reaction

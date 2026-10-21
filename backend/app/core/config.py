@@ -85,6 +85,8 @@ class Settings(BaseSettings):
     GITHUB_API_BASE_URL: str = "https://api.github.com"
     GITHUB_API_TIMEOUT_SECONDS: float = 30.0
     GITHUB_MAX_DIFF_BYTES: int = 5 * 1024 * 1024  # 5 MB safe boundary
+    GITHUB_PUBLISH_REVIEWS: bool = False
+    REVIEW_GRAPH_ENABLED: bool = True
 
     # --- Local Repository Workspace Settings (Phase 1.9) ---
     REVIEW_WORKSPACE_ROOT: Path = Field(
@@ -96,16 +98,23 @@ class Settings(BaseSettings):
     WORKSPACE_RETENTION_ON_FAILURE: bool = False
     WORKSPACE_ENABLED: bool = True
 
-    # --- LLM Provider Settings (Placeholders for Future Checkpoints) ---
+    # --- LLM Provider Settings (Phase 8 Real Provider Integration) ---
     LLM_PROVIDER: str = "openai"
     LLM_TEMPERATURE: float = 0.1
     LLM_MAX_RETRIES: int = 3
+    LLM_REQUEST_TIMEOUT_SECONDS: float = 60.0
+    LLM_MAX_OUTPUT_TOKENS: int | None = None
     OPENAI_API_KEY: SecretStr | None = None
     OPENAI_MODEL: str = "gpt-4o"
     ANTHROPIC_API_KEY: SecretStr | None = None
     ANTHROPIC_MODEL: str = "claude-3-5-sonnet-20241022"
     GOOGLE_API_KEY: SecretStr | None = None
     GOOGLE_MODEL: str = "gemini-1.5-pro"
+
+    # Ollama Configuration (Local, free LLM provider - Phase 9)
+    OLLAMA_BASE_URL: str = "http://localhost:11434"
+    OLLAMA_MODEL: str = "qwen3:4b-instruct"
+    OLLAMA_REQUEST_TIMEOUT_SECONDS: float = 120.0
 
     # --- Static Analysis Sandbox Limits (Phase 2.1) ---
     DOCKER_SANDBOX_ENABLED: bool = True
@@ -232,6 +241,57 @@ class Settings(BaseSettings):
     def is_github_app_configured(self) -> bool:
         """Check whether minimum credentials for GitHub App auth are present."""
         return bool(self.GITHUB_APP_ID and self.effective_github_private_key)
+
+    @property
+    def is_openai_configured(self) -> bool:
+        """Check whether OpenAI API key is configured with a non-empty value."""
+        return bool(
+            self.OPENAI_API_KEY and self.OPENAI_API_KEY.get_secret_value().strip()
+        )
+
+    @property
+    def is_ollama_configured(self) -> bool:
+        """Check whether Ollama base URL is configured with a non-empty value."""
+        return bool(self.OLLAMA_BASE_URL and self.OLLAMA_BASE_URL.strip())
+
+    @property
+    def llm_diagnostics(self) -> dict[str, object]:
+        """Return safe, non-sensitive diagnostic metadata for the configured LLM provider."""
+        provider = (self.LLM_PROVIDER or "mock").strip().lower()
+        base_url: str | None = None
+        if provider == "ollama":
+            configured_model = self.OLLAMA_MODEL
+            key_configured = self.is_ollama_configured
+            base_url = self.OLLAMA_BASE_URL
+        elif provider == "openai":
+            configured_model = self.OPENAI_MODEL
+            key_configured = self.is_openai_configured
+        elif provider == "anthropic":
+            configured_model = self.ANTHROPIC_MODEL
+            key_configured = bool(
+                self.ANTHROPIC_API_KEY
+                and self.ANTHROPIC_API_KEY.get_secret_value().strip()
+            )
+        elif provider == "google":
+            configured_model = self.GOOGLE_MODEL
+            key_configured = bool(
+                self.GOOGLE_API_KEY and self.GOOGLE_API_KEY.get_secret_value().strip()
+            )
+        else:
+            configured_model = "mock-model-v1"
+            key_configured = True
+
+        diag: dict[str, object] = {
+            "provider": provider,
+            "model": configured_model,
+            "api_key_configured": key_configured,
+            "timeout_seconds": self.LLM_REQUEST_TIMEOUT_SECONDS,
+            "max_retries": self.LLM_MAX_RETRIES,
+            "temperature": self.LLM_TEMPERATURE,
+        }
+        if base_url:
+            diag["base_url"] = base_url
+        return diag
 
 
 @lru_cache

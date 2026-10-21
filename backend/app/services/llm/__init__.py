@@ -2,6 +2,8 @@
 
 from app.services.llm.base import BaseLLMProvider, LLMRequest, LLMResponse
 from app.services.llm.mock_provider import MockLLMProvider
+from app.services.llm.ollama_provider import OllamaLLMProvider
+from app.services.llm.openai_provider import OpenAILLMProvider, calculate_openai_cost
 from app.services.llm.service import LLMService
 
 __all__ = [
@@ -10,4 +12,7 @@ __all__ = [
     "LLMResponse",
     "LLMService",
     "MockLLMProvider",
+    "OllamaLLMProvider",
+    "OpenAILLMProvider",
+    "calculate_openai_cost",
 ]

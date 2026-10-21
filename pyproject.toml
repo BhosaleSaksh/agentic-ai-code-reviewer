@@ -71,6 +71,8 @@ ai = [
     "langchain-core>=0.1.30",
     # OpenAI provider integration for specialist and critic agents
     "langchain-openai>=0.1.0",
+    # OpenAI official SDK for direct provider access and structured parsing
+    "openai>=1.20.0",
     # Anthropic provider integration for alternative reasoning and evaluation
     "langchain-anthropic>=0.1.0",
     # Google Gemini provider integration for multi-vendor resilience

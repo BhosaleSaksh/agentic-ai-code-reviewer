@@ -18,9 +18,12 @@ from app.orchestration.errors import (
     InvalidPlannerOutputError,
     LLMProviderError,
     LLMTimeoutError,
+    WorkflowError,
 )
 from app.services.llm.base import BaseLLMProvider, LLMRequest, LLMResponse
 from app.services.llm.mock_provider import MockLLMProvider
+from app.services.llm.ollama_provider import OllamaLLMProvider
+from app.services.llm.openai_provider import OpenAILLMProvider
 
 logger = logging.getLogger(__name__)
 
@@ -38,10 +41,20 @@ class LLMService:
         self,
         provider: BaseLLMProvider | None = None,
         settings: Settings | None = None,
-        default_timeout_seconds: float = 60.0,
+        default_timeout_seconds: float | None = None,
     ) -> None:
         self.settings = settings or get_settings()
-        self.default_timeout_seconds = default_timeout_seconds
+        provider_name = (self.settings.LLM_PROVIDER or "mock").strip().lower()
+        timeout_attr = (
+            "OLLAMA_REQUEST_TIMEOUT_SECONDS"
+            if provider_name == "ollama"
+            else "LLM_REQUEST_TIMEOUT_SECONDS"
+        )
+        self.default_timeout_seconds = (
+            default_timeout_seconds
+            if default_timeout_seconds is not None
+            else getattr(self.settings, timeout_attr, 180.0)
+        )
 
         if provider is not None:
             self._provider = provider
@@ -52,13 +65,32 @@ class LLMService:
         """Resolve the appropriate provider implementation based on configuration."""
         provider_name = (self.settings.LLM_PROVIDER or "mock").strip().lower()
 
+        if provider_name == "ollama":
+            logger.info(
+                "Initializing local OllamaLLMProvider (model=%s, base_url=%s)",
+                getattr(self.settings, "OLLAMA_MODEL", "qwen3:4b-instruct"),
+                getattr(self.settings, "OLLAMA_BASE_URL", "http://localhost:11434"),
+            )
+            return OllamaLLMProvider(settings=self.settings)
+
+        if provider_name == "openai":
+            if self.settings.is_openai_configured:
+                logger.info(
+                    "Initializing production OpenAILLMProvider (model=%s)",
+                    self.settings.OPENAI_MODEL,
+                )
+                return OpenAILLMProvider(settings=self.settings)
+            logger.info(
+                "OpenAI API key not configured; falling back safely to MockLLMProvider for offline/deterministic execution"
+            )
+            return MockLLMProvider()
+
         if provider_name == "mock":
             return MockLLMProvider()
 
-        # In Phase 3.1, real external providers are not connected without credentials.
-        # Fall back safely to MockLLMProvider if no valid external provider is configured.
+        # Fall back safely to MockLLMProvider if an external provider lacks active credentials.
         logger.info(
-            "Configured LLM provider '%s' not yet active; utilizing MockLLMProvider",
+            "Configured LLM provider '%s' not active or credentials absent; utilizing MockLLMProvider",
             provider_name,
         )
         return MockLLMProvider()
@@ -106,7 +138,7 @@ class LLMService:
                 timeout_seconds=effective_timeout,
                 provider=self._provider.__class__.__name__,
             ) from exc
-        except (LLMTimeoutError, LLMProviderError, InvalidPlannerOutputError):
+        except (LLMTimeoutError, LLMProviderError, WorkflowError):
             raise
         except Exception as exc:
             duration = time.monotonic() - start_time
@@ -169,7 +201,7 @@ class LLMService:
                 timeout_seconds=effective_timeout,
                 provider=self._provider.__class__.__name__,
             ) from exc
-        except (LLMTimeoutError, LLMProviderError, InvalidPlannerOutputError):
+        except (LLMTimeoutError, LLMProviderError, WorkflowError):
             raise
         except ValidationError as exc:
             raise InvalidPlannerOutputError(

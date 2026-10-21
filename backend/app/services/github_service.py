@@ -5,6 +5,7 @@ diff parsing to extract strongly typed, verified PullRequestContext models.
 """
 
 import logging
+from typing import Any
 
 import httpx
 
@@ -41,10 +42,42 @@ class GitHubService:
             else GitHubAppAuthenticator(http_client=http_client)
         )
         self._http_client = http_client
+        self._client: GitHubClient | None = None
+
+    @property
+    def client(self) -> Any:
+        """Optional injected or cached GitHubClient."""
+        return self._client
+
+    @client.setter
+    def client(self, value: Any) -> None:
+        self._client = value
 
     def is_configured(self) -> bool:
         """Return True if GitHub App authentication is configured."""
         return self.authenticator.is_configured
+
+    async def create_client(self, installation_id: int | None = None) -> GitHubClient:
+        """Create an authenticated GitHubClient using an installation token."""
+        settings = get_settings()
+        resolved_installation_id = (
+            installation_id
+            if installation_id is not None
+            else settings.GITHUB_APP_INSTALLATION_ID
+        )
+        if resolved_installation_id is None or resolved_installation_id <= 0:
+            raise GitHubConfigurationError(
+                "GitHub App installation ID is required but was not provided or configured."
+            )
+        token_model = await self.authenticator.get_installation_token(
+            resolved_installation_id
+        )
+        return GitHubClient(
+            token=token_model.token,
+            base_url=settings.GITHUB_API_BASE_URL,
+            timeout=settings.GITHUB_API_TIMEOUT_SECONDS,
+            http_client=self._http_client,
+        )
 
     async def get_pull_request_context(
         self,

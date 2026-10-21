@@ -8,6 +8,7 @@ tamper-evident commit SHA tracking, and safe isolation from secrets.
 from __future__ import annotations
 
 import re
+from collections.abc import Sequence
 from datetime import UTC, datetime
 from typing import Annotated, Any, TypedDict
 
@@ -210,7 +211,7 @@ def create_initial_review_state(
     workspace_metadata: dict[str, Any] | None = None,
     parsed_diff: dict[str, Any] | None = None,
     changed_files: list[str] | None = None,
-    evidence_items: list[EvidenceModel | dict[str, Any]] | None = None,
+    evidence_items: Sequence[EvidenceModel | dict[str, Any]] | None = None,
 ) -> ReviewState:
     """Create a validated, sanitized initial ReviewState for a review run.
 
