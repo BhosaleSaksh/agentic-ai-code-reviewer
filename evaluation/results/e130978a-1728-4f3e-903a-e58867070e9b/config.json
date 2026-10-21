@@ -1,0 +1,15 @@
+{
+  "run_id": "e130978a-1728-4f3e-903a-e58867070e9b",
+  "baseline_name": "static_analysis_only",
+  "execution_mode": "real_llm",
+  "provider": "bandit_semgrep_engine",
+  "model": "ast_and_regex_rulesets",
+  "dataset_version": "1.0.0",
+  "git_commit_sha": "af0f0427252487b6cd0b76bba14a0d611fd67024",
+  "timestamp": "2026-10-21T11:27:53.511600+00:00",
+  "total_cases": 23,
+  "execution_metadata": {
+    "category_filter": "all",
+    "mode": "real"
+  }
+}

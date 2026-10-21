@@ -1,0 +1,2 @@
+run_id,baseline_name,execution_mode,provider,model,dataset_version,total_cases,true_positives,false_positives,false_negatives,precision,recall,f1_score,false_positive_rate,false_negative_rate,latency_seconds,total_tokens,cost_usd,evidence_grounded_rate,git_commit_sha
+e130978a-1728-4f3e-903a-e58867070e9b,static_analysis_only,real_llm,bandit_semgrep_engine,ast_and_regex_rulesets,1.0.0,23,5,0,18,1.0,0.2174,0.3572,0.0,0.7826,0.0011,0,0.0,1.0,af0f0427252487b6cd0b76bba14a0d611fd67024

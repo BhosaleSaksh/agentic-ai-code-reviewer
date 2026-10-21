@@ -1,0 +1,6 @@
+category,cases,tp,fp,fn,precision,recall,f1,fpr,fnr,ddr
+OVERALL,23,22,0,1,1.0,0.9565,0.9778,0.0,0.0435,0.9565
+BUG_LOGIC,-,6,0,0,1.0,1.0,1.0,0.0,0.0,1.0
+ERROR_HANDLING,-,6,0,0,1.0,1.0,1.0,0.0,0.0,1.0
+SECURITY,-,7,0,0,1.0,1.0,1.0,0.0,0.0,1.0
+TEST_ADEQUACY,-,3,0,1,1.0,0.75,0.8571,0.0,0.25,0.75

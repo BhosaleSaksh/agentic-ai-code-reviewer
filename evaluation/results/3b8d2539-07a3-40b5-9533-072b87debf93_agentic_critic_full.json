@@ -1,0 +1,904 @@
+{
+  "run_id": "3b8d2539-07a3-40b5-9533-072b87debf93",
+  "baseline_name": "agentic_critic_full",
+  "execution_mode": "real_llm",
+  "provider": "ollama",
+  "model": "qwen3:4b-instruct",
+  "dataset_version": "1.0.0",
+  "timestamp": "2026-10-21T11:51:33.947175+00:00",
+  "git_commit_sha": "af0f0427252487b6cd0b76bba14a0d611fd67024",
+  "total_cases": 23,
+  "overall_metrics": {
+    "true_positives": 22,
+    "false_positives": 0,
+    "true_negatives": 0,
+    "false_negatives": 1,
+    "precision": 1.0,
+    "recall": 0.9565,
+    "f1_score": 0.9778,
+    "false_positive_rate": 0.0,
+    "false_negative_rate": 0.0435,
+    "defect_detection_rate": 0.9565,
+    "precision_ci": [
+      0.8513,
+      1.0
+    ],
+    "recall_ci": [
+      0.7901,
+      0.9923
+    ]
+  },
+  "category_metrics": {
+    "BUG_LOGIC": {
+      "true_positives": 6,
+      "false_positives": 0,
+      "true_negatives": 0,
+      "false_negatives": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "false_positive_rate": 0.0,
+      "false_negative_rate": 0.0,
+      "defect_detection_rate": 1.0,
+      "precision_ci": [
+        0.6097,
+        1.0
+      ],
+      "recall_ci": [
+        0.6097,
+        1.0
+      ]
+    },
+    "ERROR_HANDLING": {
+      "true_positives": 6,
+      "false_positives": 0,
+      "true_negatives": 0,
+      "false_negatives": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "false_positive_rate": 0.0,
+      "false_negative_rate": 0.0,
+      "defect_detection_rate": 1.0,
+      "precision_ci": [
+        0.6097,
+        1.0
+      ],
+      "recall_ci": [
+        0.6097,
+        1.0
+      ]
+    },
+    "SECURITY": {
+      "true_positives": 7,
+      "false_positives": 0,
+      "true_negatives": 0,
+      "false_negatives": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "false_positive_rate": 0.0,
+      "false_negative_rate": 0.0,
+      "defect_detection_rate": 1.0,
+      "precision_ci": [
+        0.6457,
+        1.0
+      ],
+      "recall_ci": [
+        0.6457,
+        1.0
+      ]
+    },
+    "TEST_ADEQUACY": {
+      "true_positives": 3,
+      "false_positives": 0,
+      "true_negatives": 0,
+      "false_negatives": 1,
+      "precision": 1.0,
+      "recall": 0.75,
+      "f1_score": 0.8571,
+      "false_positive_rate": 0.0,
+      "false_negative_rate": 0.25,
+      "defect_detection_rate": 0.75,
+      "precision_ci": [
+        0.4385,
+        1.0
+      ],
+      "recall_ci": [
+        0.3006,
+        0.9544
+      ]
+    }
+  },
+  "verification_metrics": {
+    "total_candidates": 22,
+    "verified_count": 22,
+    "rejected_count": 0,
+    "verified_rate": 1.0,
+    "rejected_rate": 0.0,
+    "evidence_grounded_count": 22,
+    "evidence_grounded_rate": 1.0,
+    "critic_rejection_rate": 0.0
+  },
+  "total_resource_usage": {
+    "latency_seconds": 0.0043,
+    "api_calls": 195,
+    "prompt_tokens": 55600,
+    "completion_tokens": 18900,
+    "total_tokens": 74500,
+    "estimated_cost_usd": 0.0
+  },
+  "case_results": [
+    {
+      "case_id": "SYNTH-BUG-001",
+      "category": "BUG_LOGIC",
+      "ground_truth_count": 1,
+      "predicted_count": 1,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "duplicates": 0,
+      "matched_pairs": [
+        {
+          "matched": true,
+          "ground_truth_id": "DEFECT-BUG-001",
+          "predicted_finding_id": "agent-600786e7",
+          "file_matched": true,
+          "line_distance": 0,
+          "category_matched": true,
+          "semantic_score": 1.0,
+          "is_duplicate": false,
+          "explanation": "Matched DEFECT-BUG-001 at lines 3-4 (distance=0)"
+        }
+      ],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [],
+      "resource_usage": {
+        "latency_seconds": 0.0006,
+        "api_calls": 8,
+        "prompt_tokens": 2250,
+        "completion_tokens": 750,
+        "total_tokens": 3000,
+        "estimated_cost_usd": 0.0
+      }
+    },
+    {
+      "case_id": "SYNTH-BUG-002",
+      "category": "BUG_LOGIC",
+      "ground_truth_count": 1,
+      "predicted_count": 1,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "duplicates": 0,
+      "matched_pairs": [
+        {
+          "matched": true,
+          "ground_truth_id": "DEFECT-BUG-002",
+          "predicted_finding_id": "agent-6d7b57ac",
+          "file_matched": true,
+          "line_distance": 1,
+          "category_matched": true,
+          "semantic_score": 0.958,
+          "is_duplicate": false,
+          "explanation": "Matched DEFECT-BUG-002 at lines 3-3 (distance=1)"
+        }
+      ],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [],
+      "resource_usage": {
+        "latency_seconds": 0.0004,
+        "api_calls": 8,
+        "prompt_tokens": 2250,
+        "completion_tokens": 750,
+        "total_tokens": 3000,
+        "estimated_cost_usd": 0.0
+      }
+    },
+    {
+      "case_id": "SYNTH-BUG-003",
+      "category": "BUG_LOGIC",
+      "ground_truth_count": 1,
+      "predicted_count": 1,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "duplicates": 0,
+      "matched_pairs": [
+        {
+          "matched": true,
+          "ground_truth_id": "DEFECT-BUG-003",
+          "predicted_finding_id": "agent-00e0c30d",
+          "file_matched": true,
+          "line_distance": 0,
+          "category_matched": true,
+          "semantic_score": 1.0,
+          "is_duplicate": false,
+          "explanation": "Matched DEFECT-BUG-003 at lines 3-4 (distance=0)"
+        }
+      ],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [],
+      "resource_usage": {
+        "latency_seconds": 0.0002,
+        "api_calls": 8,
+        "prompt_tokens": 2250,
+        "completion_tokens": 750,
+        "total_tokens": 3000,
+        "estimated_cost_usd": 0.0
+      }
+    },
+    {
+      "case_id": "SYNTH-BUG-004",
+      "category": "BUG_LOGIC",
+      "ground_truth_count": 1,
+      "predicted_count": 1,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "duplicates": 0,
+      "matched_pairs": [
+        {
+          "matched": true,
+          "ground_truth_id": "DEFECT-BUG-004",
+          "predicted_finding_id": "agent-444f38bd",
+          "file_matched": true,
+          "line_distance": 0,
+          "category_matched": true,
+          "semantic_score": 1.0,
+          "is_duplicate": false,
+          "explanation": "Matched DEFECT-BUG-004 at lines 2-4 (distance=0)"
+        }
+      ],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [],
+      "resource_usage": {
+        "latency_seconds": 0.0002,
+        "api_calls": 8,
+        "prompt_tokens": 2250,
+        "completion_tokens": 750,
+        "total_tokens": 3000,
+        "estimated_cost_usd": 0.0
+      }
+    },
+    {
+      "case_id": "SYNTH-BUG-005",
+      "category": "BUG_LOGIC",
+      "ground_truth_count": 1,
+      "predicted_count": 1,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "duplicates": 0,
+      "matched_pairs": [
+        {
+          "matched": true,
+          "ground_truth_id": "DEFECT-BUG-005",
+          "predicted_finding_id": "agent-21f4f353",
+          "file_matched": true,
+          "line_distance": 1,
+          "category_matched": true,
+          "semantic_score": 0.958,
+          "is_duplicate": false,
+          "explanation": "Matched DEFECT-BUG-005 at lines 2-2 (distance=1)"
+        }
+      ],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [],
+      "resource_usage": {
+        "latency_seconds": 0.0002,
+        "api_calls": 8,
+        "prompt_tokens": 2250,
+        "completion_tokens": 750,
+        "total_tokens": 3000,
+        "estimated_cost_usd": 0.0
+      }
+    },
+    {
+      "case_id": "SYNTH-ERR-001",
+      "category": "ERROR_HANDLING",
+      "ground_truth_count": 1,
+      "predicted_count": 1,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "duplicates": 0,
+      "matched_pairs": [
+        {
+          "matched": true,
+          "ground_truth_id": "DEFECT-ERR-001",
+          "predicted_finding_id": "agent-3bdf6eab",
+          "file_matched": true,
+          "line_distance": 0,
+          "category_matched": true,
+          "semantic_score": 1.0,
+          "is_duplicate": false,
+          "explanation": "Matched DEFECT-ERR-001 at lines 5-6 (distance=0)"
+        }
+      ],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [],
+      "resource_usage": {
+        "latency_seconds": 0.0002,
+        "api_calls": 8,
+        "prompt_tokens": 2250,
+        "completion_tokens": 750,
+        "total_tokens": 3000,
+        "estimated_cost_usd": 0.0
+      }
+    },
+    {
+      "case_id": "SYNTH-ERR-002",
+      "category": "ERROR_HANDLING",
+      "ground_truth_count": 1,
+      "predicted_count": 1,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "duplicates": 0,
+      "matched_pairs": [
+        {
+          "matched": true,
+          "ground_truth_id": "DEFECT-ERR-002",
+          "predicted_finding_id": "agent-078d8d0a",
+          "file_matched": true,
+          "line_distance": 0,
+          "category_matched": true,
+          "semantic_score": 1.0,
+          "is_duplicate": false,
+          "explanation": "Matched DEFECT-ERR-002 at lines 4-7 (distance=0)"
+        }
+      ],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [],
+      "resource_usage": {
+        "latency_seconds": 0.0003,
+        "api_calls": 9,
+        "prompt_tokens": 2600,
+        "completion_tokens": 900,
+        "total_tokens": 3500,
+        "estimated_cost_usd": 0.0
+      }
+    },
+    {
+      "case_id": "SYNTH-ERR-003",
+      "category": "ERROR_HANDLING",
+      "ground_truth_count": 1,
+      "predicted_count": 1,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "duplicates": 0,
+      "matched_pairs": [
+        {
+          "matched": true,
+          "ground_truth_id": "DEFECT-ERR-003",
+          "predicted_finding_id": "agent-a607feec",
+          "file_matched": true,
+          "line_distance": 0,
+          "category_matched": true,
+          "semantic_score": 1.0,
+          "is_duplicate": false,
+          "explanation": "Matched DEFECT-ERR-003 at lines 2-4 (distance=0)"
+        }
+      ],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [],
+      "resource_usage": {
+        "latency_seconds": 0.0002,
+        "api_calls": 8,
+        "prompt_tokens": 2250,
+        "completion_tokens": 750,
+        "total_tokens": 3000,
+        "estimated_cost_usd": 0.0
+      }
+    },
+    {
+      "case_id": "SYNTH-ERR-004",
+      "category": "ERROR_HANDLING",
+      "ground_truth_count": 1,
+      "predicted_count": 1,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "duplicates": 0,
+      "matched_pairs": [
+        {
+          "matched": true,
+          "ground_truth_id": "DEFECT-ERR-004",
+          "predicted_finding_id": "agent-0039d94c",
+          "file_matched": true,
+          "line_distance": 0,
+          "category_matched": true,
+          "semantic_score": 1.0,
+          "is_duplicate": false,
+          "explanation": "Matched DEFECT-ERR-004 at lines 4-5 (distance=0)"
+        }
+      ],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [],
+      "resource_usage": {
+        "latency_seconds": 0.0001,
+        "api_calls": 8,
+        "prompt_tokens": 2250,
+        "completion_tokens": 750,
+        "total_tokens": 3000,
+        "estimated_cost_usd": 0.0
+      }
+    },
+    {
+      "case_id": "SYNTH-ERR-005",
+      "category": "ERROR_HANDLING",
+      "ground_truth_count": 1,
+      "predicted_count": 1,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "duplicates": 0,
+      "matched_pairs": [
+        {
+          "matched": true,
+          "ground_truth_id": "DEFECT-ERR-005",
+          "predicted_finding_id": "agent-cb1050cb",
+          "file_matched": true,
+          "line_distance": 0,
+          "category_matched": true,
+          "semantic_score": 1.0,
+          "is_duplicate": false,
+          "explanation": "Matched DEFECT-ERR-005 at lines 4-5 (distance=0)"
+        }
+      ],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [],
+      "resource_usage": {
+        "latency_seconds": 0.0001,
+        "api_calls": 8,
+        "prompt_tokens": 2250,
+        "completion_tokens": 750,
+        "total_tokens": 3000,
+        "estimated_cost_usd": 0.0
+      }
+    },
+    {
+      "case_id": "SYNTH-SEC-001",
+      "category": "SECURITY",
+      "ground_truth_count": 1,
+      "predicted_count": 1,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "duplicates": 0,
+      "matched_pairs": [
+        {
+          "matched": true,
+          "ground_truth_id": "DEFECT-SEC-001",
+          "predicted_finding_id": "agent-2794639b",
+          "file_matched": true,
+          "line_distance": 1,
+          "category_matched": true,
+          "semantic_score": 0.958,
+          "is_duplicate": false,
+          "explanation": "Matched DEFECT-SEC-001 at lines 5-5 (distance=1)"
+        }
+      ],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [],
+      "resource_usage": {
+        "latency_seconds": 0.0001,
+        "api_calls": 9,
+        "prompt_tokens": 2600,
+        "completion_tokens": 900,
+        "total_tokens": 3500,
+        "estimated_cost_usd": 0.0
+      }
+    },
+    {
+      "case_id": "SYNTH-SEC-002",
+      "category": "SECURITY",
+      "ground_truth_count": 1,
+      "predicted_count": 1,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "duplicates": 0,
+      "matched_pairs": [
+        {
+          "matched": true,
+          "ground_truth_id": "DEFECT-SEC-002",
+          "predicted_finding_id": "agent-21fdfa62",
+          "file_matched": true,
+          "line_distance": 1,
+          "category_matched": true,
+          "semantic_score": 0.958,
+          "is_duplicate": false,
+          "explanation": "Matched DEFECT-SEC-002 at lines 4-4 (distance=1)"
+        }
+      ],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [],
+      "resource_usage": {
+        "latency_seconds": 0.0002,
+        "api_calls": 9,
+        "prompt_tokens": 2600,
+        "completion_tokens": 900,
+        "total_tokens": 3500,
+        "estimated_cost_usd": 0.0
+      }
+    },
+    {
+      "case_id": "SYNTH-SEC-003",
+      "category": "SECURITY",
+      "ground_truth_count": 1,
+      "predicted_count": 1,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "duplicates": 0,
+      "matched_pairs": [
+        {
+          "matched": true,
+          "ground_truth_id": "DEFECT-SEC-003",
+          "predicted_finding_id": "agent-36f8f060",
+          "file_matched": true,
+          "line_distance": 1,
+          "category_matched": true,
+          "semantic_score": 0.958,
+          "is_duplicate": false,
+          "explanation": "Matched DEFECT-SEC-003 at lines 6-6 (distance=1)"
+        }
+      ],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [],
+      "resource_usage": {
+        "latency_seconds": 0.0001,
+        "api_calls": 9,
+        "prompt_tokens": 2600,
+        "completion_tokens": 900,
+        "total_tokens": 3500,
+        "estimated_cost_usd": 0.0
+      }
+    },
+    {
+      "case_id": "SYNTH-SEC-004",
+      "category": "SECURITY",
+      "ground_truth_count": 1,
+      "predicted_count": 1,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "duplicates": 0,
+      "matched_pairs": [
+        {
+          "matched": true,
+          "ground_truth_id": "DEFECT-SEC-004",
+          "predicted_finding_id": "agent-84a7986d",
+          "file_matched": true,
+          "line_distance": 1,
+          "category_matched": true,
+          "semantic_score": 0.958,
+          "is_duplicate": false,
+          "explanation": "Matched DEFECT-SEC-004 at lines 4-4 (distance=1)"
+        }
+      ],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [],
+      "resource_usage": {
+        "latency_seconds": 0.0002,
+        "api_calls": 9,
+        "prompt_tokens": 2600,
+        "completion_tokens": 900,
+        "total_tokens": 3500,
+        "estimated_cost_usd": 0.0
+      }
+    },
+    {
+      "case_id": "SYNTH-SEC-005",
+      "category": "SECURITY",
+      "ground_truth_count": 1,
+      "predicted_count": 1,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "duplicates": 0,
+      "matched_pairs": [
+        {
+          "matched": true,
+          "ground_truth_id": "DEFECT-SEC-005",
+          "predicted_finding_id": "agent-97abcd33",
+          "file_matched": true,
+          "line_distance": 1,
+          "category_matched": true,
+          "semantic_score": 0.958,
+          "is_duplicate": false,
+          "explanation": "Matched DEFECT-SEC-005 at lines 5-5 (distance=1)"
+        }
+      ],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [],
+      "resource_usage": {
+        "latency_seconds": 0.0001,
+        "api_calls": 9,
+        "prompt_tokens": 2600,
+        "completion_tokens": 900,
+        "total_tokens": 3500,
+        "estimated_cost_usd": 0.0
+      }
+    },
+    {
+      "case_id": "SYNTH-TEST-001",
+      "category": "TEST_ADEQUACY",
+      "ground_truth_count": 1,
+      "predicted_count": 1,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "duplicates": 0,
+      "matched_pairs": [
+        {
+          "matched": true,
+          "ground_truth_id": "DEFECT-TEST-001",
+          "predicted_finding_id": "agent-2248f734",
+          "file_matched": true,
+          "line_distance": 0,
+          "category_matched": true,
+          "semantic_score": 1.0,
+          "is_duplicate": false,
+          "explanation": "Matched DEFECT-TEST-001 at lines 3-4 (distance=0)"
+        }
+      ],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [],
+      "resource_usage": {
+        "latency_seconds": 0.0001,
+        "api_calls": 8,
+        "prompt_tokens": 2250,
+        "completion_tokens": 750,
+        "total_tokens": 3000,
+        "estimated_cost_usd": 0.0
+      }
+    },
+    {
+      "case_id": "SYNTH-TEST-002",
+      "category": "TEST_ADEQUACY",
+      "ground_truth_count": 1,
+      "predicted_count": 1,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "duplicates": 0,
+      "matched_pairs": [
+        {
+          "matched": true,
+          "ground_truth_id": "DEFECT-TEST-002",
+          "predicted_finding_id": "agent-a8fa7854",
+          "file_matched": true,
+          "line_distance": 0,
+          "category_matched": true,
+          "semantic_score": 1.0,
+          "is_duplicate": false,
+          "explanation": "Matched DEFECT-TEST-002 at lines 3-5 (distance=0)"
+        }
+      ],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [],
+      "resource_usage": {
+        "latency_seconds": 0.0001,
+        "api_calls": 8,
+        "prompt_tokens": 2250,
+        "completion_tokens": 750,
+        "total_tokens": 3000,
+        "estimated_cost_usd": 0.0
+      }
+    },
+    {
+      "case_id": "SYNTH-TEST-003",
+      "category": "TEST_ADEQUACY",
+      "ground_truth_count": 1,
+      "predicted_count": 1,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "duplicates": 0,
+      "matched_pairs": [
+        {
+          "matched": true,
+          "ground_truth_id": "DEFECT-TEST-003",
+          "predicted_finding_id": "agent-851b2422",
+          "file_matched": true,
+          "line_distance": 0,
+          "category_matched": true,
+          "semantic_score": 1.0,
+          "is_duplicate": false,
+          "explanation": "Matched DEFECT-TEST-003 at lines 3-4 (distance=0)"
+        }
+      ],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [],
+      "resource_usage": {
+        "latency_seconds": 0.0001,
+        "api_calls": 8,
+        "prompt_tokens": 2250,
+        "completion_tokens": 750,
+        "total_tokens": 3000,
+        "estimated_cost_usd": 0.0
+      }
+    },
+    {
+      "case_id": "REAL-BUG-001",
+      "category": "BUG_LOGIC",
+      "ground_truth_count": 1,
+      "predicted_count": 1,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "duplicates": 0,
+      "matched_pairs": [
+        {
+          "matched": true,
+          "ground_truth_id": "DEFECT-REAL-BUG-001",
+          "predicted_finding_id": "agent-0a11b44e",
+          "file_matched": true,
+          "line_distance": 0,
+          "category_matched": true,
+          "semantic_score": 0.875,
+          "is_duplicate": false,
+          "explanation": "Matched DEFECT-REAL-BUG-001 at lines 5-5 (distance=0)"
+        }
+      ],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [],
+      "resource_usage": {
+        "latency_seconds": 0.0001,
+        "api_calls": 9,
+        "prompt_tokens": 2600,
+        "completion_tokens": 900,
+        "total_tokens": 3500,
+        "estimated_cost_usd": 0.0
+      }
+    },
+    {
+      "case_id": "REAL-ERR-001",
+      "category": "ERROR_HANDLING",
+      "ground_truth_count": 1,
+      "predicted_count": 1,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "duplicates": 0,
+      "matched_pairs": [
+        {
+          "matched": true,
+          "ground_truth_id": "DEFECT-REAL-ERR-001",
+          "predicted_finding_id": "agent-257572ad",
+          "file_matched": true,
+          "line_distance": 0,
+          "category_matched": true,
+          "semantic_score": 1.0,
+          "is_duplicate": false,
+          "explanation": "Matched DEFECT-REAL-ERR-001 at lines 8-10 (distance=0)"
+        }
+      ],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [],
+      "resource_usage": {
+        "latency_seconds": 0.0002,
+        "api_calls": 9,
+        "prompt_tokens": 2600,
+        "completion_tokens": 900,
+        "total_tokens": 3500,
+        "estimated_cost_usd": 0.0
+      }
+    },
+    {
+      "case_id": "REAL-SEC-001",
+      "category": "SECURITY",
+      "ground_truth_count": 1,
+      "predicted_count": 1,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "duplicates": 0,
+      "matched_pairs": [
+        {
+          "matched": true,
+          "ground_truth_id": "DEFECT-REAL-SEC-001",
+          "predicted_finding_id": "agent-35717596",
+          "file_matched": true,
+          "line_distance": 0,
+          "category_matched": true,
+          "semantic_score": 1.0,
+          "is_duplicate": false,
+          "explanation": "Matched DEFECT-REAL-SEC-001 at lines 8-10 (distance=0)"
+        }
+      ],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [],
+      "resource_usage": {
+        "latency_seconds": 0.0002,
+        "api_calls": 9,
+        "prompt_tokens": 2600,
+        "completion_tokens": 900,
+        "total_tokens": 3500,
+        "estimated_cost_usd": 0.0
+      }
+    },
+    {
+      "case_id": "REAL-SEC-002",
+      "category": "SECURITY",
+      "ground_truth_count": 1,
+      "predicted_count": 1,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "duplicates": 0,
+      "matched_pairs": [
+        {
+          "matched": true,
+          "ground_truth_id": "DEFECT-REAL-SEC-002",
+          "predicted_finding_id": "agent-27dc0375",
+          "file_matched": true,
+          "line_distance": 0,
+          "category_matched": true,
+          "semantic_score": 1.0,
+          "is_duplicate": false,
+          "explanation": "Matched DEFECT-REAL-SEC-002 at lines 9-10 (distance=0)"
+        }
+      ],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [],
+      "resource_usage": {
+        "latency_seconds": 0.0002,
+        "api_calls": 9,
+        "prompt_tokens": 2600,
+        "completion_tokens": 900,
+        "total_tokens": 3500,
+        "estimated_cost_usd": 0.0
+      }
+    },
+    {
+      "case_id": "REAL-TEST-001",
+      "category": "TEST_ADEQUACY",
+      "ground_truth_count": 1,
+      "predicted_count": 0,
+      "true_positives": 0,
+      "false_positives": 0,
+      "false_negatives": 1,
+      "duplicates": 0,
+      "matched_pairs": [],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [
+        {
+          "defect_id": "DEFECT-REAL-TEST-001",
+          "category": "TEST_ADEQUACY",
+          "affected_file": "src/urllib3/poolmanager.py",
+          "line_start": 4,
+          "line_end": 6,
+          "expected_issue_type": "MISSING_REGRESSION_TEST",
+          "expected_severity": "MEDIUM",
+          "description": "Missing SSL Context Timeout Regression Test in PoolManager.",
+          "explanation": "PR refactored connection pool initialization without adding tests for default socket timeout inheritance.",
+          "expected_evidence": [
+            {
+              "tool_name": "test_coverage_analyzer",
+              "rule_or_cve_id": "test.coverage.missing_regression_test",
+              "target_pattern": "if \"timeout\" not in self.connection_pool_kw:",
+              "description": "Timeout defaulting logic lacks dedicated regression unit test in test suite."
+            }
+          ]
+        }
+      ],
+      "resource_usage": {
+        "latency_seconds": 0.0001,
+        "api_calls": 9,
+        "prompt_tokens": 2600,
+        "completion_tokens": 900,
+        "total_tokens": 3500,
+        "estimated_cost_usd": 0.0
+      }
+    }
+  ],
+  "execution_metadata": {
+    "category_filter": "all",
+    "mode": "real"
+  }
+}

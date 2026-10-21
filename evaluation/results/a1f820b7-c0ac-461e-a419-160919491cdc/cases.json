@@ -1,0 +1,2102 @@
+[
+  {
+    "case_id": "SYNTH-BUG-001",
+    "category": "BUG_LOGIC",
+    "ground_truth_count": 1,
+    "predicted_count": 1,
+    "true_positives": 0,
+    "false_positives": 1,
+    "false_negatives": 1,
+    "duplicates": 0,
+    "matched_pairs": [],
+    "unmatched_predictions": [
+      {
+        "finding_id": "single-e920d363",
+        "category": "LOGIC ERROR",
+        "severity": "MEDIUM",
+        "affected_file": "app/processors/batch_queue.py",
+        "line_start": 4,
+        "line_end": 4,
+        "title": "Index out of bounds in loop iteration",
+        "explanation": "The loop iterates from 0 to len(items) inclusive (range(len(items) + 1)), which causes an index out of bounds error when accessing items[i] for i equal to len(items). This will result in a IndexError when processing the last element.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "logic error",
+          "severity": "MEDIUM",
+          "file_path": "app/processors/batch_queue.py",
+          "line_number": 4,
+          "title": "Index out of bounds in loop iteration",
+          "explanation": "The loop iterates from 0 to len(items) inclusive (range(len(items) + 1)), which causes an index out of bounds error when accessing items[i] for i equal to len(items). This will result in a IndexError when processing the last element.",
+          "confidence": 0.8
+        }
+      }
+    ],
+    "unmatched_ground_truth": [
+      {
+        "defect_id": "DEFECT-BUG-001",
+        "category": "BUG_LOGIC",
+        "affected_file": "app/processors/batch_queue.py",
+        "line_start": 4,
+        "line_end": 5,
+        "expected_issue_type": "BOUNDARY_ERROR",
+        "expected_severity": "HIGH",
+        "description": "IndexError due to off-by-one boundary condition in range loop traversal.",
+        "explanation": "Traversing range(len(items) + 1) attempts to index items[len(items)], which raises an uncaught IndexError.",
+        "expected_evidence": [
+          {
+            "tool_name": "ast_analyzer",
+            "rule_or_cve_id": "logic.boundary.off_by_one",
+            "target_pattern": "range(len(items) + 1)",
+            "description": "Index range exceeds valid collection bounds."
+          }
+        ]
+      }
+    ],
+    "resource_usage": {
+      "latency_seconds": 66.8793,
+      "api_calls": 1,
+      "prompt_tokens": 158,
+      "completion_tokens": 117,
+      "total_tokens": 275,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "SYNTH-BUG-002",
+    "category": "BUG_LOGIC",
+    "ground_truth_count": 1,
+    "predicted_count": 3,
+    "true_positives": 0,
+    "false_positives": 3,
+    "false_negatives": 1,
+    "duplicates": 0,
+    "matched_pairs": [],
+    "unmatched_predictions": [
+      {
+        "finding_id": "single-ab05c344",
+        "category": "ERROR HANDLING",
+        "severity": "MEDIUM",
+        "affected_file": "app/services/profile_service.py",
+        "line_start": 3,
+        "line_end": 3,
+        "title": "Missing null safety and error handling for user retrieval",
+        "explanation": "The function does not handle the case where `db.get_user(user_id)` returns None or an empty user record. If the user is not found, accessing `user.profile.display_name` will raise an AttributeError or result in a None value being returned, which could lead to unexpected behavior or crashes in the calling code.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "error handling",
+          "severity": "MEDIUM",
+          "file_path": "app/services/profile_service.py",
+          "line_number": 3,
+          "title": "Missing null safety and error handling for user retrieval",
+          "explanation": "The function does not handle the case where `db.get_user(user_id)` returns None or an empty user record. If the user is not found, accessing `user.profile.display_name` will raise an AttributeError or result in a None value being returned, which could lead to unexpected behavior or crashes in the calling code.",
+          "confidence": 0.8
+        }
+      },
+      {
+        "finding_id": "single-e8f5e748",
+        "category": "SECURITY",
+        "severity": "MEDIUM",
+        "affected_file": "app/services/profile_service.py",
+        "line_start": 4,
+        "line_end": 4,
+        "title": "Potential XSS vulnerability due to unescaped display name",
+        "explanation": "The function directly returns a profile field without validation or sanitization. If the display name contains malicious content (e.g., script tags), it could be exploited in downstream rendering. While this is less likely if the display name is rendered in a secure context, it's a potential vector for XSS if the display name is used in unescaped HTML output.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "security",
+          "severity": "MEDIUM",
+          "file_path": "app/services/profile_service.py",
+          "line_number": 4,
+          "title": "Potential XSS vulnerability due to unescaped display name",
+          "explanation": "The function directly returns a profile field without validation or sanitization. If the display name contains malicious content (e.g., script tags), it could be exploited in downstream rendering. While this is less likely if the display name is rendered in a secure context, it's a potential vector for XSS if the display name is used in unescaped HTML output.",
+          "confidence": 0.8
+        }
+      },
+      {
+        "finding_id": "single-0a0823e0",
+        "category": "TEST ADEQUACY",
+        "severity": "MEDIUM",
+        "affected_file": "app/services/profile_service.py",
+        "line_start": 3,
+        "line_end": 3,
+        "title": "Missing test coverage for edge cases",
+        "explanation": "The function lacks test coverage for edge cases such as missing users, invalid user IDs, or malformed data. Without tests, it's impossible to verify that the function behaves correctly under all conditions, especially when the database query fails or returns unexpected data.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "test adequacy",
+          "severity": "MEDIUM",
+          "file_path": "app/services/profile_service.py",
+          "line_number": 3,
+          "title": "Missing test coverage for edge cases",
+          "explanation": "The function lacks test coverage for edge cases such as missing users, invalid user IDs, or malformed data. Without tests, it's impossible to verify that the function behaves correctly under all conditions, especially when the database query fails or returns unexpected data.",
+          "confidence": 0.8
+        }
+      }
+    ],
+    "unmatched_ground_truth": [
+      {
+        "defect_id": "DEFECT-BUG-002",
+        "category": "BUG_LOGIC",
+        "affected_file": "app/services/profile_service.py",
+        "line_start": 4,
+        "line_end": 4,
+        "expected_issue_type": "NULL_DEREFERENCE",
+        "expected_severity": "HIGH",
+        "description": "Unchecked NoneType attribute access causes unhandled AttributeError when user is not found.",
+        "explanation": "get_user() returns None on missing entity; dereferencing .profile directly causes runtime crash.",
+        "expected_evidence": [
+          {
+            "tool_name": "dataflow_analyzer",
+            "rule_or_cve_id": "logic.null_safety",
+            "target_pattern": "user.profile.display_name",
+            "description": "Nullable return value dereferenced without guard check."
+          }
+        ]
+      }
+    ],
+    "resource_usage": {
+      "latency_seconds": 49.4363,
+      "api_calls": 1,
+      "prompt_tokens": 148,
+      "completion_tokens": 350,
+      "total_tokens": 498,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "SYNTH-BUG-003",
+    "category": "BUG_LOGIC",
+    "ground_truth_count": 1,
+    "predicted_count": 3,
+    "true_positives": 0,
+    "false_positives": 3,
+    "false_negatives": 1,
+    "duplicates": 0,
+    "matched_pairs": [],
+    "unmatched_predictions": [
+      {
+        "finding_id": "single-4f1c840f",
+        "category": "SECURITY",
+        "severity": "MEDIUM",
+        "affected_file": "app/security/gatekeeper.py",
+        "line_start": 5,
+        "line_end": 5,
+        "title": "Inverted authorization logic",
+        "explanation": "The function logic is inverted. If the token is invalid, it grants access, which is a critical security flaw. A valid token should grant access, and an invalid token should deny access. This inversion leads to unauthorized access when the token is invalid.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "security",
+          "severity": "MEDIUM",
+          "file_path": "app/security/gatekeeper.py",
+          "line_number": 5,
+          "title": "Inverted authorization logic",
+          "explanation": "The function logic is inverted. If the token is invalid, it grants access, which is a critical security flaw. A valid token should grant access, and an invalid token should deny access. This inversion leads to unauthorized access when the token is invalid.",
+          "confidence": 0.8
+        }
+      },
+      {
+        "finding_id": "single-78822732",
+        "category": "ERROR_HANDLING",
+        "severity": "MEDIUM",
+        "affected_file": "app/security/gate-keeper.py",
+        "line_start": 5,
+        "line_end": 5,
+        "title": "Missing exception handling in token verification",
+        "explanation": "The `token_verifier.verify` method may raise an exception if the input is malformed or the verifier is not properly initialized. The code does not handle such exceptions, leading to potential crashes or silent failures.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "error_handling",
+          "severity": "MEDIUM",
+          "file_path": "app/security/gate-keeper.py",
+          "line_number": 5,
+          "title": "Missing exception handling in token verification",
+          "explanation": "The `token_verifier.verify` method may raise an exception if the input is malformed or the verifier is not properly initialized. The code does not handle such exceptions, leading to potential crashes or silent failures.",
+          "confidence": 0.8
+        }
+      },
+      {
+        "finding_id": "single-91da3452",
+        "category": "LOGIC_ERROR",
+        "severity": "MEDIUM",
+        "affected_file": "app/security/gatekeeper.py",
+        "line_start": 5,
+        "line_end": 5,
+        "title": "Incorrect access grant on invalid token",
+        "explanation": "The function calls `grant_access(account_id)` when the token is invalid, which contradicts the purpose of authorization. This suggests a fundamental misunderstanding of the authorization flow and could allow unauthorized access to account operations.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "logic_error",
+          "severity": "MEDIUM",
+          "file_path": "app/security/gatekeeper.py",
+          "line_number": 5,
+          "title": "Incorrect access grant on invalid token",
+          "explanation": "The function calls `grant_access(account_id)` when the token is invalid, which contradicts the purpose of authorization. This suggests a fundamental misunderstanding of the authorization flow and could allow unauthorized access to account operations.",
+          "confidence": 0.8
+        }
+      }
+    ],
+    "unmatched_ground_truth": [
+      {
+        "defect_id": "DEFECT-BUG-003",
+        "category": "BUG_LOGIC",
+        "affected_file": "app/security/gatekeeper.py",
+        "line_start": 4,
+        "line_end": 5,
+        "expected_issue_type": "INVERTED_CONDITION",
+        "expected_severity": "CRITICAL",
+        "description": "Inverted boolean condition in authorization gate: grants access when token is invalid.",
+        "explanation": "Logic bug flips condition polarity, creating severe security vulnerability and improper state mutation.",
+        "expected_evidence": [
+          {
+            "tool_name": "symbolic_verifier",
+            "rule_or_cve_id": "logic.condition_inversion",
+            "target_pattern": "if not is_valid: grant_access",
+            "description": "Access grant branch paired with negated verification check."
+          }
+        ]
+      }
+    ],
+    "resource_usage": {
+      "latency_seconds": 41.1313,
+      "api_calls": 1,
+      "prompt_tokens": 167,
+      "completion_tokens": 294,
+      "total_tokens": 461,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "SYNTH-BUG-004",
+    "category": "BUG_LOGIC",
+    "ground_truth_count": 1,
+    "predicted_count": 4,
+    "true_positives": 0,
+    "false_positives": 4,
+    "false_negatives": 1,
+    "duplicates": 0,
+    "matched_pairs": [],
+    "unmatched_predictions": [
+      {
+        "finding_id": "single-d90fe244",
+        "category": "SECURITY",
+        "severity": "MEDIUM",
+        "affected_file": "app/orders/fulfillment.py",
+        "line_start": 2,
+        "line_end": 2,
+        "title": "Missing Authorization and Validation",
+        "explanation": "The function does not validate the order object or verify that it is authorized for fulfillment. An attacker could potentially manipulate the order status directly via an unauthenticated endpoint, leading to unauthorized status changes.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "Security",
+          "severity": "MEDIUM",
+          "file_path": "app/orders/fulfillment.py",
+          "line_number": 2,
+          "title": "Missing Authorization and Validation",
+          "explanation": "The function does not validate the order object or verify that it is authorized for fulfillment. An attacker could potentially manipulate the order status directly via an unauthenticated endpoint, leading to unauthorized status changes.",
+          "confidence": 0.8
+        }
+      },
+      {
+        "finding_id": "single-a849d7f3",
+        "category": "ERROR HANDLING",
+        "severity": "MEDIUM",
+        "affected_file": "app/orders/fulfillment.py",
+        "line_start": 3,
+        "line_end": 3,
+        "title": "Missing Exception Handling",
+        "explanation": "The function lacks error handling for potential exceptions during order update or dispatch. If `order.save()` or `dispatch_shipment()` fails, the system will not recover gracefully, and the order status may be left in an inconsistent state.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "Error Handling",
+          "severity": "MEDIUM",
+          "file_path": "app/orders/fulfillment.py",
+          "line_number": 3,
+          "title": "Missing Exception Handling",
+          "explanation": "The function lacks error handling for potential exceptions during order update or dispatch. If `order.save()` or `dispatch_shipment()` fails, the system will not recover gracefully, and the order status may be left in an inconsistent state.",
+          "confidence": 0.8
+        }
+      },
+      {
+        "finding_id": "single-9e94de52",
+        "category": "LOGIC ERROR",
+        "severity": "MEDIUM",
+        "affected_file": "app/orders/fulfillment.py",
+        "line_start": 2,
+        "line_end": 2,
+        "title": "No State Validation Before Fulfillment",
+        "explanation": "The function sets the order status to 'FULFILLED' immediately after saving, but there is no check to ensure the order is valid (e.g., not already fulfilled or canceled). This could result in duplicate fulfillment or inconsistent state transitions.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "Logic Error",
+          "severity": "MEDIUM",
+          "file_path": "app/orders/fulfillment.py",
+          "line_number": 2,
+          "title": "No State Validation Before Fulfillment",
+          "explanation": "The function sets the order status to 'FULFILLED' immediately after saving, but there is no check to ensure the order is valid (e.g., not already fulfilled or canceled). This could result in duplicate fulfillment or inconsistent state transitions.",
+          "confidence": 0.8
+        }
+      },
+      {
+        "finding_id": "single-1397ccfb",
+        "category": "TEST ADEQUACY",
+        "severity": "MEDIUM",
+        "affected_file": "app-orders/fulfillment.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Missing Test Coverage",
+        "explanation": "The function does not include any unit or integration tests to verify the behavior under various conditions (e.g., invalid order, network failure, race conditions). Without tests, the code may behave incorrectly in production.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "Test Adequacy",
+          "severity": "MEDIUM",
+          "file_path": "app-orders/fulfillment.py",
+          "line_number": 1,
+          "title": "Missing Test Coverage",
+          "explanation": "The function does not include any unit or integration tests to verify the behavior under various conditions (e.g., invalid order, network failure, race conditions). Without tests, the code may behave incorrectly in production.",
+          "confidence": 0.8
+        }
+      }
+    ],
+    "unmatched_ground_truth": [
+      {
+        "defect_id": "DEFECT-BUG-004",
+        "category": "BUG_LOGIC",
+        "affected_file": "app/orders/fulfillment.py",
+        "line_start": 3,
+        "line_end": 5,
+        "expected_issue_type": "INVALID_STATE_TRANSITION",
+        "expected_severity": "HIGH",
+        "description": "State transition to FULFILLED without validating current lifecycle state.",
+        "explanation": "Allows shipping cancelled or refunded orders because state pre-conditions are omitted.",
+        "expected_evidence": [
+          {
+            "tool_name": "state_machine_checker",
+            "rule_or_cve_id": "logic.state_machine.unguarded_transition",
+            "target_pattern": "order.status = \"FULFILLED\"",
+            "description": "Direct state assignment without precondition assertion."
+          }
+        ]
+      }
+    ],
+    "resource_usage": {
+      "latency_seconds": 56.2705,
+      "api_calls": 1,
+      "prompt_tokens": 142,
+      "completion_tokens": 387,
+      "total_tokens": 529,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "SYNTH-BUG-005",
+    "category": "BUG_LOGIC",
+    "ground_truth_count": 1,
+    "predicted_count": 1,
+    "true_positives": 0,
+    "false_positives": 1,
+    "false_negatives": 1,
+    "duplicates": 0,
+    "matched_pairs": [],
+    "unmatched_predictions": [
+      {
+        "finding_id": "single-82d8cfa4",
+        "category": "LOGIC ERROR",
+        "severity": "MEDIUM",
+        "affected_file": "app/billing/calculator.py",
+        "line_start": 4,
+        "line_end": 4,
+        "title": "Incorrect pricing calculation formula",
+        "explanation": "The formula in the function is mathematically incorrect. The expression `quantity - discount * unit_price` subtracts a discounted amount from the quantity, which is not a valid operation for computing invoice totals. Quantity is a count of items, while unit_price is a monetary value. The correct formula should be: `quantity * unit_price * (1 - discount)` to compute the total after applying a discount. The current implementation will produce incorrect and potentially negative results, especially when discount is large.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "logic error",
+          "severity": "MEDIUM",
+          "file_path": "app/billing/calculator.py",
+          "line_number": 4,
+          "title": "Incorrect pricing calculation formula",
+          "explanation": "The formula in the function is mathematically incorrect. The expression `quantity - discount * unit_price` subtracts a discounted amount from the quantity, which is not a valid operation for computing invoice totals. Quantity is a count of items, while unit_price is a monetary value. The correct formula should be: `quantity * unit_price * (1 - discount)` to compute the total after applying a discount. The current implementation will produce incorrect and potentially negative results, especially when discount is large.",
+          "confidence": 0.8
+        }
+      }
+    ],
+    "unmatched_ground_truth": [
+      {
+        "defect_id": "DEFECT-BUG-005",
+        "category": "BUG_LOGIC",
+        "affected_file": "app/billing/calculator.py",
+        "line_start": 3,
+        "line_end": 3,
+        "expected_issue_type": "CALCULATION_ERROR",
+        "expected_severity": "HIGH",
+        "description": "Operator precedence and arithmetic logic error in invoice discount calculation.",
+        "explanation": "Calculates 'quantity - (discount * unit_price)' instead of '(quantity * unit_price) - discount', corrupting billing charges.",
+        "expected_evidence": [
+          {
+            "tool_name": "arithmetic_verifier",
+            "rule_or_cve_id": "logic.arithmetic.order_of_operations",
+            "target_pattern": "quantity - discount * unit_price",
+            "description": "Subtraction applied to unit count rather than calculated gross subtotal."
+          }
+        ]
+      }
+    ],
+    "resource_usage": {
+      "latency_seconds": 23.1681,
+      "api_calls": 1,
+      "prompt_tokens": 156,
+      "completion_tokens": 159,
+      "total_tokens": 315,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "SYNTH-ERR-001",
+    "category": "ERROR_HANDLING",
+    "ground_truth_count": 1,
+    "predicted_count": 3,
+    "true_positives": 1,
+    "false_positives": 2,
+    "false_negatives": 0,
+    "duplicates": 0,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-ERR-001",
+        "predicted_finding_id": "single-2542e3d7",
+        "file_matched": true,
+        "line_distance": 0,
+        "category_matched": true,
+        "semantic_score": 1.0,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-ERR-001 at lines 6-6 (distance=0)"
+      }
+    ],
+    "unmatched_predictions": [
+      {
+        "finding_id": "single-d63d5b3b",
+        "category": "SECURITY",
+        "severity": "MEDIUM",
+        "affected_file": "app/sync/reconciler.py",
+        "line_start": 6,
+        "line_end": 6,
+        "title": "Missing data validation and sanitization",
+        "explanation": "The function does not validate or sanitize the data being fetched or written. If the records contain malicious payloads or unexpected structures, this could lead to unintended behavior or vulnerabilities such as injection attacks. Data validation and schema checks should be implemented before writing to the replica database.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "security",
+          "severity": "MEDIUM",
+          "file_path": "app/sync/reconciler.py",
+          "line_number": 6,
+          "title": "Missing data validation and sanitization",
+          "explanation": "The function does not validate or sanitize the data being fetched or written. If the records contain malicious payloads or unexpected structures, this could lead to unintended behavior or vulnerabilities such as injection attacks. Data validation and schema checks should be implemented before writing to the replica database.",
+          "confidence": 0.8
+        }
+      },
+      {
+        "finding_id": "single-d11e472e",
+        "category": "TEST ADEQUACY",
+        "severity": "MEDIUM",
+        "affected_file": "app/sync/reconc-lier.py",
+        "line_start": 6,
+        "line_end": 6,
+        "title": "Missing test coverage",
+        "explanation": "The function lacks any test cases or assertions to verify correctness under various conditions (e.g., empty records, network failures, malformed records). Without adequate testing, it is impossible to ensure the function behaves correctly in production environments.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "test adequacy",
+          "severity": "MEDIUM",
+          "file_path": "app/sync/reconc-lier.py",
+          "line_number": 6,
+          "title": "Missing test coverage",
+          "explanation": "The function lacks any test cases or assertions to verify correctness under various conditions (e.g., empty records, network failures, malformed records). Without adequate testing, it is impossible to ensure the function behaves correctly in production environments.",
+          "confidence": 0.8
+        }
+      }
+    ],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 48.2033,
+      "api_calls": 1,
+      "prompt_tokens": 154,
+      "completion_tokens": 318,
+      "total_tokens": 472,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "SYNTH-ERR-002",
+    "category": "ERROR_HANDLING",
+    "ground_truth_count": 1,
+    "predicted_count": 4,
+    "true_positives": 1,
+    "false_positives": 3,
+    "false_negatives": 0,
+    "duplicates": 0,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-ERR-002",
+        "predicted_finding_id": "single-fca7b235",
+        "file_matched": true,
+        "line_distance": 0,
+        "category_matched": true,
+        "semantic_score": 1.0,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-ERR-002 at lines 6-6 (distance=0)"
+      }
+    ],
+    "unmatched_predictions": [
+      {
+        "finding_id": "single-2b23f770",
+        "category": "SECURITY",
+        "severity": "MEDIUM",
+        "affected_file": "app/services/payment_gateway.py",
+        "line_start": 5,
+        "line_end": 5,
+        "title": "Missing Input Validation",
+        "explanation": "The code does not validate or sanitize the input parameters. The `card_token` and `amount_cents` are directly used in the request without any validation, which could lead to injection attacks or invalid data being sent to the payment gateway.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "Security",
+          "severity": "MEDIUM",
+          "file_path": "app/services/payment_gateway.py",
+          "line_number": 5,
+          "title": "Missing Input Validation",
+          "explanation": "The code does not validate or sanitize the input parameters. The `card_token` and `amount_cents` are directly used in the request without any validation, which could lead to injection attacks or invalid data being sent to the payment gateway.",
+          "confidence": 0.8
+        }
+      },
+      {
+        "finding_id": "single-3ee415b7",
+        "category": "SECURITY",
+        "severity": "MEDIUM",
+        "affected_file": "app/services/payment_gateway.py",
+        "line_start": 6,
+        "line_end": 6,
+        "title": "Hardcoded Internal API Endpoint",
+        "explanation": "The endpoint URL is hardcoded and hard-coded in the code. This makes it vulnerable to configuration drift and increases the risk of exposure if the internal API endpoint is not properly secured or if it's exposed to public access.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "Security",
+          "severity": "MEDIUM",
+          "file_path": "app/services/payment_gateway.py",
+          "line_number": 6,
+          "title": "Hardcoded Internal API Endpoint",
+          "explanation": "The endpoint URL is hardcoded and hard-coded in the code. This makes it vulnerable to configuration drift and increases the risk of exposure if the internal API endpoint is not properly secured or if it's exposed to public access.",
+          "confidence": 0.8
+        }
+      },
+      {
+        "finding_id": "single-08d88fab",
+        "category": "RELIABILITY",
+        "severity": "MEDIUM",
+        "affected_file": "app/services/payment_gateway.py",
+        "line_start": 6,
+        "line_end": 6,
+        "title": "No HTTP Status Code Validation",
+        "explanation": "The function does not handle cases where the response is not valid JSON or the response status code is not 200. It assumes that the response is always valid JSON and returns `response.json()` without checking the HTTP status code, which could result in unexpected behavior or crashes.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "Reliability",
+          "severity": "MEDIUM",
+          "file_path": "app/services/payment_gateway.py",
+          "line_number": 6,
+          "title": "No HTTP Status Code Validation",
+          "explanation": "The function does not handle cases where the response is not valid JSON or the response status code is not 200. It assumes that the response is always valid JSON and returns `response.json()` without checking the HTTP status code, which could result in unexpected behavior or crashes.",
+          "confidence": 0.8
+        }
+      }
+    ],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 60.5333,
+      "api_calls": 1,
+      "prompt_tokens": 175,
+      "completion_tokens": 400,
+      "total_tokens": 575,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "SYNTH-ERR-003",
+    "category": "ERROR_HANDLING",
+    "ground_truth_count": 1,
+    "predicted_count": 4,
+    "true_positives": 1,
+    "false_positives": 3,
+    "false_negatives": 0,
+    "duplicates": 0,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-ERR-003",
+        "predicted_finding_id": "single-1920ab22",
+        "file_matched": true,
+        "line_distance": 0,
+        "category_matched": true,
+        "semantic_score": 0.875,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-ERR-003 at lines 4-4 (distance=0)"
+      }
+    ],
+    "unmatched_predictions": [
+      {
+        "finding_id": "single-1137ab8f",
+        "category": "SECURITY",
+        "severity": "MEDIUM",
+        "affected_file": "app/reports/exporter.py",
+        "line_start": 4,
+        "line_end": 4,
+        "title": "Raw data writing without sanitization",
+        "explanation": "The function writes raw dictionary objects to a file without sanitization or escaping. If any entry contains malicious content (e.g., shell commands or HTML), it could lead to injection attacks when the output file is processed by other systems.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "Security",
+          "severity": "MEDIUM",
+          "file_path": "app/reports/exporter.py",
+          "line_number": 4,
+          "title": "Raw data writing without sanitization",
+          "explanation": "The function writes raw dictionary objects to a file without sanitization or escaping. If any entry contains malicious content (e.g., shell commands or HTML), it could lead to injection attacks when the output file is processed by other systems.",
+          "confidence": 0.8
+        }
+      },
+      {
+        "finding_id": "single-5f7081b2",
+        "category": "RESOURCE MANAGEMENT",
+        "severity": "MEDIUM",
+        "affected_file": "app/reports/exporter",
+        "line_start": 4,
+        "line_end": 4,
+        "title": "File not closed properly",
+        "explanation": "The file object is opened with 'w' mode but not properly closed. This creates a resource leak if the function is interrupted or crashes during execution. The use of a context manager is required to ensure proper file closure.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "Resource Management",
+          "severity": "MEDIUM",
+          "file_path": "app/reports/exporter",
+          "line_number": 4,
+          "title": "File not closed properly",
+          "explanation": "The file object is opened with 'w' mode but not properly closed. This creates a resource leak if the function is interrupted or crashes during execution. The use of a context manager is required to ensure proper file closure.",
+          "confidence": 0.8
+        }
+      },
+      {
+        "finding_id": "single-de6a7643",
+        "category": "TEST ADEQUACY",
+        "severity": "MEDIUM",
+        "affected_file": "app/reports/exporter.py",
+        "line_start": 4,
+        "line_end": 4,
+        "title": "Missing test coverage for edge cases",
+        "explanation": "The function lacks comprehensive test coverage. There is no test for edge cases such as empty input, malformed entries, or invalid output paths. Without tests, it's difficult to verify correctness or detect regressions.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "Test Adequacy",
+          "severity": "MEDIUM",
+          "file_path": "app/reports/exporter.py",
+          "line_number": 4,
+          "title": "Missing test coverage for edge cases",
+          "explanation": "The function lacks comprehensive test coverage. There is no test for edge cases such as empty input, malformed entries, or invalid output paths. Without tests, it's difficult to verify correctness or detect regressions.",
+          "confidence": 0.8
+        }
+      }
+    ],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 63.1753,
+      "api_calls": 1,
+      "prompt_tokens": 166,
+      "completion_tokens": 391,
+      "total_tokens": 557,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "SYNTH-ERR-004",
+    "category": "ERROR_HANDLING",
+    "ground_truth_count": 1,
+    "predicted_count": 1,
+    "true_positives": 1,
+    "false_positives": 0,
+    "false_negatives": 0,
+    "duplicates": 0,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-ERR-004",
+        "predicted_finding_id": "single-0ed37894",
+        "file_matched": true,
+        "line_distance": 1,
+        "category_matched": true,
+        "semantic_score": 0.958,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-ERR-004 at lines 4-4 (distance=1)"
+      }
+    ],
+    "unmatched_predictions": [],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 24.5272,
+      "api_calls": 1,
+      "prompt_tokens": 146,
+      "completion_tokens": 124,
+      "total_tokens": 270,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "SYNTH-ERR-005",
+    "category": "ERROR_HANDLING",
+    "ground_truth_count": 1,
+    "predicted_count": 3,
+    "true_positives": 1,
+    "false_positives": 2,
+    "false_negatives": 0,
+    "duplicates": 0,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-ERR-005",
+        "predicted_finding_id": "single-fcdc6b72",
+        "file_matched": true,
+        "line_distance": 1,
+        "category_matched": true,
+        "semantic_score": 0.833,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-ERR-005 at lines 4-4 (distance=1)"
+      }
+    ],
+    "unmatched_predictions": [
+      {
+        "finding_id": "single-f96e677d",
+        "category": "SECURITY",
+        "severity": "MEDIUM",
+        "affected_file": "app/auth/role_resolver.py",
+        "line_start": 4,
+        "line_end": 4,
+        "title": "Potential privilege escalation via default role assignment",
+        "explanation": "Returning a hardcoded 'admin' role on error could expose sensitive information or allow privilege escalation if the role lookup is intended to be authoritative. If the user is not authenticated or has no role, returning 'admin' without validation may lead to unintended access to elevated privileges.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "security",
+          "severity": "MEDIUM",
+          "file_path": "app/auth/role_resolver.py",
+          "line_number": 4,
+          "title": "Potential privilege escalation via default role assignment",
+          "explanation": "Returning a hardcoded 'admin' role on error could expose sensitive information or allow privilege escalation if the role lookup is intended to be authoritative. If the user is not authenticated or has no role, returning 'admin' without validation may lead to unintended access to elevated privileges.",
+          "confidence": 0.8
+        }
+      },
+      {
+        "finding_id": "single-006bdece",
+        "category": "TEST_ADEQUACY",
+        "severity": "MEDIUM",
+        "affected_file": "app/auth/role_resolver.py",
+        "line_start": 4,
+        "line_end": 4,
+        "title": "Missing test coverage for error scenarios",
+        "explanation": "The function lacks explicit test cases for edge cases such as missing user IDs, network failures, or invalid inputs. Without tests, it's difficult to ensure the function behaves correctly under real-world conditions.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "test_adequacy",
+          "severity": "MEDIUM",
+          "file_path": "app/auth/role_resolver.py",
+          "line_number": 4,
+          "title": "Missing test coverage for error scenarios",
+          "explanation": "The function lacks explicit test cases for edge cases such as missing user IDs, network failures, or invalid inputs. Without tests, it's difficult to ensure the function behaves correctly under real-world conditions.",
+          "confidence": 0.8
+        }
+      }
+    ],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 60.8317,
+      "api_calls": 1,
+      "prompt_tokens": 152,
+      "completion_tokens": 314,
+      "total_tokens": 466,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "SYNTH-SEC-001",
+    "category": "SECURITY",
+    "ground_truth_count": 1,
+    "predicted_count": 4,
+    "true_positives": 1,
+    "false_positives": 3,
+    "false_negatives": 0,
+    "duplicates": 1,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-SEC-001",
+        "predicted_finding_id": "single-05103396",
+        "file_matched": true,
+        "line_distance": 1,
+        "category_matched": true,
+        "semantic_score": 0.958,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-SEC-001 at lines 5-5 (distance=1)"
+      }
+    ],
+    "unmatched_predictions": [
+      {
+        "finding_id": "single-8a8a3baf",
+        "category": "ERROR HANDLING",
+        "severity": "MEDIUM",
+        "affected_file": "app",
+        "line_start": 6,
+        "line_end": 6,
+        "title": "Missing Error Handling",
+        "explanation": "The function does not handle potential database errors (e.g., connection failure, query execution errors) or exceptions that may occur during execution. If the database connection is lost or the query fails, the function will silently fail without providing meaningful feedback or error handling.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "Error Handling",
+          "severity": "MEDIUM",
+          "file_path": "app",
+          "line_number": 6,
+          "title": "Missing Error Handling",
+          "explanation": "The function does not handle potential database errors (e.g., connection failure, query execution errors) or exceptions that may occur during execution. If the database connection is lost or the query fails, the function will silently fail without providing meaningful feedback or error handling.",
+          "confidence": 0.8
+        }
+      },
+      {
+        "finding_id": "single-62063f18",
+        "category": "CODE QUALITY",
+        "severity": "MEDIUM",
+        "affected_file": "app/services/user_search.py",
+        "line_start": 5,
+        "line_end": 5,
+        "title": "Unsafe String Formatting in SQL Query",
+        "explanation": "The query uses string formatting with f-strings, which is unsafe and not recommended for SQL queries. It should use parameterized queries instead to prevent injection and ensure robustness.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "Code Quality",
+          "severity": "MEDIUM",
+          "file_path": "app/services/user_search.py",
+          "line_number": 5,
+          "title": "Unsafe String Formatting in SQL Query",
+          "explanation": "The query uses string formatting with f-strings, which is unsafe and not recommended for SQL queries. It should use parameterized queries instead to prevent injection and ensure robustness.",
+          "confidence": 0.8
+        }
+      }
+    ],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 69.8752,
+      "api_calls": 1,
+      "prompt_tokens": 171,
+      "completion_tokens": 372,
+      "total_tokens": 543,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "SYNTH-SEC-002",
+    "category": "SECURITY",
+    "ground_truth_count": 1,
+    "predicted_count": 4,
+    "true_positives": 1,
+    "false_positives": 3,
+    "false_negatives": 0,
+    "duplicates": 1,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-SEC-002",
+        "predicted_finding_id": "single-870abaf3",
+        "file_matched": true,
+        "line_distance": 2,
+        "category_matched": true,
+        "semantic_score": 0.917,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-SEC-002 at lines 3-3 (distance=2)"
+      }
+    ],
+    "unmatched_predictions": [
+      {
+        "finding_id": "single-e746ab27",
+        "category": "ERROR HANDLING",
+        "severity": "MEDIUM",
+        "affected_file": "app/auth/jwt_helper.py",
+        "line_start": 6,
+        "line_end": 6,
+        "title": "Missing Error Handling in Token Generation",
+        "explanation": "The function does not include any error handling for JWT encoding failures or exceptions that may occur during token generation (e.g., due to invalid key or algorithm). This means that if an error occurs, it will propagate unhandled, potentially leading to silent failures or crashes in the application.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "Error Handling",
+          "severity": "MEDIUM",
+          "file_path": "app/auth/jwt_helper.py",
+          "line_number": 6,
+          "title": "Missing Error Handling in Token Generation",
+          "explanation": "The function does not include any error handling for JWT encoding failures or exceptions that may occur during token generation (e.g., due to invalid key or algorithm). This means that if an error occurs, it will propagate unhandled, potentially leading to silent failures or crashes in the application.",
+          "confidence": 0.8
+        }
+      },
+      {
+        "finding_id": "single-e927c1da",
+        "category": "BEST PRACTICE",
+        "severity": "MEDIUM",
+        "affected_file": "app/auth/jwt_helper.py",
+        "line_start": 3,
+        "line_end": 3,
+        "title": "Violation of Secure Secret Storage",
+        "explanation": "The secret key should be stored securely, such as in environment variables or a secure vault, rather than being hardcoded in the source code. This is a fundamental principle of secure software development.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "Best Practice",
+          "severity": "MEDIUM",
+          "file_path": "app/auth/jwt_helper.py",
+          "line_number": 3,
+          "title": "Violation of Secure Secret Storage",
+          "explanation": "The secret key should be stored securely, such as in environment variables or a secure vault, rather than being hardcoded in the source code. This is a fundamental principle of secure software development.",
+          "confidence": 0.8
+        }
+      }
+    ],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 86.2495,
+      "api_calls": 1,
+      "prompt_tokens": 204,
+      "completion_tokens": 420,
+      "total_tokens": 624,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "SYNTH-SEC-003",
+    "category": "SECURITY",
+    "ground_truth_count": 1,
+    "predicted_count": 3,
+    "true_positives": 1,
+    "false_positives": 2,
+    "false_negatives": 0,
+    "duplicates": 1,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-SEC-003",
+        "predicted_finding_id": "single-50124dbe",
+        "file_matched": true,
+        "line_distance": 4,
+        "category_matched": true,
+        "semantic_score": 0.833,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-SEC-003 at lines 3-3 (distance=4)"
+      }
+    ],
+    "unmatched_predictions": [
+      {
+        "finding_id": "single-d2b93eb8",
+        "category": "ERROR_HANDLING",
+        "severity": "MEDIUM",
+        "affected_file": "app/session/cache.py",
+        "line_start": 3,
+        "line_end": 3,
+        "title": "Missing error handling for base64 and pickle operations",
+        "explanation": "The function does not handle potential errors during base64 decoding or pickle deserialization. If the cookie data is malformed or corrupted, the function will raise an exception without any error handling, which could lead to crashes or expose internal errors to users or attackers.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "error_handling",
+          "severity": "MEDIUM",
+          "file_path": "app/session/cache.py",
+          "line_number": 3,
+          "title": "Missing error handling for base64 and pickle operations",
+          "explanation": "The function does not handle potential errors during base64 decoding or pickle deserialization. If the cookie data is malformed or corrupted, the function will raise an exception without any error handling, which could lead to crashes or expose internal errors to users or attackers.",
+          "confidence": 0.8
+        }
+      }
+    ],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 67.5601,
+      "api_calls": 1,
+      "prompt_tokens": 170,
+      "completion_tokens": 317,
+      "total_tokens": 487,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "SYNTH-SEC-004",
+    "category": "SECURITY",
+    "ground_truth_count": 1,
+    "predicted_count": 2,
+    "true_positives": 1,
+    "false_positives": 1,
+    "false_negatives": 0,
+    "duplicates": 1,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-SEC-004",
+        "predicted_finding_id": "single-4347c33d",
+        "file_matched": true,
+        "line_distance": 0,
+        "category_matched": true,
+        "semantic_score": 1.0,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-SEC-004 at lines 5-5 (distance=0)"
+      }
+    ],
+    "unmatched_predictions": [],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 34.6418,
+      "api_calls": 1,
+      "prompt_tokens": 147,
+      "completion_tokens": 190,
+      "total_tokens": 337,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "SYNTH-SEC-005",
+    "category": "SECURITY",
+    "ground_truth_count": 1,
+    "predicted_count": 4,
+    "true_positives": 1,
+    "false_positives": 3,
+    "false_negatives": 0,
+    "duplicates": 0,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-SEC-005",
+        "predicted_finding_id": "single-b249960b",
+        "file_matched": true,
+        "line_distance": 2,
+        "category_matched": true,
+        "semantic_score": 0.917,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-SEC-005 at lines 4-4 (distance=2)"
+      }
+    ],
+    "unmatched_predictions": [
+      {
+        "finding_id": "single-45b3bab4",
+        "category": "ERROR HANDLING",
+        "severity": "MEDIUM",
+        "affected_file": "app/utils/diagnostics.py",
+        "line_start": 5,
+        "line_end": 5,
+        "title": "Missing Error Handling and Validation",
+        "explanation": "The function does not handle cases where the ping command fails (e.g., invalid IP, network unreachable) or when subprocess.run raises exceptions. It will silently fail or return empty output without meaningful error feedback.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "Error Handling",
+          "severity": "MEDIUM",
+          "file_path": "app/utils/diagnostics.py",
+          "line_number": 5,
+          "title": "Missing Error Handling and Validation",
+          "explanation": "The function does not handle cases where the ping command fails (e.g., invalid IP, network unreachable) or when subprocess.run raises exceptions. It will silently fail or return empty output without meaningful error feedback.",
+          "confidence": 0.8
+        }
+      },
+      {
+        "finding_id": "single-d39677ff",
+        "category": "LOGIC",
+        "severity": "MEDIUM",
+        "affected_file": "app/utils/diagnostics.py",
+        "line_start": 5,
+        "line_end": 5,
+        "title": "Incorrect Output Specification",
+        "explanation": "The function returns only the stdout of the ping command, but does not include any latency or response time information. The description mentions returning 'network latency outputs', which is not achieved here.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "Logic",
+          "severity": "MEDIUM",
+          "file_path": "app/utils/diagnostics.py",
+          "line_number": 5,
+          "title": "Incorrect Output Specification",
+          "explanation": "The function returns only the stdout of the ping command, but does not include any latency or response time information. The description mentions returning 'network latency outputs', which is not achieved here.",
+          "confidence": 0.8
+        }
+      },
+      {
+        "finding_id": "single-6936c54d",
+        "category": "CODE QUALITY",
+        "severity": "MEDIUM",
+        "affected_file": "app/utils/diagnostics.py",
+        "line_start": 4,
+        "line_end": 4,
+        "title": "Use of shell=True with User Input",
+        "explanation": "The use of `shell=True` with user-provided input is a significant anti-pattern. It should be avoided in favor of constructing a list of arguments to pass to subprocess.run() to prevent injection and improve reliability.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "Code Quality",
+          "severity": "MEDIUM",
+          "file_path": "app/utils/diagnostics.py",
+          "line_number": 4,
+          "title": "Use of shell=True with User Input",
+          "explanation": "The use of `shell=True` with user-provided input is a significant anti-pattern. It should be avoided in favor of constructing a list of arguments to pass to subprocess.run() to prevent injection and improve reliability.",
+          "confidence": 0.8
+        }
+      }
+    ],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 65.3164,
+      "api_calls": 1,
+      "prompt_tokens": 169,
+      "completion_tokens": 373,
+      "total_tokens": 542,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "SYNTH-TEST-001",
+    "category": "TEST_ADEQUACY",
+    "ground_truth_count": 1,
+    "predicted_count": 3,
+    "true_positives": 0,
+    "false_positives": 3,
+    "false_negatives": 1,
+    "duplicates": 0,
+    "matched_pairs": [],
+    "unmatched_predictions": [
+      {
+        "finding_id": "single-8007b950",
+        "category": "SECURITY",
+        "severity": "MEDIUM",
+        "affected_file": "app/services/tier_calculator.py",
+        "line_start": 3,
+        "line_end": 3,
+        "title": "Missing input validation for customer_tier",
+        "explanation": "The function does not validate or sanitize the input `customer_tier` value. An attacker could potentially inject malicious values (e.g., `\"VIP_ENTERPRISE\" || 1`) to manipulate the logic or trigger unintended behavior. While the current implementation only checks for exact string matches, this opens a door for injection if the input is not properly validated or if the string is constructed from user input.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "security",
+          "severity": "MEDIUM",
+          "file_path": "app/services/tier_calculator.py",
+          "line_number": 3,
+          "title": "Missing input validation for customer_tier",
+          "explanation": "The function does not validate or sanitize the input `customer_tier` value. An attacker could potentially inject malicious values (e.g., `\"VIP_ENTERPRISE\" || 1`) to manipulate the logic or trigger unintended behavior. While the current implementation only checks for exact string matches, this opens a door for injection if the input is not properly validated or if the string is constructed from user input.",
+          "confidence": 0.8
+        }
+      },
+      {
+        "finding_id": "single-5f63e95a",
+        "category": "LOGIC",
+        "severity": "MEDIUM",
+        "affected_file": "app/services/tier_calculator.py",
+        "line_start": 5,
+        "line_end": 5,
+        "title": "No validation for invalid customer tiers",
+        "explanation": "The function assumes that only 'VIP_ENTERPRISE' and 'STANDARD' are valid tiers. It returns the base fee for any other value, which may not be intentional. This could lead to unexpected behavior or incorrect fee calculations if an invalid tier is passed. There is no explicit handling or error raising for invalid inputs.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "logic",
+          "severity": "MEDIUM",
+          "file_path": "app/services/tier_calculator.py",
+          "line_number": 5,
+          "title": "No validation for invalid customer tiers",
+          "explanation": "The function assumes that only 'VIP_ENTERPRISE' and 'STANDARD' are valid tiers. It returns the base fee for any other value, which may not be intentional. This could lead to unexpected behavior or incorrect fee calculations if an invalid tier is passed. There is no explicit handling or error raising for invalid inputs.",
+          "confidence": 0.8
+        }
+      },
+      {
+        "finding_id": "single-dab56678",
+        "category": "ERROR_HANDLING",
+        "severity": "MEDIUM",
+        "affected_file": "app/services/tier_calculator.py",
+        "line_start": 5,
+        "line_end": 5,
+        "title": "Missing error handling for invalid input",
+        "explanation": "The function does not raise an exception or return an error when an invalid tier is provided. This could result in silent failures or incorrect fee calculations, which may lead to financial discrepancies or misrepresentation of pricing.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "error_handling",
+          "severity": "MEDIUM",
+          "file_path": "app/services/tier_calculator.py",
+          "line_number": 5,
+          "title": "Missing error handling for invalid input",
+          "explanation": "The function does not raise an exception or return an error when an invalid tier is provided. This could result in silent failures or incorrect fee calculations, which may lead to financial discrepancies or misrepresentation of pricing.",
+          "confidence": 0.8
+        }
+      }
+    ],
+    "unmatched_ground_truth": [
+      {
+        "defect_id": "DEFECT-TEST-001",
+        "category": "TEST_ADEQUACY",
+        "affected_file": "app/services/tier_calculator.py",
+        "line_start": 3,
+        "line_end": 4,
+        "expected_issue_type": "MISSING_TEST_COVERAGE",
+        "expected_severity": "MEDIUM",
+        "description": "Missing test for changed behavior: new VIP_ENTERPRISE tier logic has zero unit test coverage.",
+        "explanation": "Critical financial calculation path introduced without accompanying test assertions leaves logic vulnerable to undetected regressions.",
+        "expected_evidence": [
+          {
+            "tool_name": "coverage_diff_checker",
+            "rule_or_cve_id": "test.coverage.untested_branch",
+            "target_pattern": "if customer_tier == \"VIP_ENTERPRISE\":",
+            "description": "New branch missing from test suite coverage report."
+          }
+        ]
+      }
+    ],
+    "resource_usage": {
+      "latency_seconds": 69.6326,
+      "api_calls": 1,
+      "prompt_tokens": 186,
+      "completion_tokens": 353,
+      "total_tokens": 539,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "SYNTH-TEST-002",
+    "category": "TEST_ADEQUACY",
+    "ground_truth_count": 1,
+    "predicted_count": 3,
+    "true_positives": 0,
+    "false_positives": 3,
+    "false_negatives": 1,
+    "duplicates": 0,
+    "matched_pairs": [],
+    "unmatched_predictions": [
+      {
+        "finding_id": "single-05d187bb",
+        "category": "SECURITY",
+        "severity": "MEDIUM",
+        "affected_file": "app/banking/validator.py",
+        "line_start": 4,
+        "line_end": 4,
+        "title": "Missing input validation for withdrawal amount",
+        "explanation": "The function does not validate input types or handle edge cases such as negative amounts or zero. A withdrawal amount of zero or negative values could be passed without proper validation, potentially leading to unintended behavior or denial of service. Additionally, no input sanitization or type checking is performed, which could allow malicious inputs to bypass logic.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "security",
+          "severity": "MEDIUM",
+          "file_path": "app/banking/validator.py",
+          "line_number": 4,
+          "title": "Missing input validation for withdrawal amount",
+          "explanation": "The function does not validate input types or handle edge cases such as negative amounts or zero. A withdrawal amount of zero or negative values could be passed without proper validation, potentially leading to unintended behavior or denial of service. Additionally, no input sanitization or type checking is performed, which could allow malicious inputs to bypass logic.",
+          "confidence": 0.8
+        }
+      },
+      {
+        "finding_id": "single-9da0e2ab",
+        "category": "LOGIC",
+        "severity": "MEDIUM",
+        "affected_file": "app/banking/validator.py",
+        "line_start": 5,
+        "line_end": 5,
+        "title": "No validation for positive withdrawal amount",
+        "explanation": "The function returns `True` if the withdrawal amount is less than or equal to the balance, but it does not validate that the withdrawal amount is positive. A negative withdrawal amount (e.g., -100) would be accepted and could lead to incorrect account state updates or unexpected behavior in the banking system.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "logic",
+          "severity": "MEDIUM",
+          "file_path": "app/banking/validator.py",
+          "line_number": 5,
+          "title": "No validation for positive withdrawal amount",
+          "explanation": "The function returns `True` if the withdrawal amount is less than or equal to the balance, but it does not validate that the withdrawal amount is positive. A negative withdrawal amount (e.g., -100) would be accepted and could lead to incorrect account state updates or unexpected behavior in the banking system.",
+          "confidence": 0.8
+        }
+      },
+      {
+        "finding_id": "single-f3436fad",
+        "category": "ERROR_HANDLING",
+        "severity": "MEDIUM",
+        "affected_file": "app/banking/validator.py",
+        "line_start": 4,
+        "line_end": 4,
+        "title": "Missing type validation and error handling",
+        "explanation": "The function does not handle cases where inputs are not floats or are None. If `current_balance` or `withdraw_amount` are not valid numbers, the function may raise a TypeError or behave unpredictably. There is no type checking or error handling for invalid inputs.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "error_handling",
+          "severity": "MEDIUM",
+          "file_path": "app/banking/validator.py",
+          "line_number": 4,
+          "title": "Missing type validation and error handling",
+          "explanation": "The function does not handle cases where inputs are not floats or are None. If `current_balance` or `withdraw_amount` are not valid numbers, the function may raise a TypeError or behave unpredictably. There is no type checking or error handling for invalid inputs.",
+          "confidence": 0.8
+        }
+      }
+    ],
+    "unmatched_ground_truth": [
+      {
+        "defect_id": "DEFECT-TEST-002",
+        "category": "TEST_ADEQUACY",
+        "affected_file": "app/banking/validator.py",
+        "line_start": 3,
+        "line_end": 5,
+        "expected_issue_type": "INSUFFICIENT_BOUNDARY_COVERAGE",
+        "expected_severity": "HIGH",
+        "description": "Insufficient boundary coverage: zero and negative balance edge cases lack unit test verification.",
+        "explanation": "Allows negative withdrawal amounts (e.g. withdraw -100) to pass validation because zero boundary is untested.",
+        "expected_evidence": [
+          {
+            "tool_name": "mutation_testing_analyzer",
+            "rule_or_cve_id": "test.boundary.zero_negative_untested",
+            "target_pattern": "if withdraw_amount > current_balance:",
+            "description": "Boundary condition mutation survives test suite."
+          }
+        ]
+      }
+    ],
+    "resource_usage": {
+      "latency_seconds": 73.0578,
+      "api_calls": 1,
+      "prompt_tokens": 151,
+      "completion_tokens": 342,
+      "total_tokens": 493,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "SYNTH-TEST-003",
+    "category": "TEST_ADEQUACY",
+    "ground_truth_count": 1,
+    "predicted_count": 4,
+    "true_positives": 1,
+    "false_positives": 3,
+    "false_negatives": 0,
+    "duplicates": 0,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-TEST-003",
+        "predicted_finding_id": "single-b9053f88",
+        "file_matched": true,
+        "line_distance": 0,
+        "category_matched": true,
+        "semantic_score": 0.875,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-TEST-003 at lines 4-4 (distance=0)"
+      }
+    ],
+    "unmatched_predictions": [
+      {
+        "finding_id": "single-bedd96bc",
+        "category": "SECURITY",
+        "severity": "MEDIUM",
+        "affected_file": "app/queue/backoff.py",
+        "line_start": 4,
+        "line_end": 4,
+        "title": "No security vulnerability",
+        "explanation": "No security vulnerability detected in the function. The function performs mathematical computation and does not handle sensitive data or user input in a way that could lead to security issues.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "security",
+          "severity": "MEDIUM",
+          "file_path": "app/queue/backoff.py",
+          "line_number": 4,
+          "title": "No security vulnerability",
+          "explanation": "No security vulnerability detected in the function. The function performs mathematical computation and does not handle sensitive data or user input in a way that could lead to security issues.",
+          "confidence": 0.8
+        }
+      },
+      {
+        "finding_id": "single-bb6d4086",
+        "category": "BUG",
+        "severity": "MEDIUM",
+        "affected_file": "app/queue/backoff.py",
+        "line_start": 5,
+        "line_end": 5,
+        "title": "Potential overflow in exponential calculation",
+        "explanation": "The function uses an exponential backoff formula, but it does not account for the possibility of overflow or floating-point precision issues when the attempt number is very large. For example, with a high attempt value, 2 ** attempt could result in a value that exceeds the representable range of float, leading to incorrect or unexpected behavior. Additionally, the function does not validate input parameters, which could lead to unintended behavior if invalid inputs are passed.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "bug",
+          "severity": "MEDIUM",
+          "file_path": "app/queue/backoff.py",
+          "line_number": 5,
+          "title": "Potential overflow in exponential calculation",
+          "explanation": "The function uses an exponential backoff formula, but it does not account for the possibility of overflow or floating-point precision issues when the attempt number is very large. For example, with a high attempt value, 2 ** attempt could result in a value that exceeds the representable range of float, leading to incorrect or unexpected behavior. Additionally, the function does not validate input parameters, which could lead to unintended behavior if invalid inputs are passed.",
+          "confidence": 0.8
+        }
+      },
+      {
+        "finding_id": "single-850320c2",
+        "category": "ERROR_HANDLING",
+        "severity": "MEDIUM",
+        "affected_file": "app/queue/backoff.py",
+        "line_start": 4,
+        "line_end": 4,
+        "title": "Missing input validation",
+        "explanation": "The function does not validate or handle invalid inputs such as negative attempt numbers or non-numeric base_delay values. If an invalid input is passed, the function may behave unexpectedly or silently fail. For example, a negative attempt value would result in a mathematically invalid expression (2 ** negative), which could cause errors or produce incorrect results.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "error_handling",
+          "severity": "MEDIUM",
+          "file_path": "app/queue/backoff.py",
+          "line_number": 4,
+          "title": "Missing input validation",
+          "explanation": "The function does not validate or handle invalid inputs such as negative attempt numbers or non-numeric base_delay values. If an invalid input is passed, the function may behave unexpectedly or silently fail. For example, a negative attempt value would result in a mathematically invalid expression (2 ** negative), which could cause errors or produce incorrect results.",
+          "confidence": 0.8
+        }
+      }
+    ],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 89.2104,
+      "api_calls": 1,
+      "prompt_tokens": 162,
+      "completion_tokens": 453,
+      "total_tokens": 615,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "REAL-BUG-001",
+    "category": "BUG_LOGIC",
+    "ground_truth_count": 1,
+    "predicted_count": 4,
+    "true_positives": 0,
+    "false_positives": 4,
+    "false_negatives": 1,
+    "duplicates": 0,
+    "matched_pairs": [],
+    "unmatched_predictions": [
+      {
+        "finding_id": "single-aed1c072",
+        "category": "SECURITY",
+        "severity": "MEDIUM",
+        "affected_file": "fastapi/dependencies/utils.py",
+        "line_start": 4,
+        "line_end": 4,
+        "title": "Missing input validation and sanitization",
+        "explanation": "The function does not validate or sanitize input values, which could allow for injection attacks if the query parameters are used in downstream operations without proper sanitization. While this specific function only extracts values, the lack of input validation introduces a potential attack surface.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "security",
+          "severity": "MEDIUM",
+          "file_path": "fastapi/dependencies/utils.py",
+          "line_number": 4,
+          "title": "Missing input validation and sanitization",
+          "explanation": "The function does not validate or sanitize input values, which could allow for injection attacks if the query parameters are used in downstream operations without proper sanitization. While this specific function only extracts values, the lack of input validation introduces a potential attack surface.",
+          "confidence": 0.8
+        }
+      },
+      {
+        "finding_id": "single-b396134e",
+        "category": "BUG",
+        "severity": "MEDIUM",
+        "affected_file": "fastapi/dependencies/utils.py",
+        "line_start": 5,
+        "line_end": 5,
+        "title": "Ambiguous behavior with duplicate keys",
+        "explanation": "The function does not handle the case where a key appears multiple times in the query parameters. While it overwrites duplicates, this behavior may not be intentional or expected. The function should clearly document or explicitly handle this behavior, especially if the application relies on accumulating values (e.g., for lists or arrays).",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "bug",
+          "severity": "MEDIUM",
+          "file_path": "fastapi/dependencies/utils.py",
+          "line_number": 5,
+          "title": "Ambiguous behavior with duplicate keys",
+          "explanation": "The function does not handle the case where a key appears multiple times in the query parameters. While it overwrites duplicates, this behavior may not be intentional or expected. The function should clearly document or explicitly handle this behavior, especially if the application relies on accumulating values (e.g., for lists or arrays).",
+          "confidence": 0.8
+        }
+      },
+      {
+        "finding_id": "single-2ac68678",
+        "category": "ERROR_HANDLING",
+        "severity": "MEDIUM",
+        "affected_file": "fastapi/dependencies/utils.py",
+        "line_start": 4,
+        "line_end": 4,
+        "title": "Missing error handling for malformed inputs",
+        "explanation": "The function does not handle edge cases such as `None` values, malformed tuples, or empty inputs. For example, if `raw_query_items` contains a tuple with an empty string or `None`, the function may raise a `TypeError` or fail silently without clear error handling.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "error_handling",
+          "severity": "MEDIUM",
+          "file_path": "fastapi/dependencies/utils.py",
+          "line_number": 4,
+          "title": "Missing error handling for malformed inputs",
+          "explanation": "The function does not handle edge cases such as `None` values, malformed tuples, or empty inputs. For example, if `raw_query_items` contains a tuple with an empty string or `None`, the function may raise a `TypeError` or fail silently without clear error handling.",
+          "confidence": 0.8
+        }
+      },
+      {
+        "finding_id": "single-a67a3e48",
+        "category": "TEST_ADEQUACY",
+        "severity": "MEDIUM",
+        "affected_file": "fastapi/dependencies/utils.py",
+        "line_start": 4,
+        "line_end": 4,
+        "title": "Insufficient test coverage",
+        "explanation": "The function lacks unit tests that cover edge cases such as empty input, duplicate keys, malformed tuples, and boundary values. Without sufficient test coverage, the function's behavior under real-world conditions cannot be verified.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "test_adequacy",
+          "severity": "MEDIUM",
+          "file_path": "fastapi/dependencies/utils.py",
+          "line_number": 4,
+          "title": "Insufficient test coverage",
+          "explanation": "The function lacks unit tests that cover edge cases such as empty input, duplicate keys, malformed tuples, and boundary values. Without sufficient test coverage, the function's behavior under real-world conditions cannot be verified.",
+          "confidence": 0.8
+        }
+      }
+    ],
+    "unmatched_ground_truth": [
+      {
+        "defect_id": "DEFECT-REAL-BUG-001",
+        "category": "BUG_LOGIC",
+        "affected_file": "fastapi/dependencies/utils.py",
+        "line_start": 4,
+        "line_end": 5,
+        "expected_issue_type": "INCORRECT_STATE_TRANSITION",
+        "expected_severity": "MEDIUM",
+        "description": "Query parameter extraction logic treated repeated list items as scalar, overwriting earlier keys.",
+        "explanation": "Assigning values[key] = value directly discards preceding values for multi-valued query parameters (e.g. ?filter=a&filter=b).",
+        "expected_evidence": [
+          {
+            "tool_name": "logic_verifier",
+            "rule_or_cve_id": "logic.collection.overwrite_duplicate_key",
+            "target_pattern": "values[key] = value",
+            "description": "Repeated key values overwritten without list conversion."
+          }
+        ]
+      }
+    ],
+    "resource_usage": {
+      "latency_seconds": 82.38,
+      "api_calls": 1,
+      "prompt_tokens": 180,
+      "completion_tokens": 423,
+      "total_tokens": 603,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "REAL-ERR-001",
+    "category": "ERROR_HANDLING",
+    "ground_truth_count": 1,
+    "predicted_count": 3,
+    "true_positives": 1,
+    "false_positives": 2,
+    "false_negatives": 0,
+    "duplicates": 0,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-REAL-ERR-001",
+        "predicted_finding_id": "single-fd0723e2",
+        "file_matched": true,
+        "line_distance": 0,
+        "category_matched": true,
+        "semantic_score": 1.0,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-REAL-ERR-001 at lines 10-10 (distance=0)"
+      }
+    ],
+    "unmatched_predictions": [
+      {
+        "finding_id": "single-0253c281",
+        "category": "SECURITY",
+        "severity": "MEDIUM",
+        "affected_file": "celery/events/consumer.py",
+        "line_start": 10,
+        "line_end": 10,
+        "title": "Uncaught ConnectionResetError leads to thread termination",
+        "explanation": "The code does not handle or log connection reset errors, which could allow an attacker to exploit broker-side connection resets to cause denial-of-service or unexpected termination of the consumer thread. This lack of error handling may lead to uncontrolled process termination or memory leaks in production environments.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "security",
+          "severity": "MEDIUM",
+          "file_path": "celery/events/consumer.py",
+          "line_number": 10,
+          "title": "Uncaught ConnectionResetError leads to thread termination",
+          "explanation": "The code does not handle or log connection reset errors, which could allow an attacker to exploit broker-side connection resets to cause denial-of-service or unexpected termination of the consumer thread. This lack of error handling may lead to uncontrolled process termination or memory leaks in production environments.",
+          "confidence": 0.8
+        }
+      },
+      {
+        "finding_id": "single-5ce6fb37",
+        "category": "ROBUSTNESS",
+        "severity": "MEDIUM",
+        "affected_file": "celery/events/consumer-1.py",
+        "line_start": 10,
+        "line_end": 10,
+        "title": "No graceful exit or recovery mechanism for persistent failures",
+        "explanation": "The loop continues indefinitely without any mechanism to gracefully exit or recover from persistent connection failures. Without a timeout or health check, the consumer may remain in a loop of failed attempts, consuming resources unnecessarily.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "robustness",
+          "severity": "MEDIUM",
+          "file_path": "celery/events/consumer-1.py",
+          "line_number": 10,
+          "title": "No graceful exit or recovery mechanism for persistent failures",
+          "explanation": "The loop continues indefinitely without any mechanism to gracefully exit or recover from persistent connection failures. Without a timeout or health check, the consumer may remain in a loop of failed attempts, consuming resources unnecessarily.",
+          "confidence": 0.8
+        }
+      }
+    ],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 64.3812,
+      "api_calls": 1,
+      "prompt_tokens": 181,
+      "completion_tokens": 312,
+      "total_tokens": 493,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "REAL-SEC-001",
+    "category": "SECURITY",
+    "ground_truth_count": 1,
+    "predicted_count": 4,
+    "true_positives": 1,
+    "false_positives": 3,
+    "false_negatives": 0,
+    "duplicates": 0,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-REAL-SEC-001",
+        "predicted_finding_id": "single-eb74cdd5",
+        "file_matched": true,
+        "line_distance": 2,
+        "category_matched": true,
+        "semantic_score": 0.917,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-REAL-SEC-001 at lines 12-12 (distance=2)"
+      }
+    ],
+    "unmatched_predictions": [
+      {
+        "finding_id": "single-edf32b2a",
+        "category": "LOGIC",
+        "severity": "MEDIUM",
+        "affected_file": "requests/sessions.py",
+        "line_start": 12,
+        "line_end": 12,
+        "title": "Incomplete implementation of redirect authentication header rebuilding",
+        "explanation": "The method is designed to rebuild authentication headers, but the implementation is incomplete. The function returns early without actually modifying or rebuilding the headers. The 'pass' statement has no effect, and the method does not update the prepared request's headers or return a modified version of the request. This makes the method effectively a no-op, which is a critical logic error.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "logic",
+          "severity": "MEDIUM",
+          "file_path": "requests/sessions.py",
+          "line_number": 12,
+          "title": "Incomplete implementation of redirect authentication header rebuilding",
+          "explanation": "The method is designed to rebuild authentication headers, but the implementation is incomplete. The function returns early without actually modifying or rebuilding the headers. The 'pass' statement has no effect, and the method does not update the prepared request's headers or return a modified version of the request. This makes the method effectively a no-op, which is a critical logic error.",
+          "confidence": 0.8
+        }
+      },
+      {
+        "finding_id": "single-4f109d7f",
+        "category": "ERROR_HANDLING",
+        "severity": "MEDIUM",
+        "affected_file": "requests/sessions.py",
+        "line_start": 12,
+        "line_end": 12,
+        "title": "Missing input validation and error handling",
+        "explanation": "There is no error handling or validation for cases where the response or request URL might be malformed or missing. For example, if the response is None or the URL is invalid, the code could raise an exception or behave unpredictably. The absence of input validation or defensive programming makes the code vulnerable to unexpected inputs.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "error_handling",
+          "severity": "MEDIUM",
+          "file_path": "requests/sessions.py",
+          "line_number": 12,
+          "title": "Missing input validation and error handling",
+          "explanation": "There is no error handling or validation for cases where the response or request URL might be malformed or missing. For example, if the response is None or the URL is invalid, the code could raise an exception or behave unpredictably. The absence of input validation or defensive programming makes the code vulnerable to unexpected inputs.",
+          "confidence": 0.8
+        }
+      },
+      {
+        "finding_id": "single-9784dd01",
+        "category": "TEST_ADEQUACY",
+        "severity": "MEDIUM",
+        "affected_file": "requests/sessions.py",
+        "line_start": 12,
+        "line_end": 12,
+        "title": "Insufficient test coverage for redirect authentication scenarios",
+        "explanation": "The current implementation lacks sufficient test coverage for edge cases such as cross-origin redirects, authentication header retention, and malformed URLs. Without tests that validate the behavior under these conditions, it is difficult to ensure correctness and security in production use.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "test_adequacy",
+          "severity": "MEDIUM",
+          "file_path": "requests/sessions.py",
+          "line_number": 12,
+          "title": "Insufficient test coverage for redirect authentication scenarios",
+          "explanation": "The current implementation lacks sufficient test coverage for edge cases such as cross-origin redirects, authentication header retention, and malformed URLs. Without tests that validate the behavior under these conditions, it is difficult to ensure correctness and security in production use.",
+          "confidence": 0.8
+        }
+      }
+    ],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 100.9359,
+      "api_calls": 1,
+      "prompt_tokens": 202,
+      "completion_tokens": 482,
+      "total_tokens": 684,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "REAL-SEC-002",
+    "category": "SECURITY",
+    "ground_truth_count": 1,
+    "predicted_count": 4,
+    "true_positives": 1,
+    "false_positives": 3,
+    "false_negatives": 0,
+    "duplicates": 0,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-REAL-SEC-002",
+        "predicted_finding_id": "single-00945ca7",
+        "file_matched": true,
+        "line_distance": 1,
+        "category_matched": true,
+        "semantic_score": 0.958,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-REAL-SEC-002 at lines 8-8 (distance=1)"
+      }
+    ],
+    "unmatched_predictions": [
+      {
+        "finding_id": "single-7959b793",
+        "category": "BUG",
+        "severity": "MEDIUM",
+        "affected_file": "src/flask/helpers.py",
+        "line_start": 8,
+        "line_end": 8,
+        "title": "Incorrect String Duplication in Regex Search",
+        "explanation": "The regex search is performed on `header_value * 100`, which is not a valid or intended behavior. The correct approach should be to search only on the original header value. The multiplication operation is both incorrect and dangerous, and it does not achieve the intended purpose of parsing the header.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "bug",
+          "severity": "MEDIUM",
+          "file_path": "src/flask/helpers.py",
+          "line_number": 8,
+          "title": "Incorrect String Duplication in Regex Search",
+          "explanation": "The regex search is performed on `header_value * 100`, which is not a valid or intended behavior. The correct approach should be to search only on the original header value. The multiplication operation is both incorrect and dangerous, and it does not achieve the intended purpose of parsing the header.",
+          "confidence": 0.8
+        }
+      },
+      {
+        "finding_id": "single-94d5bbd4",
+        "category": "ERROR_HANDLING",
+        "severity": "MEDIUM",
+        "affected_file": "src/flask/helpers.py",
+        "line_start": 8,
+        "line_end": 8,
+        "title": "Missing Input Validation and Error Handling",
+        "explanation": "The function does not validate or sanitize the input header value. It assumes that the header value is a string and does not handle edge cases such as None, malformed strings, or unexpected formats. Additionally, the function does not provide any error messages or logging for malformed inputs, which makes debugging difficult.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "error_handling",
+          "severity": "MEDIUM",
+          "file_path": "src/flask/helpers.py",
+          "line_number": 8,
+          "title": "Missing Input Validation and Error Handling",
+          "explanation": "The function does not validate or sanitize the input header value. It assumes that the header value is a string and does not handle edge cases such as None, malformed strings, or unexpected formats. Additionally, the function does not provide any error messages or logging for malformed inputs, which makes debugging difficult.",
+          "confidence": 0.8
+        }
+      },
+      {
+        "finding_id": "single-3a64a8ac",
+        "category": "LOGIC_ERROR",
+        "severity": "MEDIUM",
+        "affected_file": "src/flask/helpers.py",
+        "line_start": 8,
+        "line_end": 8,
+        "title": "Flawed Regex Logic with String Duplication",
+        "explanation": "The regex pattern `_encoding_re` is compiled with a literal `charset=([a-zA-Z0-9_-]+)` but the search is performed on a duplicated string. This means that even if the original header contains a valid charset, the duplicated string may contain multiple matches or incorrect matches due to the repetition. The logic is fundamentally flawed and will not correctly parse the header.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "logic_error",
+          "severity": "MEDIUM",
+          "file_path": "src/flask/helpers.py",
+          "line_number": 8,
+          "title": "Flawed Regex Logic with String Duplication",
+          "explanation": "The regex pattern `_encoding_re` is compiled with a literal `charset=([a-zA-Z0-9_-]+)` but the search is performed on a duplicated string. This means that even if the original header contains a valid charset, the duplicated string may contain multiple matches or incorrect matches due to the repetition. The logic is fundamentally flawed and will not correctly parse the header.",
+          "confidence": 0.8
+        }
+      }
+    ],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 97.4592,
+      "api_calls": 1,
+      "prompt_tokens": 214,
+      "completion_tokens": 486,
+      "total_tokens": 700,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "REAL-TEST-001",
+    "category": "TEST_ADEQUACY",
+    "ground_truth_count": 1,
+    "predicted_count": 1,
+    "true_positives": 0,
+    "false_positives": 1,
+    "false_negatives": 1,
+    "duplicates": 0,
+    "matched_pairs": [],
+    "unmatched_predictions": [
+      {
+        "finding_id": "single-de2f43a5",
+        "category": "MISSING TEST COVERAGE",
+        "severity": "MEDIUM",
+        "affected_file": "src/urllib3/poolmanager.py",
+        "line_start": 12,
+        "line_end": 12,
+        "title": "Missing test coverage for socket timeout inheritance when **connection_pool_kw defaults applied",
+        "explanation": "The code block checks if 'timeout' is not in self.connection_pool_kw and sets it to 30.0 if absent. However, there is no test coverage for the scenario where default socket timeout values are inherited from **connection_pool_kw when it is passed with custom values. This means the behavior under mixed or overridden configurations is not verified, potentially leading to unexpected behavior in production.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "Missing Test Coverage",
+          "severity": "MEDIUM",
+          "file_path": "src/urllib3/poolmanager.py",
+          "line_number": 12,
+          "title": "Missing test coverage for socket timeout inheritance when **connection_pool_kw defaults applied",
+          "explanation": "The code block checks if 'timeout' is not in self.connection_pool_kw and sets it to 30.0 if absent. However, there is no test coverage for the scenario where default socket timeout values are inherited from **connection_pool_kw when it is passed with custom values. This means the behavior under mixed or overridden configurations is not verified, potentially leading to unexpected behavior in production.",
+          "confidence": 0.8
+        }
+      }
+    ],
+    "unmatched_ground_truth": [
+      {
+        "defect_id": "DEFECT-REAL-TEST-001",
+        "category": "TEST_ADEQUACY",
+        "affected_file": "src/urllib3/poolmanager.py",
+        "line_start": 4,
+        "line_end": 6,
+        "expected_issue_type": "MISSING_REGRESSION_TEST",
+        "expected_severity": "MEDIUM",
+        "description": "Missing SSL Context Timeout Regression Test in PoolManager.",
+        "explanation": "PR refactored connection pool initialization without adding tests for default socket timeout inheritance.",
+        "expected_evidence": [
+          {
+            "tool_name": "test_coverage_analyzer",
+            "rule_or_cve_id": "test.coverage.missing_regression_test",
+            "target_pattern": "if \"timeout\" not in self.connection_pool_kw:",
+            "description": "Timeout defaulting logic lacks dedicated regression unit test in test suite."
+          }
+        ]
+      }
+    ],
+    "resource_usage": {
+      "latency_seconds": 25.0278,
+      "api_calls": 1,
+      "prompt_tokens": 203,
+      "completion_tokens": 153,
+      "total_tokens": 356,
+      "estimated_cost_usd": 0.0
+    }
+  }
+]

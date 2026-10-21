@@ -1,0 +1,2 @@
+run_id,baseline_name,execution_mode,provider,model,dataset_version,total_cases,true_positives,false_positives,false_negatives,precision,recall,f1_score,false_positive_rate,false_negative_rate,latency_seconds,total_tokens,cost_usd,evidence_grounded_rate,git_commit_sha
+d56531a3-3e3d-46cc-a0e1-240c6e4634c3,agentic_no_static_evidence,real_llm,ollama,qwen3:4b-instruct,1.0.0,23,19,0,4,1.0,0.8261,0.9048,0.0,0.1739,0.0034,61930,0.0,0.8421,af0f0427252487b6cd0b76bba14a0d611fd67024

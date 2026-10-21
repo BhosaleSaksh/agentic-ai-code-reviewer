@@ -1,0 +1,1616 @@
+[
+  {
+    "case_id": "SYNTH-BUG-001",
+    "category": "BUG_LOGIC",
+    "ground_truth_count": 1,
+    "predicted_count": 3,
+    "true_positives": 1,
+    "false_positives": 2,
+    "false_negatives": 0,
+    "duplicates": 0,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-BUG-001",
+        "predicted_finding_id": "agent-356517bb",
+        "file_matched": true,
+        "line_distance": 0,
+        "category_matched": true,
+        "semantic_score": 1.0,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-BUG-001 at lines 3-4 (distance=0)"
+      }
+    ],
+    "unmatched_predictions": [
+      {
+        "finding_id": "spec-style-9ecb41fa",
+        "category": "STYLE",
+        "severity": "INFO",
+        "affected_file": "app/processors/batch_queue.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Style Suggestion: Consider PEP-8 formatting adherence",
+        "explanation": "Specialist suggests cosmetic whitespace adjustment without functional defect impact.",
+        "confidence_score": 0.65,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      },
+      {
+        "finding_id": "spec-hallucination-b0df52a3",
+        "category": "SECURITY",
+        "severity": "HIGH",
+        "affected_file": "app/processors/batch_queue.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Speculative SSRF Vulnerability Claim",
+        "explanation": "Unverified specialist claims outbound SSRF without validating network destination.",
+        "confidence_score": 0.45,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      }
+    ],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 0.0003,
+      "api_calls": 5,
+      "prompt_tokens": 1200,
+      "completion_tokens": 300,
+      "total_tokens": 1500,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "SYNTH-BUG-002",
+    "category": "BUG_LOGIC",
+    "ground_truth_count": 1,
+    "predicted_count": 3,
+    "true_positives": 1,
+    "false_positives": 2,
+    "false_negatives": 0,
+    "duplicates": 0,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-BUG-002",
+        "predicted_finding_id": "agent-16cb2ec7",
+        "file_matched": true,
+        "line_distance": 1,
+        "category_matched": true,
+        "semantic_score": 0.958,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-BUG-002 at lines 3-3 (distance=1)"
+      }
+    ],
+    "unmatched_predictions": [
+      {
+        "finding_id": "spec-style-9c6ef85e",
+        "category": "STYLE",
+        "severity": "INFO",
+        "affected_file": "app/services/profile_service.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Style Suggestion: Consider PEP-8 formatting adherence",
+        "explanation": "Specialist suggests cosmetic whitespace adjustment without functional defect impact.",
+        "confidence_score": 0.65,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      },
+      {
+        "finding_id": "spec-hallucination-da16fb8d",
+        "category": "SECURITY",
+        "severity": "HIGH",
+        "affected_file": "app/services/profile_service.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Speculative SSRF Vulnerability Claim",
+        "explanation": "Unverified specialist claims outbound SSRF without validating network destination.",
+        "confidence_score": 0.45,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      }
+    ],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 0.0002,
+      "api_calls": 5,
+      "prompt_tokens": 1200,
+      "completion_tokens": 300,
+      "total_tokens": 1500,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "SYNTH-BUG-003",
+    "category": "BUG_LOGIC",
+    "ground_truth_count": 1,
+    "predicted_count": 3,
+    "true_positives": 1,
+    "false_positives": 2,
+    "false_negatives": 0,
+    "duplicates": 0,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-BUG-003",
+        "predicted_finding_id": "agent-41b3b4f4",
+        "file_matched": true,
+        "line_distance": 0,
+        "category_matched": true,
+        "semantic_score": 1.0,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-BUG-003 at lines 3-4 (distance=0)"
+      }
+    ],
+    "unmatched_predictions": [
+      {
+        "finding_id": "spec-style-f62009ff",
+        "category": "STYLE",
+        "severity": "INFO",
+        "affected_file": "app/security/gatekeeper.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Style Suggestion: Consider PEP-8 formatting adherence",
+        "explanation": "Specialist suggests cosmetic whitespace adjustment without functional defect impact.",
+        "confidence_score": 0.65,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      },
+      {
+        "finding_id": "spec-hallucination-19583686",
+        "category": "SECURITY",
+        "severity": "HIGH",
+        "affected_file": "app/security/gatekeeper.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Speculative SSRF Vulnerability Claim",
+        "explanation": "Unverified specialist claims outbound SSRF without validating network destination.",
+        "confidence_score": 0.45,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      }
+    ],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 0.0001,
+      "api_calls": 5,
+      "prompt_tokens": 1200,
+      "completion_tokens": 300,
+      "total_tokens": 1500,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "SYNTH-BUG-004",
+    "category": "BUG_LOGIC",
+    "ground_truth_count": 1,
+    "predicted_count": 3,
+    "true_positives": 1,
+    "false_positives": 2,
+    "false_negatives": 0,
+    "duplicates": 0,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-BUG-004",
+        "predicted_finding_id": "agent-fcdbb5db",
+        "file_matched": true,
+        "line_distance": 0,
+        "category_matched": true,
+        "semantic_score": 1.0,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-BUG-004 at lines 2-4 (distance=0)"
+      }
+    ],
+    "unmatched_predictions": [
+      {
+        "finding_id": "spec-style-0789c2e7",
+        "category": "STYLE",
+        "severity": "INFO",
+        "affected_file": "app/orders/fulfillment.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Style Suggestion: Consider PEP-8 formatting adherence",
+        "explanation": "Specialist suggests cosmetic whitespace adjustment without functional defect impact.",
+        "confidence_score": 0.65,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      },
+      {
+        "finding_id": "spec-hallucination-3dc84db3",
+        "category": "SECURITY",
+        "severity": "HIGH",
+        "affected_file": "app/orders/fulfillment.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Speculative SSRF Vulnerability Claim",
+        "explanation": "Unverified specialist claims outbound SSRF without validating network destination.",
+        "confidence_score": 0.45,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      }
+    ],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 0.0002,
+      "api_calls": 5,
+      "prompt_tokens": 1200,
+      "completion_tokens": 300,
+      "total_tokens": 1500,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "SYNTH-BUG-005",
+    "category": "BUG_LOGIC",
+    "ground_truth_count": 1,
+    "predicted_count": 3,
+    "true_positives": 1,
+    "false_positives": 2,
+    "false_negatives": 0,
+    "duplicates": 0,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-BUG-005",
+        "predicted_finding_id": "agent-8a567bb3",
+        "file_matched": true,
+        "line_distance": 1,
+        "category_matched": true,
+        "semantic_score": 0.958,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-BUG-005 at lines 2-2 (distance=1)"
+      }
+    ],
+    "unmatched_predictions": [
+      {
+        "finding_id": "spec-style-a3e2a426",
+        "category": "STYLE",
+        "severity": "INFO",
+        "affected_file": "app/billing/calculator.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Style Suggestion: Consider PEP-8 formatting adherence",
+        "explanation": "Specialist suggests cosmetic whitespace adjustment without functional defect impact.",
+        "confidence_score": 0.65,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      },
+      {
+        "finding_id": "spec-hallucination-1f7bba83",
+        "category": "SECURITY",
+        "severity": "HIGH",
+        "affected_file": "app/billing/calculator.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Speculative SSRF Vulnerability Claim",
+        "explanation": "Unverified specialist claims outbound SSRF without validating network destination.",
+        "confidence_score": 0.45,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      }
+    ],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 0.0002,
+      "api_calls": 5,
+      "prompt_tokens": 1200,
+      "completion_tokens": 300,
+      "total_tokens": 1500,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "SYNTH-ERR-001",
+    "category": "ERROR_HANDLING",
+    "ground_truth_count": 1,
+    "predicted_count": 3,
+    "true_positives": 1,
+    "false_positives": 2,
+    "false_negatives": 0,
+    "duplicates": 0,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-ERR-001",
+        "predicted_finding_id": "agent-a8d7c298",
+        "file_matched": true,
+        "line_distance": 0,
+        "category_matched": true,
+        "semantic_score": 1.0,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-ERR-001 at lines 5-6 (distance=0)"
+      }
+    ],
+    "unmatched_predictions": [
+      {
+        "finding_id": "spec-style-4663f89a",
+        "category": "STYLE",
+        "severity": "INFO",
+        "affected_file": "app/sync/reconciler.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Style Suggestion: Consider PEP-8 formatting adherence",
+        "explanation": "Specialist suggests cosmetic whitespace adjustment without functional defect impact.",
+        "confidence_score": 0.65,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      },
+      {
+        "finding_id": "spec-hallucination-7a4ddbc4",
+        "category": "SECURITY",
+        "severity": "HIGH",
+        "affected_file": "app/sync/reconciler.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Speculative SSRF Vulnerability Claim",
+        "explanation": "Unverified specialist claims outbound SSRF without validating network destination.",
+        "confidence_score": 0.45,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      }
+    ],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 0.0002,
+      "api_calls": 5,
+      "prompt_tokens": 1200,
+      "completion_tokens": 300,
+      "total_tokens": 1500,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "SYNTH-ERR-002",
+    "category": "ERROR_HANDLING",
+    "ground_truth_count": 1,
+    "predicted_count": 4,
+    "true_positives": 1,
+    "false_positives": 3,
+    "false_negatives": 0,
+    "duplicates": 0,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-ERR-002",
+        "predicted_finding_id": "agent-352d80e6",
+        "file_matched": true,
+        "line_distance": 0,
+        "category_matched": true,
+        "semantic_score": 1.0,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-ERR-002 at lines 4-7 (distance=0)"
+      }
+    ],
+    "unmatched_predictions": [
+      {
+        "finding_id": "spec-style-018a865f",
+        "category": "STYLE",
+        "severity": "INFO",
+        "affected_file": "app/services/payment_gateway.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Style Suggestion: Consider PEP-8 formatting adherence",
+        "explanation": "Specialist suggests cosmetic whitespace adjustment without functional defect impact.",
+        "confidence_score": 0.65,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      },
+      {
+        "finding_id": "spec-comment-902cb8d0",
+        "category": "BUG_LOGIC",
+        "severity": "MEDIUM",
+        "affected_file": "app/services/payment_gateway.py",
+        "line_start": 2,
+        "line_end": 2,
+        "title": "Speculative defect claim on comment or whitespace line",
+        "explanation": "Specialist flagged a non-executable line without evidence.",
+        "confidence_score": 0.55,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      },
+      {
+        "finding_id": "spec-hallucination-2c09e9de",
+        "category": "SECURITY",
+        "severity": "HIGH",
+        "affected_file": "app/services/payment_gateway.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Speculative SSRF Vulnerability Claim",
+        "explanation": "Unverified specialist claims outbound SSRF without validating network destination.",
+        "confidence_score": 0.45,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      }
+    ],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 0.0001,
+      "api_calls": 5,
+      "prompt_tokens": 1200,
+      "completion_tokens": 300,
+      "total_tokens": 1500,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "SYNTH-ERR-003",
+    "category": "ERROR_HANDLING",
+    "ground_truth_count": 1,
+    "predicted_count": 3,
+    "true_positives": 1,
+    "false_positives": 2,
+    "false_negatives": 0,
+    "duplicates": 0,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-ERR-003",
+        "predicted_finding_id": "agent-11d778b4",
+        "file_matched": true,
+        "line_distance": 0,
+        "category_matched": true,
+        "semantic_score": 1.0,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-ERR-003 at lines 2-4 (distance=0)"
+      }
+    ],
+    "unmatched_predictions": [
+      {
+        "finding_id": "spec-style-7a35210f",
+        "category": "STYLE",
+        "severity": "INFO",
+        "affected_file": "app/reports/exporter.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Style Suggestion: Consider PEP-8 formatting adherence",
+        "explanation": "Specialist suggests cosmetic whitespace adjustment without functional defect impact.",
+        "confidence_score": 0.65,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      },
+      {
+        "finding_id": "spec-hallucination-d083f226",
+        "category": "SECURITY",
+        "severity": "HIGH",
+        "affected_file": "app/reports/exporter.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Speculative SSRF Vulnerability Claim",
+        "explanation": "Unverified specialist claims outbound SSRF without validating network destination.",
+        "confidence_score": 0.45,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      }
+    ],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 0.0001,
+      "api_calls": 5,
+      "prompt_tokens": 1200,
+      "completion_tokens": 300,
+      "total_tokens": 1500,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "SYNTH-ERR-004",
+    "category": "ERROR_HANDLING",
+    "ground_truth_count": 1,
+    "predicted_count": 3,
+    "true_positives": 1,
+    "false_positives": 2,
+    "false_negatives": 0,
+    "duplicates": 0,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-ERR-004",
+        "predicted_finding_id": "agent-8e6459c2",
+        "file_matched": true,
+        "line_distance": 0,
+        "category_matched": true,
+        "semantic_score": 1.0,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-ERR-004 at lines 4-5 (distance=0)"
+      }
+    ],
+    "unmatched_predictions": [
+      {
+        "finding_id": "spec-style-3b887a50",
+        "category": "STYLE",
+        "severity": "INFO",
+        "affected_file": "app/config/parser.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Style Suggestion: Consider PEP-8 formatting adherence",
+        "explanation": "Specialist suggests cosmetic whitespace adjustment without functional defect impact.",
+        "confidence_score": 0.65,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      },
+      {
+        "finding_id": "spec-hallucination-ce56cd7b",
+        "category": "SECURITY",
+        "severity": "HIGH",
+        "affected_file": "app/config/parser.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Speculative SSRF Vulnerability Claim",
+        "explanation": "Unverified specialist claims outbound SSRF without validating network destination.",
+        "confidence_score": 0.45,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      }
+    ],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 0.0001,
+      "api_calls": 5,
+      "prompt_tokens": 1200,
+      "completion_tokens": 300,
+      "total_tokens": 1500,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "SYNTH-ERR-005",
+    "category": "ERROR_HANDLING",
+    "ground_truth_count": 1,
+    "predicted_count": 3,
+    "true_positives": 1,
+    "false_positives": 2,
+    "false_negatives": 0,
+    "duplicates": 0,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-ERR-005",
+        "predicted_finding_id": "agent-6423b433",
+        "file_matched": true,
+        "line_distance": 0,
+        "category_matched": true,
+        "semantic_score": 1.0,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-ERR-005 at lines 4-5 (distance=0)"
+      }
+    ],
+    "unmatched_predictions": [
+      {
+        "finding_id": "spec-style-86d674df",
+        "category": "STYLE",
+        "severity": "INFO",
+        "affected_file": "app/auth/role_resolver.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Style Suggestion: Consider PEP-8 formatting adherence",
+        "explanation": "Specialist suggests cosmetic whitespace adjustment without functional defect impact.",
+        "confidence_score": 0.65,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      },
+      {
+        "finding_id": "spec-hallucination-3d279884",
+        "category": "SECURITY",
+        "severity": "HIGH",
+        "affected_file": "app/auth/role_resolver.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Speculative SSRF Vulnerability Claim",
+        "explanation": "Unverified specialist claims outbound SSRF without validating network destination.",
+        "confidence_score": 0.45,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      }
+    ],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 0.0001,
+      "api_calls": 5,
+      "prompt_tokens": 1200,
+      "completion_tokens": 300,
+      "total_tokens": 1500,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "SYNTH-SEC-001",
+    "category": "SECURITY",
+    "ground_truth_count": 1,
+    "predicted_count": 4,
+    "true_positives": 1,
+    "false_positives": 3,
+    "false_negatives": 0,
+    "duplicates": 1,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-SEC-001",
+        "predicted_finding_id": "agent-ed792742",
+        "file_matched": true,
+        "line_distance": 1,
+        "category_matched": true,
+        "semantic_score": 0.958,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-SEC-001 at lines 5-5 (distance=1)"
+      }
+    ],
+    "unmatched_predictions": [
+      {
+        "finding_id": "spec-style-791442f4",
+        "category": "STYLE",
+        "severity": "INFO",
+        "affected_file": "app/services/user_search.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Style Suggestion: Consider PEP-8 formatting adherence",
+        "explanation": "Specialist suggests cosmetic whitespace adjustment without functional defect impact.",
+        "confidence_score": 0.65,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      },
+      {
+        "finding_id": "spec-comment-1c01f94d",
+        "category": "BUG_LOGIC",
+        "severity": "MEDIUM",
+        "affected_file": "app/services/user_search.py",
+        "line_start": 2,
+        "line_end": 2,
+        "title": "Speculative defect claim on comment or whitespace line",
+        "explanation": "Specialist flagged a non-executable line without evidence.",
+        "confidence_score": 0.55,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      }
+    ],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 0.0002,
+      "api_calls": 5,
+      "prompt_tokens": 1200,
+      "completion_tokens": 300,
+      "total_tokens": 1500,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "SYNTH-SEC-002",
+    "category": "SECURITY",
+    "ground_truth_count": 1,
+    "predicted_count": 4,
+    "true_positives": 1,
+    "false_positives": 3,
+    "false_negatives": 0,
+    "duplicates": 1,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-SEC-002",
+        "predicted_finding_id": "agent-ff687ada",
+        "file_matched": true,
+        "line_distance": 1,
+        "category_matched": true,
+        "semantic_score": 0.958,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-SEC-002 at lines 4-4 (distance=1)"
+      }
+    ],
+    "unmatched_predictions": [
+      {
+        "finding_id": "spec-style-8ef5998f",
+        "category": "STYLE",
+        "severity": "INFO",
+        "affected_file": "app/auth/jwt_helper.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Style Suggestion: Consider PEP-8 formatting adherence",
+        "explanation": "Specialist suggests cosmetic whitespace adjustment without functional defect impact.",
+        "confidence_score": 0.65,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      },
+      {
+        "finding_id": "spec-comment-8794341b",
+        "category": "BUG_LOGIC",
+        "severity": "MEDIUM",
+        "affected_file": "app/auth/jwt_helper.py",
+        "line_start": 3,
+        "line_end": 3,
+        "title": "Speculative defect claim on comment or whitespace line",
+        "explanation": "Specialist flagged a non-executable line without evidence.",
+        "confidence_score": 0.55,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      }
+    ],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 0.0003,
+      "api_calls": 5,
+      "prompt_tokens": 1200,
+      "completion_tokens": 300,
+      "total_tokens": 1500,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "SYNTH-SEC-003",
+    "category": "SECURITY",
+    "ground_truth_count": 1,
+    "predicted_count": 4,
+    "true_positives": 1,
+    "false_positives": 3,
+    "false_negatives": 0,
+    "duplicates": 0,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-SEC-003",
+        "predicted_finding_id": "agent-102c75ef",
+        "file_matched": true,
+        "line_distance": 1,
+        "category_matched": true,
+        "semantic_score": 0.958,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-SEC-003 at lines 6-6 (distance=1)"
+      }
+    ],
+    "unmatched_predictions": [
+      {
+        "finding_id": "spec-style-6588228e",
+        "category": "STYLE",
+        "severity": "INFO",
+        "affected_file": "app/session/cache.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Style Suggestion: Consider PEP-8 formatting adherence",
+        "explanation": "Specialist suggests cosmetic whitespace adjustment without functional defect impact.",
+        "confidence_score": 0.65,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      },
+      {
+        "finding_id": "spec-comment-b6690ec7",
+        "category": "BUG_LOGIC",
+        "severity": "MEDIUM",
+        "affected_file": "app/session/cache.py",
+        "line_start": 3,
+        "line_end": 3,
+        "title": "Speculative defect claim on comment or whitespace line",
+        "explanation": "Specialist flagged a non-executable line without evidence.",
+        "confidence_score": 0.55,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      },
+      {
+        "finding_id": "spec-hallucination-f422388f",
+        "category": "SECURITY",
+        "severity": "HIGH",
+        "affected_file": "app/session/cache.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Speculative SSRF Vulnerability Claim",
+        "explanation": "Unverified specialist claims outbound SSRF without validating network destination.",
+        "confidence_score": 0.45,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      }
+    ],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 0.0002,
+      "api_calls": 5,
+      "prompt_tokens": 1200,
+      "completion_tokens": 300,
+      "total_tokens": 1500,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "SYNTH-SEC-004",
+    "category": "SECURITY",
+    "ground_truth_count": 1,
+    "predicted_count": 4,
+    "true_positives": 1,
+    "false_positives": 3,
+    "false_negatives": 0,
+    "duplicates": 1,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-SEC-004",
+        "predicted_finding_id": "agent-5a4cf464",
+        "file_matched": true,
+        "line_distance": 1,
+        "category_matched": true,
+        "semantic_score": 0.958,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-SEC-004 at lines 4-4 (distance=1)"
+      }
+    ],
+    "unmatched_predictions": [
+      {
+        "finding_id": "spec-style-dcc384e8",
+        "category": "STYLE",
+        "severity": "INFO",
+        "affected_file": "app/auth/hasher.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Style Suggestion: Consider PEP-8 formatting adherence",
+        "explanation": "Specialist suggests cosmetic whitespace adjustment without functional defect impact.",
+        "confidence_score": 0.65,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      },
+      {
+        "finding_id": "spec-comment-e271c55c",
+        "category": "BUG_LOGIC",
+        "severity": "MEDIUM",
+        "affected_file": "app/auth/hasher.py",
+        "line_start": 2,
+        "line_end": 2,
+        "title": "Speculative defect claim on comment or whitespace line",
+        "explanation": "Specialist flagged a non-executable line without evidence.",
+        "confidence_score": 0.55,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      }
+    ],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 0.0002,
+      "api_calls": 5,
+      "prompt_tokens": 1200,
+      "completion_tokens": 300,
+      "total_tokens": 1500,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "SYNTH-SEC-005",
+    "category": "SECURITY",
+    "ground_truth_count": 1,
+    "predicted_count": 4,
+    "true_positives": 1,
+    "false_positives": 3,
+    "false_negatives": 0,
+    "duplicates": 1,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-SEC-005",
+        "predicted_finding_id": "agent-c050fef4",
+        "file_matched": true,
+        "line_distance": 1,
+        "category_matched": true,
+        "semantic_score": 0.958,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-SEC-005 at lines 5-5 (distance=1)"
+      }
+    ],
+    "unmatched_predictions": [
+      {
+        "finding_id": "spec-style-26853a8b",
+        "category": "STYLE",
+        "severity": "INFO",
+        "affected_file": "app/utils/diagnostics.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Style Suggestion: Consider PEP-8 formatting adherence",
+        "explanation": "Specialist suggests cosmetic whitespace adjustment without functional defect impact.",
+        "confidence_score": 0.65,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      },
+      {
+        "finding_id": "spec-comment-cdfb1905",
+        "category": "BUG_LOGIC",
+        "severity": "MEDIUM",
+        "affected_file": "app/utils/diagnostics.py",
+        "line_start": 2,
+        "line_end": 2,
+        "title": "Speculative defect claim on comment or whitespace line",
+        "explanation": "Specialist flagged a non-executable line without evidence.",
+        "confidence_score": 0.55,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      }
+    ],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 0.0002,
+      "api_calls": 5,
+      "prompt_tokens": 1200,
+      "completion_tokens": 300,
+      "total_tokens": 1500,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "SYNTH-TEST-001",
+    "category": "TEST_ADEQUACY",
+    "ground_truth_count": 1,
+    "predicted_count": 3,
+    "true_positives": 1,
+    "false_positives": 2,
+    "false_negatives": 0,
+    "duplicates": 0,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-TEST-001",
+        "predicted_finding_id": "agent-c3c2ef0b",
+        "file_matched": true,
+        "line_distance": 0,
+        "category_matched": true,
+        "semantic_score": 1.0,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-TEST-001 at lines 3-4 (distance=0)"
+      }
+    ],
+    "unmatched_predictions": [
+      {
+        "finding_id": "spec-style-cfaa6766",
+        "category": "STYLE",
+        "severity": "INFO",
+        "affected_file": "app/services/tier_calculator.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Style Suggestion: Consider PEP-8 formatting adherence",
+        "explanation": "Specialist suggests cosmetic whitespace adjustment without functional defect impact.",
+        "confidence_score": 0.65,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      },
+      {
+        "finding_id": "spec-hallucination-6254d0b9",
+        "category": "SECURITY",
+        "severity": "HIGH",
+        "affected_file": "app/services/tier_calculator.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Speculative SSRF Vulnerability Claim",
+        "explanation": "Unverified specialist claims outbound SSRF without validating network destination.",
+        "confidence_score": 0.45,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      }
+    ],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 0.0002,
+      "api_calls": 5,
+      "prompt_tokens": 1200,
+      "completion_tokens": 300,
+      "total_tokens": 1500,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "SYNTH-TEST-002",
+    "category": "TEST_ADEQUACY",
+    "ground_truth_count": 1,
+    "predicted_count": 3,
+    "true_positives": 1,
+    "false_positives": 2,
+    "false_negatives": 0,
+    "duplicates": 0,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-TEST-002",
+        "predicted_finding_id": "agent-28263a8c",
+        "file_matched": true,
+        "line_distance": 0,
+        "category_matched": true,
+        "semantic_score": 1.0,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-TEST-002 at lines 3-5 (distance=0)"
+      }
+    ],
+    "unmatched_predictions": [
+      {
+        "finding_id": "spec-style-e939366b",
+        "category": "STYLE",
+        "severity": "INFO",
+        "affected_file": "app/banking/validator.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Style Suggestion: Consider PEP-8 formatting adherence",
+        "explanation": "Specialist suggests cosmetic whitespace adjustment without functional defect impact.",
+        "confidence_score": 0.65,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      },
+      {
+        "finding_id": "spec-hallucination-b4991a6d",
+        "category": "SECURITY",
+        "severity": "HIGH",
+        "affected_file": "app/banking/validator.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Speculative SSRF Vulnerability Claim",
+        "explanation": "Unverified specialist claims outbound SSRF without validating network destination.",
+        "confidence_score": 0.45,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      }
+    ],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 0.0002,
+      "api_calls": 5,
+      "prompt_tokens": 1200,
+      "completion_tokens": 300,
+      "total_tokens": 1500,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "SYNTH-TEST-003",
+    "category": "TEST_ADEQUACY",
+    "ground_truth_count": 1,
+    "predicted_count": 3,
+    "true_positives": 1,
+    "false_positives": 2,
+    "false_negatives": 0,
+    "duplicates": 0,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-TEST-003",
+        "predicted_finding_id": "agent-c8645554",
+        "file_matched": true,
+        "line_distance": 0,
+        "category_matched": true,
+        "semantic_score": 1.0,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-TEST-003 at lines 3-4 (distance=0)"
+      }
+    ],
+    "unmatched_predictions": [
+      {
+        "finding_id": "spec-style-88739c4e",
+        "category": "STYLE",
+        "severity": "INFO",
+        "affected_file": "app/queue/backoff.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Style Suggestion: Consider PEP-8 formatting adherence",
+        "explanation": "Specialist suggests cosmetic whitespace adjustment without functional defect impact.",
+        "confidence_score": 0.65,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      },
+      {
+        "finding_id": "spec-hallucination-055d3805",
+        "category": "SECURITY",
+        "severity": "HIGH",
+        "affected_file": "app/queue/backoff.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Speculative SSRF Vulnerability Claim",
+        "explanation": "Unverified specialist claims outbound SSRF without validating network destination.",
+        "confidence_score": 0.45,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      }
+    ],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 0.0002,
+      "api_calls": 5,
+      "prompt_tokens": 1200,
+      "completion_tokens": 300,
+      "total_tokens": 1500,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "REAL-BUG-001",
+    "category": "BUG_LOGIC",
+    "ground_truth_count": 1,
+    "predicted_count": 4,
+    "true_positives": 1,
+    "false_positives": 3,
+    "false_negatives": 0,
+    "duplicates": 1,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-REAL-BUG-001",
+        "predicted_finding_id": "agent-89bd0219",
+        "file_matched": true,
+        "line_distance": 0,
+        "category_matched": true,
+        "semantic_score": 0.875,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-REAL-BUG-001 at lines 5-5 (distance=0)"
+      }
+    ],
+    "unmatched_predictions": [
+      {
+        "finding_id": "spec-style-27818088",
+        "category": "STYLE",
+        "severity": "INFO",
+        "affected_file": "fastapi/dependencies/utils.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Style Suggestion: Consider PEP-8 formatting adherence",
+        "explanation": "Specialist suggests cosmetic whitespace adjustment without functional defect impact.",
+        "confidence_score": 0.65,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      },
+      {
+        "finding_id": "spec-hallucination-f91cf104",
+        "category": "SECURITY",
+        "severity": "HIGH",
+        "affected_file": "fastapi/dependencies/utils.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Speculative SSRF Vulnerability Claim",
+        "explanation": "Unverified specialist claims outbound SSRF without validating network destination.",
+        "confidence_score": 0.45,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      }
+    ],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 0.0002,
+      "api_calls": 5,
+      "prompt_tokens": 1200,
+      "completion_tokens": 300,
+      "total_tokens": 1500,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "REAL-ERR-001",
+    "category": "ERROR_HANDLING",
+    "ground_truth_count": 1,
+    "predicted_count": 4,
+    "true_positives": 1,
+    "false_positives": 3,
+    "false_negatives": 0,
+    "duplicates": 0,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-REAL-ERR-001",
+        "predicted_finding_id": "agent-e496a785",
+        "file_matched": true,
+        "line_distance": 0,
+        "category_matched": true,
+        "semantic_score": 1.0,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-REAL-ERR-001 at lines 8-10 (distance=0)"
+      }
+    ],
+    "unmatched_predictions": [
+      {
+        "finding_id": "spec-style-f6c4a60f",
+        "category": "STYLE",
+        "severity": "INFO",
+        "affected_file": "celery/events/consumer.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Style Suggestion: Consider PEP-8 formatting adherence",
+        "explanation": "Specialist suggests cosmetic whitespace adjustment without functional defect impact.",
+        "confidence_score": 0.65,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      },
+      {
+        "finding_id": "spec-comment-e2345155",
+        "category": "BUG_LOGIC",
+        "severity": "MEDIUM",
+        "affected_file": "celery/events/consumer.py",
+        "line_start": 10,
+        "line_end": 10,
+        "title": "Speculative defect claim on comment or whitespace line",
+        "explanation": "Specialist flagged a non-executable line without evidence.",
+        "confidence_score": 0.55,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      },
+      {
+        "finding_id": "spec-hallucination-516dc2a4",
+        "category": "SECURITY",
+        "severity": "HIGH",
+        "affected_file": "celery/events/consumer.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Speculative SSRF Vulnerability Claim",
+        "explanation": "Unverified specialist claims outbound SSRF without validating network destination.",
+        "confidence_score": 0.45,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      }
+    ],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 0.0003,
+      "api_calls": 5,
+      "prompt_tokens": 1200,
+      "completion_tokens": 300,
+      "total_tokens": 1500,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "REAL-SEC-001",
+    "category": "SECURITY",
+    "ground_truth_count": 1,
+    "predicted_count": 4,
+    "true_positives": 1,
+    "false_positives": 3,
+    "false_negatives": 0,
+    "duplicates": 0,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-REAL-SEC-001",
+        "predicted_finding_id": "agent-05189d2c",
+        "file_matched": true,
+        "line_distance": 0,
+        "category_matched": true,
+        "semantic_score": 1.0,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-REAL-SEC-001 at lines 8-10 (distance=0)"
+      }
+    ],
+    "unmatched_predictions": [
+      {
+        "finding_id": "spec-style-736874b7",
+        "category": "STYLE",
+        "severity": "INFO",
+        "affected_file": "requests/sessions.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Style Suggestion: Consider PEP-8 formatting adherence",
+        "explanation": "Specialist suggests cosmetic whitespace adjustment without functional defect impact.",
+        "confidence_score": 0.65,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      },
+      {
+        "finding_id": "spec-comment-84eb2be5",
+        "category": "BUG_LOGIC",
+        "severity": "MEDIUM",
+        "affected_file": "requests/sessions.py",
+        "line_start": 7,
+        "line_end": 7,
+        "title": "Speculative defect claim on comment or whitespace line",
+        "explanation": "Specialist flagged a non-executable line without evidence.",
+        "confidence_score": 0.55,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      },
+      {
+        "finding_id": "spec-hallucination-ab2a38b2",
+        "category": "SECURITY",
+        "severity": "HIGH",
+        "affected_file": "requests/sessions.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Speculative SSRF Vulnerability Claim",
+        "explanation": "Unverified specialist claims outbound SSRF without validating network destination.",
+        "confidence_score": 0.45,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      }
+    ],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 0.0003,
+      "api_calls": 5,
+      "prompt_tokens": 1200,
+      "completion_tokens": 300,
+      "total_tokens": 1500,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "REAL-SEC-002",
+    "category": "SECURITY",
+    "ground_truth_count": 1,
+    "predicted_count": 4,
+    "true_positives": 1,
+    "false_positives": 3,
+    "false_negatives": 0,
+    "duplicates": 0,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-REAL-SEC-002",
+        "predicted_finding_id": "agent-a8042e36",
+        "file_matched": true,
+        "line_distance": 0,
+        "category_matched": true,
+        "semantic_score": 1.0,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-REAL-SEC-002 at lines 9-10 (distance=0)"
+      }
+    ],
+    "unmatched_predictions": [
+      {
+        "finding_id": "spec-style-84989880",
+        "category": "STYLE",
+        "severity": "INFO",
+        "affected_file": "src/flask/helpers.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Style Suggestion: Consider PEP-8 formatting adherence",
+        "explanation": "Specialist suggests cosmetic whitespace adjustment without functional defect impact.",
+        "confidence_score": 0.65,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      },
+      {
+        "finding_id": "spec-comment-786d4665",
+        "category": "BUG_LOGIC",
+        "severity": "MEDIUM",
+        "affected_file": "src/flask/helpers.py",
+        "line_start": 2,
+        "line_end": 2,
+        "title": "Speculative defect claim on comment or whitespace line",
+        "explanation": "Specialist flagged a non-executable line without evidence.",
+        "confidence_score": 0.55,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      },
+      {
+        "finding_id": "spec-hallucination-1ef1ff22",
+        "category": "SECURITY",
+        "severity": "HIGH",
+        "affected_file": "src/flask/helpers.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Speculative SSRF Vulnerability Claim",
+        "explanation": "Unverified specialist claims outbound SSRF without validating network destination.",
+        "confidence_score": 0.45,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      }
+    ],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 0.0003,
+      "api_calls": 5,
+      "prompt_tokens": 1200,
+      "completion_tokens": 300,
+      "total_tokens": 1500,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  {
+    "case_id": "REAL-TEST-001",
+    "category": "TEST_ADEQUACY",
+    "ground_truth_count": 1,
+    "predicted_count": 4,
+    "true_positives": 1,
+    "false_positives": 3,
+    "false_negatives": 0,
+    "duplicates": 0,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-REAL-TEST-001",
+        "predicted_finding_id": "agent-1609c1c3",
+        "file_matched": true,
+        "line_distance": 0,
+        "category_matched": true,
+        "semantic_score": 1.0,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-REAL-TEST-001 at lines 4-6 (distance=0)"
+      }
+    ],
+    "unmatched_predictions": [
+      {
+        "finding_id": "spec-style-fa998640",
+        "category": "STYLE",
+        "severity": "INFO",
+        "affected_file": "src/urllib3/poolmanager.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Style Suggestion: Consider PEP-8 formatting adherence",
+        "explanation": "Specialist suggests cosmetic whitespace adjustment without functional defect impact.",
+        "confidence_score": 0.65,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      },
+      {
+        "finding_id": "spec-comment-51f0b707",
+        "category": "BUG_LOGIC",
+        "severity": "MEDIUM",
+        "affected_file": "src/urllib3/poolmanager.py",
+        "line_start": 4,
+        "line_end": 4,
+        "title": "Speculative defect claim on comment or whitespace line",
+        "explanation": "Specialist flagged a non-executable line without evidence.",
+        "confidence_score": 0.55,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      },
+      {
+        "finding_id": "spec-hallucination-4ba1f87a",
+        "category": "SECURITY",
+        "severity": "HIGH",
+        "affected_file": "src/urllib3/poolmanager.py",
+        "line_start": 1,
+        "line_end": 1,
+        "title": "Speculative SSRF Vulnerability Claim",
+        "explanation": "Unverified specialist claims outbound SSRF without validating network destination.",
+        "confidence_score": 0.45,
+        "is_verified": true,
+        "verification_status": "UNVERIFIED_CANDIDATE",
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {}
+      }
+    ],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 0.0005,
+      "api_calls": 5,
+      "prompt_tokens": 1200,
+      "completion_tokens": 300,
+      "total_tokens": 1500,
+      "estimated_cost_usd": 0.0
+    }
+  }
+]
