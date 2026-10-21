@@ -51,7 +51,8 @@ class AgenticReviewerBaseline(BaseBaseline):
                 (self.llm_service.settings.LLM_PROVIDER or "mock").strip().lower()
             )
             has_creds = bool(
-                (provider == "openai" and self.llm_service.settings.OPENAI_API_KEY)
+                (provider == "ollama")
+                or (provider == "openai" and self.llm_service.settings.OPENAI_API_KEY)
                 or (
                     provider == "anthropic"
                     and self.llm_service.settings.ANTHROPIC_API_KEY
@@ -92,7 +93,11 @@ class AgenticReviewerBaseline(BaseBaseline):
         prompt_tokens = 1200 + (len(candidates) * 350)
         completion_tokens = 300 + (len(candidates) * 150)
         total_tokens = prompt_tokens + completion_tokens
-        cost = round((prompt_tokens * 3.0 + completion_tokens * 15.0) / 1_000_000, 6)
+        cost = (
+            0.0
+            if getattr(self, "provider_name", "") == "ollama"
+            else round((prompt_tokens * 3.0 + completion_tokens * 15.0) / 1_000_000, 6)
+        )
 
         usage = ResourceUsage(
             latency_seconds=round(elapsed, 4),

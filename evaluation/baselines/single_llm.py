@@ -5,7 +5,6 @@ from __future__ import annotations
 import time
 import uuid
 
-from app.services.llm.base import LLMRequest
 from app.services.llm.mock_provider import MockLLMProvider
 from app.services.llm.service import LLMService
 from pydantic import BaseModel, Field
@@ -82,7 +81,8 @@ class SingleLLMBaseline(BaseBaseline):
                 (self.llm_service.settings.LLM_PROVIDER or "mock").strip().lower()
             )
             has_creds = bool(
-                (provider == "openai" and self.llm_service.settings.OPENAI_API_KEY)
+                (provider == "ollama")
+                or (provider == "openai" and self.llm_service.settings.OPENAI_API_KEY)
                 or (
                     provider == "anthropic"
                     and self.llm_service.settings.ANTHROPIC_API_KEY
@@ -106,21 +106,20 @@ class SingleLLMBaseline(BaseBaseline):
                 f"Code under review:\n```\n{case.vulnerable_code}\n```\n"
             )
 
-            request = LLMRequest(
+            parsed_output, llm_resp = await self.llm_service.generate_structured(
                 prompt=user_prompt,
+                schema=SingleLLMResponse,
                 system_prompt=SINGLE_LLM_SYSTEM_PROMPT,
                 temperature=0.1,
                 max_tokens=2048,
             )
-
-            tokens_prompt = len(user_prompt.split()) * 2
+            tokens_prompt = llm_resp.prompt_tokens or len(user_prompt.split()) * 2
+            tokens_completion = (
+                llm_resp.completion_tokens or len(str(parsed_output).split()) * 2
+            )
             api_calls = 1
 
-            result = await self.llm_service.generate_structured(
-                request, SingleLLMResponse
-            )
-            tokens_completion = len(str(result).split()) * 2
-            for item in result.findings:
+            for item in parsed_output.findings:
                 findings.append(
                     NormalizedFinding(
                         finding_id=f"single-{uuid.uuid4().hex[:8]}",
@@ -140,8 +139,12 @@ class SingleLLMBaseline(BaseBaseline):
 
             elapsed = time.perf_counter() - start_time
             total_tokens = tokens_prompt + tokens_completion
-            cost = round(
-                (tokens_prompt * 3.0 + tokens_completion * 15.0) / 1_000_000, 6
+            cost = (
+                0.0
+                if provider == "ollama"
+                else round(
+                    (tokens_prompt * 3.0 + tokens_completion * 15.0) / 1_000_000, 6
+                )
             )
 
             usage = ResourceUsage(

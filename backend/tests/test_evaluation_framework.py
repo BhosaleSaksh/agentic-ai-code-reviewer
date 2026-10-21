@@ -654,7 +654,13 @@ async def test_agentic_no_static_evidence_baseline() -> None:
 @pytest.mark.asyncio
 async def test_real_mode_fails_fast_when_credentials_missing() -> None:
     """Verify that requesting mode='real' without provisioned API keys raises RuntimeError."""
-    baseline = SingleLLMBaseline(mode="real")
+    from app.core.config import Settings
+    from app.services.llm.service import LLMService
+
+    unconfigured_service = LLMService(
+        settings=Settings(LLM_PROVIDER="openai", OPENAI_API_KEY="")
+    )
+    baseline = SingleLLMBaseline(llm_service=unconfigured_service, mode="real")
     eval_input = EvaluationInput(
         case_id="TEST-REAL",
         category=DefectCategory.SECURITY,

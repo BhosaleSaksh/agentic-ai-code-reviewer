@@ -44,13 +44,18 @@ class AgenticNoCriticBaseline(BaseBaseline):
             cand.verification_status = "UNVERIFIED_CANDIDATE"
 
         elapsed = time.perf_counter() - start_time
+        cost = (
+            0.0
+            if getattr(self, "provider_name", "") == "ollama"
+            else round((1200 * 3.0 + 300 * 15.0) / 1_000_000, 6)
+        )
         usage = ResourceUsage(
             latency_seconds=round(elapsed, 4),
             api_calls=5,  # 1 Planner + 4 Specialists, 0 Critic calls
             prompt_tokens=1200,
             completion_tokens=300,
             total_tokens=1500,
-            estimated_cost_usd=round((1200 * 3.0 + 300 * 15.0) / 1_000_000, 6),
+            estimated_cost_usd=cost,
         )
 
         return candidates, usage
@@ -100,13 +105,18 @@ class AgenticNoStaticEvidenceBaseline(BaseBaseline):
                 verified_findings.append(candidate)
 
         elapsed = time.perf_counter() - start_time
+        cost = (
+            0.0
+            if getattr(self, "provider_name", "") == "ollama"
+            else round((1000 * 3.0 + 250 * 15.0) / 1_000_000, 6)
+        )
         usage = ResourceUsage(
             latency_seconds=round(elapsed, 4),
             api_calls=1 + 4 + len(candidates),
             prompt_tokens=1000 + (len(candidates) * 300),
             completion_tokens=250 + (len(candidates) * 120),
             total_tokens=1250 + (len(candidates) * 420),
-            estimated_cost_usd=round((1000 * 3.0 + 250 * 15.0) / 1_000_000, 6),
+            estimated_cost_usd=cost,
         )
 
         return verified_findings, usage
