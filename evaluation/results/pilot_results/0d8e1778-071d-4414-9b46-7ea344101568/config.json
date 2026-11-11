@@ -1,0 +1,15 @@
+{
+  "run_id": "0d8e1778-071d-4414-9b46-7ea344101568",
+  "baseline_name": "single_llm_reviewer",
+  "execution_mode": "real_llm",
+  "provider": "ollama",
+  "model": "qwen3:4b-instruct",
+  "dataset_version": "1.0.0",
+  "git_commit_sha": "af0f0427252487b6cd0b76bba14a0d611fd67024",
+  "timestamp": "2026-10-21T10:50:18.678740+00:00",
+  "total_cases": 1,
+  "execution_metadata": {
+    "category_filter": "all",
+    "mode": "real"
+  }
+}

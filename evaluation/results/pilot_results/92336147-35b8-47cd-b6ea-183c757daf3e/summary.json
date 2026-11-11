@@ -1,0 +1,110 @@
+{
+  "run_id": "92336147-35b8-47cd-b6ea-183c757daf3e",
+  "baseline_name": "agentic_critic_full",
+  "execution_mode": "real_llm",
+  "provider": "ollama",
+  "model": "qwen3:4b-instruct",
+  "dataset_version": "1.0.0",
+  "timestamp": "2026-10-21T10:52:13.623806+00:00",
+  "git_commit_sha": "af0f0427252487b6cd0b76bba14a0d611fd67024",
+  "total_cases": 1,
+  "overall_metrics": {
+    "true_positives": 1,
+    "false_positives": 0,
+    "true_negatives": 0,
+    "false_negatives": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1_score": 1.0,
+    "false_positive_rate": 0.0,
+    "false_negative_rate": 0.0,
+    "defect_detection_rate": 1.0,
+    "precision_ci": [
+      0.2065,
+      1.0
+    ],
+    "recall_ci": [
+      0.2065,
+      1.0
+    ]
+  },
+  "category_metrics": {
+    "SECURITY": {
+      "true_positives": 1,
+      "false_positives": 0,
+      "true_negatives": 0,
+      "false_negatives": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "false_positive_rate": 0.0,
+      "false_negative_rate": 0.0,
+      "defect_detection_rate": 1.0,
+      "precision_ci": [
+        0.2065,
+        1.0
+      ],
+      "recall_ci": [
+        0.2065,
+        1.0
+      ]
+    }
+  },
+  "verification_metrics": {
+    "total_candidates": 1,
+    "verified_count": 1,
+    "rejected_count": 0,
+    "verified_rate": 1.0,
+    "rejected_rate": 0.0,
+    "evidence_grounded_count": 1,
+    "evidence_grounded_rate": 1.0,
+    "critic_rejection_rate": 0.0
+  },
+  "total_resource_usage": {
+    "latency_seconds": 0.0012,
+    "api_calls": 9,
+    "prompt_tokens": 2600,
+    "completion_tokens": 900,
+    "total_tokens": 3500,
+    "estimated_cost_usd": 0.0
+  },
+  "case_results": [
+    {
+      "case_id": "SYNTH-SEC-001",
+      "category": "SECURITY",
+      "ground_truth_count": 1,
+      "predicted_count": 1,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "duplicates": 0,
+      "matched_pairs": [
+        {
+          "matched": true,
+          "ground_truth_id": "DEFECT-SEC-001",
+          "predicted_finding_id": "agent-8c00d821",
+          "file_matched": true,
+          "line_distance": 1,
+          "category_matched": true,
+          "semantic_score": 0.958,
+          "is_duplicate": false,
+          "explanation": "Matched DEFECT-SEC-001 at lines 5-5 (distance=1)"
+        }
+      ],
+      "unmatched_predictions": [],
+      "unmatched_ground_truth": [],
+      "resource_usage": {
+        "latency_seconds": 0.0012,
+        "api_calls": 9,
+        "prompt_tokens": 2600,
+        "completion_tokens": 900,
+        "total_tokens": 3500,
+        "estimated_cost_usd": 0.0
+      }
+    }
+  ],
+  "execution_metadata": {
+    "category_filter": "all",
+    "mode": "real"
+  }
+}

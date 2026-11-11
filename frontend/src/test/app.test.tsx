@@ -44,6 +44,7 @@ describe("Phase 6 Review Dashboard - UI & Security Invariants", () => {
     expect(screen.getByText("Review Runs")).toBeInTheDocument();
     expect(screen.getByText("Findings")).toBeInTheDocument();
     expect(screen.getByText("Feedback")).toBeInTheDocument();
+    expect(screen.getByText("Evaluation & Matrix")).toBeInTheDocument();
     expect(screen.getByText("Backend Online")).toBeInTheDocument();
   });
 

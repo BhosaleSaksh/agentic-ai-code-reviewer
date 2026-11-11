@@ -8,6 +8,7 @@ import {
   ShieldAlert,
   MessageSquareQuote,
   Sparkles,
+  BarChart3,
 } from "lucide-react";
 
 export const Sidebar: React.FC = () => {
@@ -76,6 +77,15 @@ export const Sidebar: React.FC = () => {
         >
           <MessageSquareQuote size={18} />
           <span>Feedback</span>
+        </NavLink>
+
+        <NavLink
+          to="/evaluation"
+          className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
+          id="nav-evaluation"
+        >
+          <BarChart3 size={18} />
+          <span>Evaluation & Matrix</span>
         </NavLink>
       </nav>
 

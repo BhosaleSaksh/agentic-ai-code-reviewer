@@ -1,0 +1,84 @@
+[
+  {
+    "case_id": "SYNTH-SEC-001",
+    "category": "SECURITY",
+    "ground_truth_count": 1,
+    "predicted_count": 4,
+    "true_positives": 1,
+    "false_positives": 3,
+    "false_negatives": 0,
+    "duplicates": 1,
+    "matched_pairs": [
+      {
+        "matched": true,
+        "ground_truth_id": "DEFECT-SEC-001",
+        "predicted_finding_id": "single-0583f6e3",
+        "file_matched": true,
+        "line_distance": 1,
+        "category_matched": true,
+        "semantic_score": 0.958,
+        "is_duplicate": false,
+        "explanation": "Matched DEFECT-SEC-001 at lines 5-5 (distance=1)"
+      }
+    ],
+    "unmatched_predictions": [
+      {
+        "finding_id": "single-eb00082d",
+        "category": "ERROR HANDLING",
+        "severity": "MEDIUM",
+        "affected_file": "app/services/user_search.py",
+        "line_start": 5,
+        "line_end": 5,
+        "title": "Missing Error Handling",
+        "explanation": "The function does not handle potential errors such as database connection failures, query execution errors, or cursor exceptions. If the database is unavailable or the query fails, the function will raise an unhandled exception without providing meaningful feedback or graceful fallback.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "Error Handling",
+          "severity": "MEDIUM",
+          "file_path": "app/services/user_search.py",
+          "line_number": 5,
+          "title": "Missing Error Handling",
+          "explanation": "The function does not handle potential errors such as database connection failures, query execution errors, or cursor exceptions. If the database is unavailable or the query fails, the function will raise an unhandled exception without providing meaningful feedback or graceful fallback.",
+          "confidence": 0.8
+        }
+      },
+      {
+        "finding_id": "single-e3ffd04f",
+        "category": "CODE QUALITY",
+        "severity": "MEDIUM",
+        "affected_file": "app/services/user_search.py",
+        "line_start": 5,
+        "line_end": 5,
+        "title": "Use of Unsafe String Formatting",
+        "explanation": "The query uses string formatting with f-strings, which is error-prone and not secure. It should be replaced with parameterized queries to prevent injection and ensure robustness.",
+        "confidence_score": 0.8,
+        "is_verified": true,
+        "verification_status": null,
+        "rejection_reason": null,
+        "evidence": [],
+        "raw_payload": {
+          "category": "Code Quality",
+          "severity": "MEDIUM",
+          "file_path": "app/services/user_search.py",
+          "line_number": 5,
+          "title": "Use of Unsafe String Formatting",
+          "explanation": "The query uses string formatting with f-strings, which is error-prone and not secure. It should be replaced with parameterized queries to prevent injection and ensure robustness.",
+          "confidence": 0.8
+        }
+      }
+    ],
+    "unmatched_ground_truth": [],
+    "resource_usage": {
+      "latency_seconds": 53.7381,
+      "api_calls": 1,
+      "prompt_tokens": 171,
+      "completion_tokens": 385,
+      "total_tokens": 556,
+      "estimated_cost_usd": 0.0
+    }
+  }
+]

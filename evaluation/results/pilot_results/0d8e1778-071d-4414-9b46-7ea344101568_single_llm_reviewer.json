@@ -1,0 +1,159 @@
+{
+  "run_id": "0d8e1778-071d-4414-9b46-7ea344101568",
+  "baseline_name": "single_llm_reviewer",
+  "execution_mode": "real_llm",
+  "provider": "ollama",
+  "model": "qwen3:4b-instruct",
+  "dataset_version": "1.0.0",
+  "timestamp": "2026-10-21T10:50:18.678740+00:00",
+  "git_commit_sha": "af0f0427252487b6cd0b76bba14a0d611fd67024",
+  "total_cases": 1,
+  "overall_metrics": {
+    "true_positives": 1,
+    "false_positives": 3,
+    "true_negatives": 0,
+    "false_negatives": 0,
+    "precision": 0.25,
+    "recall": 1.0,
+    "f1_score": 0.4,
+    "false_positive_rate": 0.75,
+    "false_negative_rate": 0.0,
+    "defect_detection_rate": 1.0,
+    "precision_ci": [
+      0.0456,
+      0.6994
+    ],
+    "recall_ci": [
+      0.2065,
+      1.0
+    ]
+  },
+  "category_metrics": {
+    "SECURITY": {
+      "true_positives": 1,
+      "false_positives": 3,
+      "true_negatives": 0,
+      "false_negatives": 0,
+      "precision": 0.25,
+      "recall": 1.0,
+      "f1_score": 0.4,
+      "false_positive_rate": 0.75,
+      "false_negative_rate": 0.0,
+      "defect_detection_rate": 1.0,
+      "precision_ci": [
+        0.0456,
+        0.6994
+      ],
+      "recall_ci": [
+        0.2065,
+        1.0
+      ]
+    }
+  },
+  "verification_metrics": {
+    "total_candidates": 4,
+    "verified_count": 4,
+    "rejected_count": 0,
+    "verified_rate": 1.0,
+    "rejected_rate": 0.0,
+    "evidence_grounded_count": 0,
+    "evidence_grounded_rate": 0.0,
+    "critic_rejection_rate": 0.0
+  },
+  "total_resource_usage": {
+    "latency_seconds": 53.7381,
+    "api_calls": 1,
+    "prompt_tokens": 171,
+    "completion_tokens": 385,
+    "total_tokens": 556,
+    "estimated_cost_usd": 0.0
+  },
+  "case_results": [
+    {
+      "case_id": "SYNTH-SEC-001",
+      "category": "SECURITY",
+      "ground_truth_count": 1,
+      "predicted_count": 4,
+      "true_positives": 1,
+      "false_positives": 3,
+      "false_negatives": 0,
+      "duplicates": 1,
+      "matched_pairs": [
+        {
+          "matched": true,
+          "ground_truth_id": "DEFECT-SEC-001",
+          "predicted_finding_id": "single-0583f6e3",
+          "file_matched": true,
+          "line_distance": 1,
+          "category_matched": true,
+          "semantic_score": 0.958,
+          "is_duplicate": false,
+          "explanation": "Matched DEFECT-SEC-001 at lines 5-5 (distance=1)"
+        }
+      ],
+      "unmatched_predictions": [
+        {
+          "finding_id": "single-eb00082d",
+          "category": "ERROR HANDLING",
+          "severity": "MEDIUM",
+          "affected_file": "app/services/user_search.py",
+          "line_start": 5,
+          "line_end": 5,
+          "title": "Missing Error Handling",
+          "explanation": "The function does not handle potential errors such as database connection failures, query execution errors, or cursor exceptions. If the database is unavailable or the query fails, the function will raise an unhandled exception without providing meaningful feedback or graceful fallback.",
+          "confidence_score": 0.8,
+          "is_verified": true,
+          "verification_status": null,
+          "rejection_reason": null,
+          "evidence": [],
+          "raw_payload": {
+            "category": "Error Handling",
+            "severity": "MEDIUM",
+            "file_path": "app/services/user_search.py",
+            "line_number": 5,
+            "title": "Missing Error Handling",
+            "explanation": "The function does not handle potential errors such as database connection failures, query execution errors, or cursor exceptions. If the database is unavailable or the query fails, the function will raise an unhandled exception without providing meaningful feedback or graceful fallback.",
+            "confidence": 0.8
+          }
+        },
+        {
+          "finding_id": "single-e3ffd04f",
+          "category": "CODE QUALITY",
+          "severity": "MEDIUM",
+          "affected_file": "app/services/user_search.py",
+          "line_start": 5,
+          "line_end": 5,
+          "title": "Use of Unsafe String Formatting",
+          "explanation": "The query uses string formatting with f-strings, which is error-prone and not secure. It should be replaced with parameterized queries to prevent injection and ensure robustness.",
+          "confidence_score": 0.8,
+          "is_verified": true,
+          "verification_status": null,
+          "rejection_reason": null,
+          "evidence": [],
+          "raw_payload": {
+            "category": "Code Quality",
+            "severity": "MEDIUM",
+            "file_path": "app/services/user_search.py",
+            "line_number": 5,
+            "title": "Use of Unsafe String Formatting",
+            "explanation": "The query uses string formatting with f-strings, which is error-prone and not secure. It should be replaced with parameterized queries to prevent injection and ensure robustness.",
+            "confidence": 0.8
+          }
+        }
+      ],
+      "unmatched_ground_truth": [],
+      "resource_usage": {
+        "latency_seconds": 53.7381,
+        "api_calls": 1,
+        "prompt_tokens": 171,
+        "completion_tokens": 385,
+        "total_tokens": 556,
+        "estimated_cost_usd": 0.0
+      }
+    }
+  ],
+  "execution_metadata": {
+    "category_filter": "all",
+    "mode": "real"
+  }
+}

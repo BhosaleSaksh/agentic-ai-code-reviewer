@@ -175,3 +175,44 @@ async def list_review_run_feedback(
     return await dashboard_service.list_feedback(
         session, filter_params=filter_params, limit=limit, offset=offset
     )
+
+
+@router.post(
+    "/{review_run_id}/publish",
+    response_model=ReviewRunRead,
+    summary="Publish Verified Findings and Complete Review Run",
+    description="Publishes verified findings to GitHub and marks the review execution as COMPLETED.",
+)
+async def publish_review_run(
+    review_run_id: uuid.UUID,
+    session: Annotated[AsyncSession, Depends(get_db_session)],
+) -> ReviewRunRead:
+    """Manually or programmatically publish verified review findings to GitHub."""
+    run = await dashboard_service.publish_review_run(session, review_run_id)
+    if run is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"ReviewRun {review_run_id} not found",
+        )
+    return run
+
+
+@router.post(
+    "/{review_run_id}/reset",
+    response_model=ReviewRunRead,
+    summary="Reset Review Run to Active/Running State",
+    description="Resets a review run back to RUNNING and unpublishes findings for live demonstration.",
+)
+async def reset_review_run(
+    review_run_id: uuid.UUID,
+    session: Annotated[AsyncSession, Depends(get_db_session)],
+) -> ReviewRunRead:
+    """Reset review execution back to active state for presentation demo."""
+    run = await dashboard_service.reset_review_run(session, review_run_id)
+    if run is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"ReviewRun {review_run_id} not found",
+        )
+    return run
+

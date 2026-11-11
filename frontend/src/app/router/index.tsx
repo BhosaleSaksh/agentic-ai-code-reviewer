@@ -9,6 +9,7 @@ import { ReviewRunsPage } from "@/features/review-runs/ReviewRunsPage";
 import { ReviewRunDetailPage } from "@/features/review-runs/ReviewRunDetailPage";
 import { FindingsPage } from "@/features/findings/FindingsPage";
 import { FeedbackPage } from "@/features/feedback/FeedbackPage";
+import { EvaluationPage } from "@/features/evaluation/EvaluationPage";
 
 export const router = createBrowserRouter([
   {
@@ -54,6 +55,10 @@ export const router = createBrowserRouter([
       {
         path: "feedback",
         element: <FeedbackPage />,
+      },
+      {
+        path: "evaluation",
+        element: <EvaluationPage />,
       },
       {
         path: "*",

@@ -6,6 +6,7 @@ Collects and includes all v1 endpoint routers.
 from fastapi import APIRouter
 
 from app.api.v1.dashboard import router as dashboard_router
+from app.api.v1.evaluation import router as evaluation_router
 from app.api.v1.feedback import router as feedback_router
 from app.api.v1.findings import router as findings_router
 from app.api.v1.health import router as health_router
@@ -29,3 +30,5 @@ v1_router.include_router(pull_requests_router)
 v1_router.include_router(reviews_router)
 v1_router.include_router(findings_router)
 v1_router.include_router(feedback_router)
+v1_router.include_router(evaluation_router)
+

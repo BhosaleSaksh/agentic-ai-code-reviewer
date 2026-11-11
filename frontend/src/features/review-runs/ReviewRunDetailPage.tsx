@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   fetchReviewRunById,
   fetchReviewRunFindings,
   fetchReviewRunEvidence,
   fetchReviewRunPublications,
   fetchReviewRunFeedback,
+  publishReviewRun,
+  resetReviewRun,
 } from "@/lib/api/reviews";
 import { queryKeys } from "@/lib/query/queryKeys";
 import { LoadingState } from "@/components/ui/LoadingState";
@@ -25,12 +27,36 @@ import {
   MessageSquareQuote,
   ShieldCheck,
   CheckCircle2,
+  RotateCcw,
 } from "lucide-react";
 
 export const ReviewRunDetailPage: React.FC = () => {
   const { reviewRunId } = useParams<{ reviewRunId: string }>();
+  const queryClient = useQueryClient();
   const [activeTab, setActiveTab] = useState<"findings" | "evidence" | "publications" | "feedback">("findings");
   const [findingFilter, setFindingFilter] = useState<string>("ALL");
+
+  const publishMutation = useMutation({
+    mutationFn: () => publishReviewRun(reviewRunId || ""),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.reviews.detail(reviewRunId || "") });
+      queryClient.invalidateQueries({ queryKey: queryKeys.reviews.findings(reviewRunId || "") });
+      queryClient.invalidateQueries({ queryKey: queryKeys.reviews.publications(reviewRunId || "") });
+      queryClient.invalidateQueries({ queryKey: queryKeys.reviews.all });
+      queryClient.invalidateQueries({ queryKey: queryKeys.dashboard.metrics });
+    },
+  });
+
+  const resetMutation = useMutation({
+    mutationFn: () => resetReviewRun(reviewRunId || ""),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.reviews.detail(reviewRunId || "") });
+      queryClient.invalidateQueries({ queryKey: queryKeys.reviews.findings(reviewRunId || "") });
+      queryClient.invalidateQueries({ queryKey: queryKeys.reviews.publications(reviewRunId || "") });
+      queryClient.invalidateQueries({ queryKey: queryKeys.reviews.all });
+      queryClient.invalidateQueries({ queryKey: queryKeys.dashboard.metrics });
+    },
+  });
 
   const {
     data: run,
@@ -42,6 +68,7 @@ export const ReviewRunDetailPage: React.FC = () => {
     queryFn: () => fetchReviewRunById(reviewRunId || ""),
     enabled: !!reviewRunId,
   });
+
 
   const {
     data: findings,
@@ -117,7 +144,74 @@ export const ReviewRunDetailPage: React.FC = () => {
           </p>
         </div>
 
-        <div style={{ display: "flex", gap: "8px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          {run.status === "RUNNING" || run.published_findings_count < run.verified_findings_count ? (
+            <button
+              onClick={() => publishMutation.mutate()}
+              disabled={publishMutation.isPending}
+              className="tab-btn"
+              data-testid="publish-github-btn"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                background: "linear-gradient(135deg, #2563eb, #1d4ed8)",
+                color: "#ffffff",
+                fontWeight: 600,
+                border: "none",
+                cursor: publishMutation.isPending ? "not-allowed" : "pointer",
+                padding: "8px 16px",
+                borderRadius: "6px",
+                boxShadow: "0 2px 10px rgba(37, 99, 235, 0.45)",
+                transition: "all 0.2s ease",
+              }}
+              title="Publish verified findings to GitHub and complete review run"
+            >
+              <Send size={15} />
+              {publishMutation.isPending ? "Publishing to GitHub..." : "Publish to GitHub"}
+            </button>
+          ) : (
+            <div style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>
+              <span
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  padding: "6px 12px",
+                  borderRadius: "6px",
+                  background: "rgba(16, 185, 129, 0.15)",
+                  color: "#10b981",
+                  fontSize: "12px",
+                  fontWeight: 600,
+                  border: "1px solid rgba(16, 185, 129, 0.3)",
+                }}
+              >
+                <CheckCircle2 size={14} /> Published to GitHub
+              </span>
+              <button
+                onClick={() => resetMutation.mutate()}
+                disabled={resetMutation.isPending}
+                className="tab-btn"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  padding: "6px 12px",
+                  borderRadius: "6px",
+                  background: "rgba(255, 255, 255, 0.05)",
+                  border: "1px solid var(--border-subtle)",
+                  color: "var(--text-secondary)",
+                  fontSize: "12px",
+                  cursor: resetMutation.isPending ? "not-allowed" : "pointer",
+                }}
+                title="Reset review run back to active RUNNING state for demonstration"
+              >
+                <RotateCcw size={13} className={resetMutation.isPending ? "spin-animation" : ""} />
+                <span>{resetMutation.isPending ? "Resetting..." : "Reset Demo PR"}</span>
+              </button>
+            </div>
+          )}
+
           {run.pull_request_id && (
             <Link
               to={`/pull-requests/${run.pull_request_id}`}

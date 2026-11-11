@@ -10,6 +10,7 @@ import {
   MessageSquareQuote,
   Activity,
   Layers,
+  BarChart3,
 } from "lucide-react";
 import { fetchDashboardMetrics } from "@/lib/api/dashboard";
 import { fetchReviewRuns } from "@/lib/api/reviews";
@@ -63,6 +64,27 @@ export const DashboardPage: React.FC = () => {
           <p className="page-subheading">
             Live metrics and audit verification state across connected repositories
           </p>
+        </div>
+        <div>
+          <Link
+            to="/evaluation"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "8px",
+              background: "linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(16, 185, 129, 0.2))",
+              border: "1px solid rgba(99, 102, 241, 0.4)",
+              color: "#c7d2fe",
+              padding: "8px 16px",
+              borderRadius: "6px",
+              fontSize: "13px",
+              fontWeight: 600,
+              textDecoration: "none",
+            }}
+          >
+            <BarChart3 size={15} color="#10b981" />
+            <span>Evaluation & Confusion Matrix</span>
+          </Link>
         </div>
       </div>
 

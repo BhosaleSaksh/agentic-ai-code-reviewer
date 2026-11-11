@@ -1,0 +1,15 @@
+{
+  "run_id": "92336147-35b8-47cd-b6ea-183c757daf3e",
+  "baseline_name": "agentic_critic_full",
+  "execution_mode": "real_llm",
+  "provider": "ollama",
+  "model": "qwen3:4b-instruct",
+  "dataset_version": "1.0.0",
+  "git_commit_sha": "af0f0427252487b6cd0b76bba14a0d611fd67024",
+  "timestamp": "2026-10-21T10:52:13.623806+00:00",
+  "total_cases": 1,
+  "execution_metadata": {
+    "category_filter": "all",
+    "mode": "real"
+  }
+}
